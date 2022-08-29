@@ -1,0 +1,71 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=euc-kr">
+<title>태그연습장-뷰파트</title>
+<style>
+<!--
+TABLE,TD,SELECT,INPUT,TEXTAREA,BODY{font-size:9pt;}
+BODY{
+ margin:1px;
+}
+.tagBox{
+ overflow:auto;
+  width:100%; 
+ Height:100%;
+ border:1 black solid;
+}
+-->
+</style>
+<script>
+<!--
+function reLoadSrc(who){
+ view.document.createStyleSheet('./sally_styles.css');
+ view.document.body.innerHTML=temp;
+ obj.disabled=false;
+ if(obj.checked){
+    alert("직접 편집하는 모드입니다. \n\n결과보기창에서 수정을 하실 수가 있어요. ");
+ }
+ else{
+    alert("편집이 끝나고 결과보기 모드가 되었습니다. \n\n내용을 모두선택,복사하여 포스트에 붙여넣기 하세요. ");
+ }
+}
+var temp;
+var obj;
+function modeChange(who){
+ obj=who;
+ temp=view.document.body.innerHTML;
+ if(obj.checked){
+    view.document.designMode="On";
+ }
+ else{
+   view.document.designMode="Off";
+ }
+ obj.disabled=true;
+ setTimeout("reLoadSrc();",500);
+}
+//-->
+</script>
+</head>
+
+<body text="black" link="blue" vlink="purple" alink="red">
+<table border="0" width="100%" height="100%" cellspacing=0>
+    <tr>
+        <td height="1%" bgcolor="#ECE9D8" style="padding-top:6px;">
+            <p>&nbsp;<b>결과보기창↓</b>(미리보기) :: <font color="purple">모두선택</font>, <font color="purple">복사</font>, 
+            포스트에 <font color="purple">붙여넣기</font> 하세요. 
+            <input title="편집하기/결과보기 선택" type="checkbox" onclick="modeChange(this);">편집&nbsp; 
+            
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td height="100%">
+            <p><iframe id=view class="tagBox" frameborder=0></iframe></p>
+        </td>
+    </tr>
+</table>
+
+
+	
+</script>

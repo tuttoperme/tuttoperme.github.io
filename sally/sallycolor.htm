@@ -1,0 +1,94 @@
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=euc-kr">
+<title>(C)샐리디카™　태그연습장　색상표 2004-8-12 </title>
+<style>
+<!--
+A:link{color:#006699;}
+A:visited{color:#006699;}
+A:hover{color:#660000;}
+TABLE,BODY{font-size:9pt;}
+TD{font-size:2px;}
+INPUT{font-size:10pt; font-family:굴림체;}
+LI{line-height:150%}
+-->
+</style>
+<script>
+<!--
+cHx=new Array("00","33","66","99","BB","CC","DD","EE","FF");  
+cDc=new Array("0","51","102","153","187","204","221","238","255");
+function gC(rd,gd,bd){
+ var cc='#'+cHx[rd]+cHx[gd]+cHx[bd];
+ var cd='rgb('+cDc[rd]+','+cDc[gd]+','+cDc[bd]+')';
+ selGet.bgColor=cc;
+ selCode.value=cc;
+ selRGB.value=cd;
+}
+function gov(rd,gd,bd){
+ var cc='#'+cHx[rd]+cHx[gd]+cHx[bd];
+ selColor.bgColor=cc;
+}
+function copyCode(who){
+  who.select();
+  var know=who.createTextRange();
+  know.execCommand("Copy");
+  helpWin.style.posLeft=event.clientX-140;
+  helpWin.style.posTop=event.clientY-55;
+  helpWin.style.visibility='visible';
+  cCode.innerText=who.value;
+  setTimeout('helpWinOff();',1000);
+}
+function helpWinOff(){
+  helpWin.style.visibility='hidden';
+}
+//-->
+</script>
+
+</head>
+<body bgcolor="#EEEEEE" style="padding:10px;">
+<table border=0 cellpadding=0 cellspacing=0  align=center>
+<tr><td style="border:1 black solid; padding:1px;">
+  <script>
+  <!--
+  var r=0,g=0,b=0;
+  var str='<table height=90 border="0" cellspacing="0" cellpadding="0">'; 
+  for(b=0; b<9; b++){ 
+      str+='<tr><td width=8 onclick="gC('+b+','+b+','+b+');" onmouseover="gov('+b+','+b+','+b+');" bgcolor='+'"#'+cHx[b]+cHx[b]+cHx[b]+'">&nbsp;</td>'; 
+      for(r=0; r<9; r++)for(g=0; g<9; g++){  
+          str+='<td width=8 onclick="gC('+r+','+g+','+b+');" onmouseover="gov('+r+','+g+','+b+');" bgcolor='+'"#'+cHx[r]+cHx[g]+cHx[b]+'">&nbsp;</td>'; 
+      }  
+      str+='</tr>'; 
+  }  
+  document.write(str+'</table>');
+  //-->
+  </script>
+</td></tr>
+<tr><td>
+  <table border=0 cellpadding=0 cellspacing=3><tr>
+    <td style="font-size:9pt;" nowrap>보기</td>
+    <td width=80% style="border:1 black solid;" id=selColor>&nbsp;</td>
+    <td style="font-size:9pt;" nowrap>&nbsp;선택색</td>
+    <td width=20% style="border:1 black solid;" id=selGet>&nbsp;</td>
+    <td><input size=7 value="색코드" id=selCode onclick="copyCode(this);"></td>
+    <td><input size=17 value="색코드(R,G,B)" id=selRGB onclick="copyCode(this);"></td>
+    <td style="font-size:9pt; cursor:hand;" nowrap 
+     onclick="helpDoc.style.visibility='visible'">&nbsp;사용법보기</td>
+  </tr></table>
+</td></tr></table>
+<div id=helpWin style="position:absolute; left:0; top:0; visibility:hidden; height:10px;
+  border:1 black solid; padding:5px; background-color:#FFFFE0;">
+  색코드&nbsp;<font color=red><B><nobr id=cCode></nobr></B></font>&nbsp;복사됨</div>
+<div id=helpDoc style="position:absolute; left:20px; top:15px; visibility:hidden; width:500px; height:100px;
+  border:1 black solid; padding:8px; background-color:#FFFFE0;">
+  <a href="http://blog.naver.com/sallynice" target="_blank">샐리의 디카여행</a> :: 색상표<br>
+  <ul style="margin:5 0 5 20;">
+    <li>원하는 색을 골라 마우스로 클릭하세요.</li>
+    <li>색코드를 클릭하면 자동복사되니까 그대로 필요한 곳에 붙여넣기 하세요.</li>
+    <li>보통은 #기호가 붙은 왼쪽편 코드를 사용하시면 된답니다.</li>
+ </ul>
+ <span style="width:100%; text-align:right; cursor:hand;" 
+  onclick="helpDoc.style.visibility='hidden'">[사용법닫기 -클릭]</span>
+</div>
+
+</script>

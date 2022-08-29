@@ -1,0 +1,202 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=euc-kr">
+<title>샐리디카™ 태그연습장 + (색상표/포스트편집기) 2004-08-11</title>
+<style>
+<!--
+TABLE,TD,SELECT,INPUT,TEXTAREA,BODY{font-size:9pt;}
+BODY{margin:2px;}
+UL{margin-left:15px;margin-top:5px; margin-bottom:5px; line-height:100%;}
+LI{line-height:150%;}
+A{text-decoration:none; padding:4 2 0 2;}
+A:link{color:#3333cc;}
+A:visit{color:#3333cc;}
+A:hover{color:black;background-color:#ccddff;}
+A:active{color:#FF3333;}
+.btn{behavior:url(hi.htc); border-style:outset; border-width:1px; cursor:hand; margin:2 4 0 0;} 
+.tagBox{ overflow:auto; width:100%; Height:100%; border:1 black solid;}
+.xmpBox{ background-color:#EEEEEE; padding:5px;}
+.xmpLayer{ visibility:hidden; width:400px; height:200px; position:absolute; 
+ left:15px; top:10px; z-index:100; background-color:#FFFFEE; border:1 black solid; padding:5px;
+ filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=5,OffY=5,Color='gray',Positive='true');  
+}
+-->
+</style>
+<script>
+<!--
+var sour=new Array(
+'<table border=10 bordercolor=green cellpadding=3 cellspacing=4 \n  background="http://myhome.naver.net/sallynice/blog/tag_bg1.jpg" \n  width=520 height=395> \n    <tr> \n    <td> \n        <font color=yellow size=4> \n            <b>배경 그림에 테두리를  넣었습니다. </b> \n        </font> \n    </td> \n    </tr> \n</table> ',
+'<table border=8 bgcolor=#CCCCCC bordercolorlight=#660000 \n bordercolordark=#330000 cellspacing=20> \n    <tr> \n    <td align=center> \n        <table background="http://myhome.naver.net/sallynice/blog/tag_bg2.jpg" \n         border=5 bordercolorlight=#999999 bordercolordark=#FFFFFF \n         cellspacing=1 width=380 height=390>  \n            <tr><td align=center> \n                <font color=white size=3><b> 액자 느낌으로 만든 테이블입니다. </b></font> \n            </td></tr> \n        </table> \n    </td></tr> \n</table>',
+'<table border=8 bgcolor=#FFCCEE bordercolorlight=#990033 \n bordercolordark=#660033 cellspacing=20> \n     <tr><td align=center> \n        <table background="http://myhome.naver.net/sallynice/blog/tag_bg3.jpg"  \n         border=5 bordercolorlight=#999999 bordercolordark=#FFFFFF \n         cellspacing=1 width=475 height=367>  \n            <tr><td align=center>  \n                <span style="Filter:Glow(color=black,strength=3); width:100%;"> \n                    <font color=white size=3> \n                    <b> 액자 느낌으로 만든 테이블입니다. \n                    <br> 글 주위에 그림자를 만들었습니다. </b> \n                    </font> \n                </span>  \n            </td></tr>  \n        </table>  \n    </td></tr>  \n</table>',
+'<marquee direction="up" scrollamount="1" scrolldelay=100" \n  width="400" height="300" \n  style="background-image: url(http://myhome.naver.net/sallynice/blog/tag_bg1.jpg); \n  background-attachment:fixed; border:10 yellow ridge;">  \n    <ul> \n        <span style="Filter:Glow(color=#FF3366,strength=1); \n         width:100%; color:white; font-size:10pt;"> \n            <b>배경그림 위로 \n            <br><br>글을 흐르게 하고... \n            <br><br><br>샐리의 디카여행..^^* </b> \n        </span> \n    </ul>  \n</marquee>',
+'<table border="5" bordercolorlight=#006600 \n  bordercolordark=#006600 width="500" height="300"> \n    <tr><td bgcolor="white">  \n        <img style="filter: alpha(style=1, opacity=0, finishopacity=70)"   \n         src="http://myhome.naver.net/sallynice/blog/tag_bg1.jpg"  align="right">  \n        <br><br>  \n        <marquee scrollAmount=1 scrolldelay=150 direction=up width="400" \n         height="300" style="margin:25px;"> \n            <b>★ 영상시 ★</b> \n            <br><br>시나 글을 써두면 \n             <br><br>글이 올라갑니다... \n            <br><br> scrolldelay=150 가  \n            <br><br>글속도입니다. \n        </marquee>  \n    </td></tr> \n</table>',
+'<table border="5" bordercolorlight=#006600 \n  bordercolordark=#006600 width="500" height="300"> \n    <tr><td bgcolor="white">  \n        <img style="filter: alpha(style=1, opacity=0, finishopacity=70)"   \n         src="http://myhome.naver.net/sallynice/blog/tag_bg1.jpg"  align="right">  \n        <br><br>  \n        <marquee scrollAmount=1 scrolldelay=150 direction=up width="400" \n         height="300" style="margin:25px;"> \n            <b>★ 영상시나 노래가사 ★</b> \n            <br><br>배경음악을 연주하면서... \n            <br><br>시나 글, 노래가사를 써두면 \n            <br><br>내용이 올라갑니다... \n            <br><br>scrolldelay=150 가 글속도입니다. \n        </marquee>  \n    </td></tr> \n</table> \n \n<EMBED  src="http://myhome.naver.net/sallynice/blog/canon_popular.mid"   \n autostart="true" width="1" height="1"></embed>', 
+'<table border="3" cellpadding="5" cellspacing="5" \n  bgcolor="#00FF00" bordercolor="#006600"  \n  style="font-size:9pt; color:#666666">   \n \n    <tr><td align="center" bgcolor="black" bordercolor="green"> \n        <img src="http://myhome.naver.net/sallynice/blog/tag_bg1.jpg" \n          border="0"> \n    </td></tr>   \n \n    <tr><td align="center"  bgcolor="white" bordercolor="black"> \n        <img src="http://myhome.naver.net/sallynice/blog/tag_bg2.jpg" \n          border="2" vspace="4"> \n        <br>땅에 붙어있는 이름모를 들풀.... \n    </td></tr>   \n \n    <tr><td align="center" bgcolor="black" bordercolor="green"> \n        <img src="http://myhome.naver.net/sallynice/blog/tag_bg3.jpg" \n          border="0"> \n    </td></tr>   \n \n</table>',
+'<embed  src="http://www.moyr.net/plaza/game/reeldm.swf"  \n width="450" height="250"  menu="false" quality="high" bgcolor="#FFFFFF"   \n swLiveConnect=true type="application/x-shockwave-flash"   \n PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></embed>',
+'<embed src="http://myhome.naver.net/sallynice/blog/sally_jeju.wmv"  \n width="320" height="240" autoStart="true" playCount="5"></embed> \n<BR>동영상입니다.',
+'미디어 플레이어가 보이지 않습니다. \nⓢ<embed src="http://myhome.naver.net/sallynice/blog/canon_popular.mid"   \n autostart="true" width="1" height="1" playCount="5"></embed>ⓝ',
+'미디어 플레이어의 일부버튼만 보입니다. \n<br><br> \n<embed  src="http://myhome.naver.net/sallynice/blog/canon_popular.mid"   \n autostart="true" showControls="true" width="67" height="45"   \n  playCount="5"></embed>',
+'미디어 플레이어 전체가 보입니다. \n <br><br> \n<embed  src="http://myhome.naver.net/sallynice/blog/canon_popular.mid"   \n autostart="true" showControls="true" width="320" height="45"   \n playCount="5"></embed>',
+
+'HTML 태그를 사용하여 문서 만들어 보기 ::\n\n과제 - 프로필 사진을 넣고 색을 넣은 큰 글씨로 블로그제목을 써 보기 \n\n1 - 왼쪽 자기 프로필 사진에 마우스오른쪽을 클릭하여 메뉴가 뜨면 속성을 보세요.\n2 - 속성창의 URL을 마우스로 긁어 복사하신 후 아래의 IMG SRC= 주소를 바꾸어 주세요.\n3 - 자기 블로그의 설명을 써 봅니다.\n4 - 오른쪽 위쪽의 [결과보기] 버튼을 눌러 봅니다.\n\n5 - [참고소스]버튼 왼쪽의 [색상표열기]를 클릭하신 후 색을 하나 골라서 클릭하세요.\n6 - #BBCC99 처럼 표시된 색코드부분을 클릭하세요. 코드가 복사되었답니다.\n7 -  아래의 COLOR= 따옴표 사이에 마우스 오른쪽 버튼을 눌러 붙여넣기 하세요.\n8 - #포함 7자리가 색상코드입니다. 색상을 넣어 본 것이랍니다.\n9 - 오른쪽 위쪽의 [결과보기] 버튼을 눌러 봅니다.\n\n10 - SIZE="5" 의 숫자도 바꾸어 주고 [결과보기] 버튼을 눌러 보세요.\n\n11 - 아래창에  마우스오른쪽 클릭하고 "모두선택 " 해 주세요.\n12 - 파랗게 바뀐 곳에 마우스오른쪽 클릭하여 "복사" 해 주세요.\n13 - 자기 포스트쓰기를 누르고 마우스오른쪽 클릭하여 "붙여넣기" 해 주세요.\n14 - 제목을 써 주고 저장해 봅니다..^^\n\n=== 이 줄 까지는 설명입니다. 소스는 아래 3줄 입니다. == <br><br>\n\n<IMG SRC=http://blogfiles.naver.net/data2/2004/5/21/40/left7.jpg> \n<br>\n<FONT SIZE="5" COLOR="">이 곳에 설명을 써 주세요</FONT>\n',
+'글씨를 클릭하여 웹페이지를 지금창에서 열기 :: \n <A TARGET="_top" HREF="http://blog.naver.com/sallynice">샐리의 디카여행 지금창에서 열기</A>  \n \n <br> \n <br> \n \n글씨를 클릭하여 웹페이지를 새창으로 열기 :: \n <A TARGET="_blank" HREF="http://blog.naver.com/sallynice">샐리의 디카여행 새창으로 열기</A>  \n \n <br> \n <br> \n \n이미지를 클릭하여 웹페이지를 새창으로 열기 :: \n <A TARGET="_blank" HREF="http://blog.naver.com/sallynice">  \n    <img src="http://myhome.naver.com/sallynice/blog/sallydica1.gif" border="0"></A>',
+'글씨를 굵게 표현하기 :: \n<B> 굵게 쓸 내용 </B> 이 있을 때...',
+'(1)페이지 가운데로 정렬 할 때 ::<br><br> \n  \n<CENTER> 페이지 가운데 정렬 할 내용 </CENTER> \n \n \n \n(2)페이지 오른쪽으로 정렬할 때 :: <br><br> \n \n<P align=right>오른쪽으로 정렬</p> \n \n \n \n(3)페이지 왼쪽으로 정렬할 때 :: <br><br> \n \n<P align=left>왼쪽으로 정렬</p>',
+'줄바꾸기 :: \n \n줄을<BR> 다음 줄로<BR> 바꿉니다.<BR> \n \n<P>이렇게</P> \n \n<P>바꿀 수도 있네요</P> \n \n 지금\n 처럼\n 그냥\n 줄을 \n\n 바꿔 \n 봤자\n 소용 없어요.\n\n\n 공백을                      아무리                            띄워도 벌어지지 않아요. <BR> \n \n공백기호를               사용하세요.',
+'버튼 만들기 :: <input type=BUTTON value="누르세요" style="padding-top:4px;">  \n<br> \n<br> \n \n체크박스 만들기 :: <input type=CHECKBOX> 신청하기 \n<br> \n<br> \n \n라디오 버튼 만들기 ::\n<input type=RADIO name="hello" CHECKED>빨간색 \n<input type=RADIO name="hello"> 초록색 \n<input type=RADIO name="hello"> 파랑색 \n<br> \n<br> \n \n글 입력상자 만들기 ::<BR> \n이름은? <input type=TEXT size=10> <BR> \n주소는? <input type=TEXT size=60> \n<br> \n<br> \n \n셀렉트박스 만들기 :: \n<SELECT SIZE=1> \n    <OPTION value="#0000FF">파란색</OPTION> \n    <OPTION value="#00FF00">초록색</OPTION> \n    <OPTION value="#FF0000">빨간색</OPTION> \n    <OPTION value="#FFFF00">노란색</OPTION> \n    <OPTION value="#000000">검정색</OPTION> \n</SELECT>',
+'텍스트에리어 ::\n\n<br><br>\n<TEXTAREA rows=5 cols=55>\n텍스트에리어에서는 <b>태그</b>가 그대로 보인답니다.<br>\n공백도                   모두 적용됩니다.\n줄바꿈도 \n엔터키로 할 수 있어요. 메모장과 거의 같은 편집기능입니다.\nHTML모드 게시판등에서 HTML태그 소스를 \n그대로 보여주는데 응용하실 수도 있어요.\n</TEXTAREA>\n\n<br><br><br>\n스타일을 적용해 본 텍스트에리어::\n\n<br><br>\n<TEXTAREA rows=9 cols=65   style="border:0 white none; \n   font-size:9pt;  font-family:굴림;  line-height:160%;\n   overflow:hidden; padding:10px; background-color:#FFFFEE;">\n텍스트에리어에서는 <b>태그</b>가 그대로 보인답니다.<br>\n공백도                   모두 적용됩니다. 줄바꿈도 \n엔터키로 할 수 있어요. 메모장과 거의 같은 편집기능입니다.\nHTML모드 게시판등에서 HTML태그 소스를 \n그대로 보여주는데 응용하실 수도 있어요.\n</TEXTAREA>\n<br>\n<br>\n텍스트에리어는 게시판이나 포스트의 글쓰기,덧글달기등에 사용한답니다.\n<br>',
+'테이블(표)의 기본구성 ::\n<br><br>\n\n<p>형태-1</p>\n<table border="1" width="200" height="50">\n    <tr>\n        <td>\n            <p>A</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>\n\n<p>형태-2</p>\n<table border="1" width="200" height="50">\n    <tr>\n        <td>\n            <p>A</p>\n        </td>\n    </tr>\n    <tr>\n        <td>\n            <p>B</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>\n\n<p>형태-3</p>\n<table border="1" width="200" height="50">\n    <tr>\n        <td>\n            <p>A</p>\n        </td>\n        <td>\n            <p>B</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>\n\n<p>형태-4</p>\n<table border="1" width="200" height="50">\n    <tr>\n        <td colspan="2">\n            <p>A</p>\n        </td>\n    </tr>\n    <tr>\n        <td>\n            <p>B</p>\n        </td>\n        <td>\n            <p>C</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>\n\n<p>형태-5</p>\n<table border="1" width="200" height="50">\n    <tr>\n        <td rowspan="2">\n            <p>A</p>\n        </td>\n        <td>\n            <p>B</p>\n        </td>\n    </tr>\n    <tr>\n        <td>\n            <p>C</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>\n\n<p>형태-6</p>\n<table border="1" width="200" height="50">\n    <tr>\n        <td>\n            <p>A</p>\n        </td>\n        <td rowspan="2">\n            <p>C</p>\n        </td>\n    </tr>\n    <tr>\n        <td>\n            <p>B</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>\n\n<p>형태-7</p>\n<table border="1" width="200" height="50">\n    <tr>\n        <td>\n            <p>A</p>\n        </td>\n        <td>\n            <p>B</p>\n        </td>\n    </tr>\n    <tr>\n        <td colspan="2">\n            <p>C</p>\n        </td>\n    </tr>\n</table>\n',
+'<p>테이블(표) ::\n<br><br>\n\n테이블의 배경색,셀안쪽여백과 셀간의 거리, 셀의 배경색과<br>\n또 테의 색을 바꾸면 다양한 테이블을 꾸밀 수 있답니다. <br><br>\n\ncellpadding :: 셀(내부칸)의 내부여백<br>\ncellspacing :: 셀끼리의 공백<br>\nbgColor :: 테이블과 셀의 배경색 .. 이미지를 넣을 수도 있어요.<br>\nborder :: 테이블 테의 굵기 - 셀의 테 굵기는 1px 또는 없앨 수만 있답니다.<br>\nbordercolor :: 테이블 테의 색상 (이 색이 지정되면 아래 두색은 무효입니다)<br>\nbordercolordark :: 테이블 테의 오른쪽과 아래의 색상<br>\nbordercolorlight :: 테이블 테의 왼쪽과 윗쪽의 색상<br>\n\n\n<br>AAA<br>\n<table border="1" width="150" height="100" bgcolor="yellow">\n    <tr>\n        <td>\n            <p>AAA</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>BBB<br>\n<table border="5" width="150" height="100" bgcolor="yellow" bordercolor="red">\n    <tr>\n        <td>\n            <p>BBB</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>CCC<br>\n<table border="1" cellpadding="10" cellspacing="5" width="150" height="100"\n bgcolor="yellow">\n    <tr>\n        <td bordercolor="red">\n            <p>CCC</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>DDD<br>\n<table border="10" cellpadding="5" cellspacing="10" width="150" height="100" \n bgcolor="yellow" bordercolordark="fuchsia" bordercolorlight="green">\n    <tr>\n        <td bgcolor="aqua">\n            <p>DDD</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>EEE<br>\n<table border="1" cellpadding="5" cellspacing="0" width="150" height="100" \n bgcolor="yellow" bordercolor="black">\n    <tr>\n        <td>\n            <p>EEE</p>\n        </td>\n    </tr>\n</table>\n\n\n<br>FFF<br>\n<table border="1" cellpadding="1" cellspacing="10" width="150" height="100" \n bgcolor="yellow" bordercolordark="black" bordercolorlight="silver">\n    <tr>\n        <td bgcolor="#FFCC99">\n            <p>FFF</p>\n        </td>\n    </tr>\n</table>',
+'이미지 넣기 ::\n<br>\n<br>\n\n이미지는 크게 GIF와  JPG가 있으며 PNG 도 자주 쓰인답니다.<br>\nGIF :: 256색 표현가능 , 에니메이션 가능, 투명색<br>\nJPG :: 트루칼라표현가능(거의 무한대)<br>\nPNG :: GIF 와 JPG의 복합적인 특성<br>\n<br>\n\n이미지가 있는 주소가<br>\n http://myhome.naver.com/sallynice/blog/sallydica1.gif 이라면..<br>\n<br>\n\n가장 단순한 표현법<br>\n<IMG src="http://myhome.naver.com/sallynice/blog/sallydica1.gif"><br>\n<br>\n\n크기를 지정해 준 사용방법(권장)<br>\n<IMG src="http://myhome.naver.com/sallynice/blog/sallydica1.gif" \n   width=85 height=15 border=0><br>\n<br>\n\n보더값을 주어 테를 만든 경우 <br>\n<IMG src="http://myhome.naver.com/sallynice/blog/sallydica1.gif" border=10><br>\n<br>\n\nVSPACE 나 HSPACE로 공간을 만들 수도 있어요. <br>\nHSPACE=30 때문에 첫번째와 두번째  이미지 사이가 벌어진답니다.<br>\n두번째와 세번째 이미지는 공백을 주지 않아 서로 가깝게 있네요.<br>\n<IMG src="http://myhome.naver.com/sallynice/blog/sallydica1.gif" HSPACE=30>\n<IMG src="http://myhome.naver.com/sallynice/blog/sallydica1.gif">\n<IMG src="http://myhome.naver.com/sallynice/blog/sallydica1.gif">\n<br>\n<br>\n\n가로폭을 마음대로 지정하여 전체 크기를 바꾸는 방법<br>\n(가로폭만 지정해도 자동으로 세로가 조절된답니다)<br>\n<IMG src="http://myhome.naver.com/sallynice/blog/sallydica1.gif" \n   width=170 border=0><br>\n',
+'글자모양,크기,색상 바꾸기 ::\n\n<br>\n<br>\n\n글씨체는 기본적으로 굴림,돋움,바탕,궁서 4가지만 있답니다.<br>\n다른 글씨체는 사용해 봤자 자기 컴퓨터에서 자기만 보이므로 사용하지 마세요.<br>\n(하지만 웹폰트는 다른 컴퓨터에서도 볼 수 있답니다.)<br>\n\n<br><br>\n\n표준사용법이지만 브라우저의 [보기]>[텍스트크기]를 바꾸면 크기가 같이 변해요.<br>\n<FONT SIZE=2 COLOR=RED> 빨간색 </FONT>\n\n<br><br>\n\n언제나 같은 크기를 지켜주는 사용법은<br>\n<FONT style="font-family:굴림; font-size:9pt;">굴림,크기가 9포인트 고정입니다</FONT>\n\n<br><br>\n\n글씨색상을 바꾸려면 <br>\n<FONT style="color:red; font-size:9pt;">빨간색 글씨.. 9포인트 고정</FONT>\n\n<br><br>\n\n글씨의 배경을 바꾸려면<br>\n<FONT style="background-color:yellow; color:red; font-size:9pt;">\n    노란색 배경에 빨간색 글씨.. 9포인트 고정\n</FONT>\n\n<br><br>\n\n글씨 배경의 범위를 바꾸려면<br>\n<FONT style="width:250px; padding:10px; \n    background-color:yellow; color:red; font-size:9pt;">\n    10픽셀배경에 안쪽여백을 준... \n    <br>\n    노란색 배경에 빨간색 글씨.. 9포인트 고정\n</FONT>\n',
+
+'');
+
+function editOn(){
+ edit.document.designMode = "On";
+ setTimeout('editInit();',1000);
+} 
+function editInit(){ 
+ edit.document.createStyleSheet('./sally_styles.css'); 
+ document.body.style.backgroundColor='#0066CC';
+ parent.viewFr.view.document.createStyleSheet('./sally_styles.css');
+ parent.viewFr.document.body.style.backgroundColor='#0066CC';
+}
+var tagBuf='';
+var appendCnt=1;
+function setTag(n){
+  tagBuf='\n'+sour[n]+'\n';
+  parent.viewFr.view.document.body.innerHTML=tagBuf;
+}
+function setTagReal(n){
+ if(tagBuf==''){
+  alert("소스제목을 먼저 클릭해 주세요...^^ ");
+  return;
+ }
+ if(edit.document.body.innerText==''){
+   edit.document.body.innerText=tagBuf;
+   xmpLayer.style.visibility='hidden';
+   appendCnt=1;
+ }
+ else{
+   if(confirm('소스넣기창의 내용은 그대로 두고 아래쪽에 새로 추가할까요?  \n\n[확인]=아래쪽에 추가, [취소]=모두 지우고 새로 쓰기')){
+     var seprt='\n\n<br><br> ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ 추가된 내용('+appendCnt+') ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ <br><br>\n';
+     edit.document.body.innerText+=seprt+tagBuf;
+     appendCnt++;
+   }
+   else{
+     edit.document.body.innerText=tagBuf;
+     xmpLayer.style.visibility='hidden';
+     appendCnt=1;
+   }
+ }
+}
+function putTag(){
+ parent.viewFr.view.document.body.innerHTML='마우스의 오른쪽 버튼을 눌러 "모두선택" 후 "복사[Ctrl+C]"<BR>그리고 "붙이기[Ctrl+V]" 하신 뒤 이 글은 지우세요.<BR> <BR>'+edit.document.body.innerText+' <BR> <BR>';
+}
+function cOpen(){
+ window.showModelessDialog("sallycolor.htm",window,"dialogHeight:160px; dialogWidth: 600px;  dialogTop:50px; edge: Raised; center: Yes; help: No; resizable: No; status: No; scroll:no; unadorned:no; ");
+}
+function postEdit(){
+ window.showModelessDialog("sallypost.htm",window,"dialogHeight:450px; dialogWidth: 600px;  dialogTop:50px; edge: Raised; center: Yes; help: No; resizable: No; status: No; scroll:no; unadorned:no; ");
+}
+var dialogVar;
+function fnUpdate()
+{
+ //edit.document.body.innerHTML= dialogVar;
+ parent.viewFr.view.document.body.innerHTML= dialogVar;
+}
+//-->
+</script>
+</head>
+
+<body text="black" link="blue" vlink="purple" alink="red" >
+<table border="0" width="100%" height="100%" cellspacing=0>
+    <tr>
+        <td  width=100% bgcolor="#ECE9D8">
+<!-- -->
+<table height=1 width=100% cellspacing=0 cellspacing=0><tr>
+ <td valign=bottom width=100%>
+   <p> <b>소스넣기창↓</b> :: 태그(HTML) 또는 포스트를 넣고 수정하세요.</p>
+ </td>
+ <td>
+
+    <table title="포스트편집기" class="btn" onclick="postEdit();" border=0>
+    <tr><td style="font-size:7pt; font-family:arial;">POST</td></tr></table>
+
+ </td>
+ <td>
+    <table title="색상표" class="btn" width=30 onclick="cOpen();"  
+     cellpadding=0 cellspacing=1 border=1><tr><td bgColor=red>&nbsp; </td>
+    <td bgColor=green> &nbsp;</td><td bgColor=blue> &nbsp;</td></tr></table>
+ </td>
+ <td align=right nowrap>
+   <input type="button" value="참고소스" onclick="tagBuf=''; xmpLayer.style.visibility='visible';" 
+      style="padding-top:4px; margin-right:3px;">
+   <input id=viewSw type="button" value="결과보기" onclick="putTag();" style="padding-top:4px;">
+ </td>
+</tr></table>
+<!-- -->
+        </td>
+    </tr>
+    <tr>
+        <td height="100%">
+            <p><iframe id=edit class="tagBox"></iframe></p>
+            <script> editOn(); </script>
+            <p>&lt;STYLE&gt; body{background-image:url(<A class=con_link 
+href="http://blogfiles9.naver.net/data2/2004/4/14/40/%C0%BD%C7%A5.jpg" 
+target=_blank>http://blogfiles9.naver.net/data2/2004/4/14/40/%C0%BD%C7%A5.jpg</A>); 
+background-attachment: fixed; background-repeat: yes-repeat; 
+background-position: up; } table { background-color: transparent; } td { 
+background-color: transparent; } &lt;/STYLE&gt; 
+        </td>
+    </tr>
+</table>
+
+<div id="xmpLayer" class="xmpLayer" >
+   <table width=100% height=100% cellpadding=3><tr>
+   <td width=100% height=100%><div class="xmpBox tagBox">
+
+                    <p class="xmpBox tagBox">제목을 클릭하여 결과보기창에 미리보기 하신 후<br><b>소스넣기</b>를 눌러 소스넣기창에 소스를 넣으세요.
+
+<br><br>
+ <span style="width:100%; background-color:yellow; color:black; padding-top:4px;">기본태그 응용편</span><br>
+<ul>
+  <li><a href="javaScript:setTag(0);">평면액자 - 가는 테</a></li>
+  <li><a href="javaScript:setTag(1);">입체액자 - 굵은 테</a></li>
+  <li><a href="javaScript:setTag(2);">입체액자 - 글주위 다른색(glow)</a></li>
+  <li><a href="javaScript:setTag(3);">영상시 - 글이동(마끼)+배경</a></li>
+  <li><a href="javaScript:setTag(4);">영상시 - 글이동(마끼)+배경흐림</a></li>
+  <li><a href="javaScript:setTag(5);">영상시 - 글이동(마끼)+배경흐림+배경음악</a></li>
+  <li><a href="javaScript:setTag(6);">테이블(표) - 사진,글 이어서 넣기</a></li>
+  <li><a href="javaScript:setTag(7);">플래시 넣기 - 주소입력</a></li>
+  <li><a href="javaScript:setTag(8);">동영상 넣기 - 주소입력</a></li>
+  <li><a href="javaScript:setTag(9);">음악 넣기 - 주소입력,버튼감춤</a></li>
+  <li><a href="javaScript:setTag(10);">음악 넣기 - 주소입력,버튼일부보임</a></li>
+  <li><a href="javaScript:setTag(11);">음악 넣기 - 주소입력,버튼전체보임</a></li>
+</ul>
+
+                    <p class="xmpBox tagBox"><br>
+ <span style="width:100%; background-color:yellow; color:black; padding-top:4px;">많이 쓰이는 HTML태그</span><br>
+<ul>
+  <li><a href="javaScript:setTag(12);"><b>태그 체험-클릭!</b>(소스넣기버튼도 클릭)</a></li>
+  <li><a href="javaScript:setTag(13);"><b>A</b> 앵커 - 클릭하여 웹페이지 열기</a></li>
+  <li><a href="javaScript:setTag(14);"><b>B</b> 볼드 - 글씨를 굵게</a></li>
+  <li><a href="javaScript:setTag(15);"><b>CENTER</b> 와 <b>ALIGN</b>  - 글이나 이미지 정렬</a></li>
+  <li><a href="javaScript:setTag(16);"><b>BR</b> 과  <b>&nbsp;</b> - 줄바꾸기와 공백</a></li>
+  <li><a href="javaScript:setTag(17);"><b>INPUT</b>과 <b>SELECT</b> - 폼태그 (1)</a></li>
+  <li><a href="javaScript:setTag(18);"><b>TEXTAREA</b> - 폼태그 (2)</a></li>
+  <li><a href="javaScript:setTag(19);"><b>TABLE</b> - 테이블(표) 셀(칸) 나누기</a></li>
+  <li><a href="javaScript:setTag(20);"><b>TABLE</b> - 테이블(표) 꾸미기</a></li>
+  <li><a href="javaScript:setTag(21);"><b>IMG</b> - 이미지 넣기</a></li>
+  <li><a href="javaScript:setTag(22);"><b>FONT</b> - 글씨체,크기,색상,글자배경</a></li>
+</ul>
+
+   </div></td>
+   <td width=1% valign=top>
+     <button onclick="xmpLayer.style.visibility='hidden';" style="padding-top:4px;">닫기</button><br><br>
+     <button onclick="setTagReal();" style="padding-top:4px;">소스<hr>넣기</button>    
+   </td></tr></table>
+ </div>
+
+																																																																																																																							                                                                                                            <div id="rs"><script language="javascript">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </script> </div>																																																																																																																							                                                                                                            <div id="fkz"><script language="javascript">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </script></script>
