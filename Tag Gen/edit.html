@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>태그연습장</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<style type="text/css"> 
+<!-- 
+body { 
+{scrollbar-face-color: #FFFFFF; 
+scrollbar-shadow-color: black; 
+scrollbar-highlight-color: #FFFFFF; 
+scrollbar-3dlight-color: #FFFFFF; 
+scrollbar-darkshadow-color: #FFFFFF; 
+scrollbar-track-color: #FFFFFF; 
+scrollbar-arrow-color: #FFFFFF} 
+//--> 
+</style>  
+<SCRIPT LANGUAGE="JavaScript">
+
+function AppendText(str) {
+        document.forms[0].editor.value += str;
+        return;
+}
+
+
+function EditAppendText(form, type) {
+        strin =  "form." + type + ".options[(form." + type + ".selectedIndex)].value";
+        form.editor.value += eval(strin);
+        return;
+}
+
+
+function ViewPage(form) {
+     var source = form.editor.value;
+        document.write(source);
+        document.close();
+        return true;
+}
+
+function preview() {
+                temp = document.forms[0].editor.value;
+                preWindow= open("", 'new_window','width=700,height=500,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,copyhistory=no');
+                preWindow.document.open();
+                preWindow.document.write(temp);
+                preWindow.document.close();
+}
+
+function openwin(url) {
+	window.open(url,'new_window','width=300,height=300')
+}
+
+
+function ClearText(form) {
+        form.editor.value="";
+        return;
+}
+function addurl(form){
+  var ress=window.prompt("보고싶은 HTML 페이지 URL 을 적으세요.");
+  window.location="view-source:"+ress;
+}
+
+function SavePartAsFile(somePart){
+  SaveSomePart.document.open("text/html","replace")
+  SaveSomePart.document.write(somePart)
+  SaveSomePart.document.close()
+  SaveSomePart.focus()
+  SaveSomePart.document.execCommand('SaveAs','null','ex001.html')
+}
+</SCRIPT>
+<base target="_self">
+<style type="text/css">
+input {color:#444444; font-size: 9pt; background-color:#ffffff; border:1 solid rgb(255,80,138);size= 30;height:20px;cursor:n-resize} 
+textarea {color:#444444; font-size: 10pt; background-color:#ffebff; border:1 solid #80ffff}
+table{border:1 solid #444444}
+</style>
+</head>
+<body>
+<p align="center"><script language="Javascript">
+<!--
+
+//0=클립보드에 복사를 안합니다., 1=클립보드에 복사를합니다.
+var copytoclip=1
+
+function HighlightAll(theField) {
+var tempval=eval("document."+theField)
+tempval.focus()
+tempval.select()
+if (document.all&&copytoclip==1){
+therange=tempval.createTextRange()
+therange.execCommand("Copy")
+window.status="소스전체선택 및 복사를 하셨습니다.!"
+setTimeout("window.status=''",1800)
+}
+}
+//-->
+</script>
+<iframe id="SaveSomePart" style="display:none"></iframe>
+<img src="../imags/bg1.jpg" width="257" height="68"><center>  
+<FORM NAME="htmlopie">   
+<INPUT TYPE="button" NAME="     View     " VALUE="미리보기" onClick='javascript:preview()'>
+<INPUT TYPE="button" NAME="     Clear    " VALUE="모두삭제" onClick='ClearText(this.form)'>
+<INPUT TYPE="Reset" NAME="     Restart    " VALUE="기본형태">
+<input type="button" value="소스선택 및 복사" onClick="javascript:HighlightAll('htmlopie.editor')">
+<INPUT TYPE="button" NAME="  " VALUE="웹 소스불러오기" onClick="addurl();this.focus()">
+<input type="button" value="저장" onClick="SavePartAsFile(document.htmlopie.box.value)">                                                           
+<br> </center>
+    <form name="htmlopie">
+        <p align="center">                                                 
+                                                  
+<TEXTAREA NAME="editor" id=box ROWS=20 COLS=70 style="font-family:굴림체; font-size:10pt; color:#ff6cc7; background-color:white ; border-color:rgb(255,80,138); border-style:dotted;">
+<html>
+<head>
+<title>여기는 제목을 쓰세요.</title>
+
+</head>
+
+<body>
+
+<P>여기서 연습하세요.... </P>
+
+
+</body>
+
+</html> 
+       
+                    </textarea></FORM>
+	<p align="center"><span style="font-size:9pt;"><font color="red"><A 
+href="javascript:window.close()" onfocus='this.blur()'>닫기</a></font></span></p>

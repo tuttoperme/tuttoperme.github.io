@@ -1,0 +1,1986 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+
+<head>
+<title>영상시 만들기 마법사</title>
+<meta name="GENERATOR" content="Namo WebEditor v5.0">
+<script language="JavaScript">
+<!-- JavaScript
+ var targets=null;
+function img_change() {
+	table_form.IMG_URL.value= table_form.IMG_GR.value;
+}
+
+ var targets=null;
+function sound_change() {
+	table_form.S_SRC.value= table_form.S_SEM.value;
+}
+
+ var targets=null;
+function table_change() {
+	table_form.T_WIDTH.value= table_form.T_WIDTH2.value;
+}
+
+ var targets=null;
+function table_change2() {
+	table_form.T_HEIGHT.value= table_form.T_HEIGHT2.value;
+}
+
+
+function table_submit() {
+	targets=window.open("","","toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=no,width=800,height=700");
+	
+ str = null;
+	 str = "<table " ;
+	 if ( table_form.T_WIDTH.value !="") str = str + "width=\""+table_form.T_WIDTH.value + "\""
+ else    str = str+ table_form.T_WIDTH.value;
+ if ( table_form.T_HEIGHT.value !="") str = str + " height=\""+table_form.T_HEIGHT.value + "\""
+ else    str = str+ table_form.T_HEIGHT.value;
+       	      str = str	+ table_form.ALIGN.value + " "
+			+ table_form.BORDER.value + "" 
+			
+    if ( table_form.BGCOLOR2.value !="0000000") str = str + " bordercolordark=\""+table_form.BGCOLOR2.value + "\" "
+	else str = str + table_form.BORGERCOLOR.value;;
+	
+    if ( table_form.BGCOLOR3.value !="0000000") str = str + " bordercolorlight=\""+table_form.BGCOLOR3.value + "\" "
+	else str = str + table_form.BORGERCOLOR2.value;;
+	     str = str +" cellpadding=\""+ table_form.cellpa.value + "\""
+		       +" cellspacing=\""+ table_form.cellspa.value + "\""; 	
+              str = str + ">";
+	      str = str + "<tr>";
+	      str = str + "<td "; 
+       if ( table_form.IMG_URL2.value !="") str = str + "background=\""+table_form.IMG_URL2.value + "\""
+ else    str = str+ table_form.IMG_URL2.value;
+	str = str + ">";     
+
+        str = str + "<table " ;
+        str = str + " height=\""+ table_form.T3_HEIGHT.value +"\""
+	  str = str + " width=\""+ table_form.T3_WIDTH.value +"\""
+			+ table_form.T3_ALIGN.value + " "
+			+ table_form.T3_BORDER.value + "" 
+			
+    if ( table_form.T3_BGCOLOR2.value !="0000000") str = str + " bordercolordark=\""+table_form.T3_BGCOLOR2.value + "\" "
+	else str = str + table_form.T3_BORGERCOLOR.value;;
+	
+    if ( table_form.T3_BGCOLOR3.value !="0000000") str = str + " bordercolorlight=\""+table_form.T3_BGCOLOR3.value + "\" "
+	else str = str + table_form.T3_BORGERCOLOR2.value;;
+	     str = str +" cellpadding=\""+ table_form.cellpa2.value + "\""
+		       +" cellspacing=\""+ table_form.cellspa2.value + "\"";	
+              str = str + ">";
+	      str = str + "<tr>";
+	      str = str + "<td "; 
+       if ( table_form.IMG_URL3.value !="") str = str + "background=\""+table_form.IMG_URL3.value + "\""
+ else    str = str+ table_form.IMG_URL3.value;
+	str = str + ">";     
+	
+	str = str + "<table " ;
+	
+        str = str + " height=\""+ table_form.T2_HEIGHT.value +"\""
+	  str = str + " width=\""+ table_form.T2_WIDTH.value +"\""
+			+ table_form.T2_ALIGN.value + " "
+			+ table_form.T2_BORDER.value + "" 
+			
+    if ( table_form.T2_BGCOLOR2.value !="0000000") str = str + " bordercolordark=\""+table_form.T2_BGCOLOR2.value + "\" "
+	else str = str + table_form.T2_BORGERCOLOR.value;;
+	
+    if ( table_form.T2_BGCOLOR3.value !="0000000") str = str + " bordercolorlight=\""+table_form.T2_BGCOLOR3.value + "\" "
+	else str = str + table_form.T2_BORGERCOLOR2.value;;
+	     str = str +" cellpadding=\""+ table_form.cellpa3.value + "\""
+		       +" cellspacing=\""+ table_form.cellspa3.value + "\""; 	
+              str = str + ">";
+	      str = str + "<tr>"; 	      
+        str = str + "<td " ;
+	if ( table_form.IMG_URL4.value !="") str = str + "background=\""+table_form.IMG_URL4.value + "\""
+ else    str = str+ table_form.IMG_URL4.value;
+	  str = str + " height=\""+ table_form.IMG_HEIGHT.value +"\""
+	  str = str + " width=\""+ table_form.IMG_WIDTH.value +"\"";
+	   
+	str = str + ">";
+	
+	str = str + "<table " ;
+	if ( table_form.IMG_URL.value !="") str = str + "background=\""+table_form.IMG_URL.value + "\""
+ else    str = str+ table_form.IMG_URL.value;
+	
+	str = str + " height=\""+ table_form.T4_HEIGHT.value +"\""
+	  str = str + " width=\""+ table_form.T4_WIDTH.value +"\""
+	  str = str + table_form.T4_ALIGN.value + " "
+	  str = str + table_form.T4_BORDER.value + "" 
+	  if ( table_form.T5_BGCOLOR2.value !="0000000") str = str + " bordercolordark=\""+table_form.T5_BGCOLOR2.value + "\" "
+	else str = str + table_form.T5_BORGERCOLOR.value;;
+	
+    if ( table_form.T5_BGCOLOR3.value !="0000000") str = str + " bordercolorlight=\""+table_form.T5_BGCOLOR3.value + "\" "
+	else str = str + table_form.T5_BORGERCOLOR2.value;;
+	  str = str +" cellpadding=\""+ table_form.cellpa3.value + "\""
+		       +" cellspacing=\""+ table_form.cellspa3.value + "\""; 
+	  str = str+ ">";
+	  str = str + "<tr>";
+	  str = str + "<td>";
+	  str = str + "<table "; 
+	   str = str + " height=\""+ table_form.T5_HEIGHT.value +"\""
+	  str = str + " width=\""+ table_form.T5_WIDTH.value +"\""  
+	  str= str+ table_form.IMG_BORDER.value;
+	  str = str+ ">";
+	  str = str + "<tr>";
+        str = str + " <td " ;
+	     str = str  + table_form.T4_ALIGN2.value + "  "
+			 + table_form.T4_ALIGN3.value + "" ;
+		 str = str+ ">";
+		 str = str + "<font "+ table_form.T_FACE.value
+	                      + table_form.T_SIZE.value 
+			      + table_form.T4_COLOR.value ;
+		str = str + ">";
+		str = str + table_form.T_STRONG.value+ "" ; 
+		str = str  + table_form.TXT1.value 
+		str = str + "<br>"; 
+		str = str + table_form.MAGIN.value 
+		 	+ table_form.NAME.value;
+		
+			    
+		           + "</B>"
+			   + "</I>"
+			   + "</U>"
+           str = str + "</font>";
+		str = str + "</tr>"; 	      
+        str = str + "</td> " ;
+	
+	str = str + "<tr>"; 	      
+        str = str + "<td> " ;		
+	str = str + "<marquee " ;
+	str = str 	+ table_form.M_MOVE.value 
+			+ table_form.M_BEHAVIOR.value 
+			+ table_form.M_LOOP.value 
+			+ table_form.M_SCROLLAMOUNT.value
+	str = str + ">";
+			
+	str = str + "<span style=\""; "\"";
+	if ( table_form.COLOR2.value !="0000000") str = str + " (color:\"#"+table_form.COLOR2.value + "\" "
+	 else  str = str       + table_form.COLOR.value 
+                  + ";";
+	       str = str	+ table_form.M_WIDTH.value 
+	       + ";";	
+	       	str = str+ table_form.M_HEIGHT.value+ ""
+	        + ";";	       	
+	        str = str+ " "+ table_form.SIZE.value + " " ;
+	        str = str + ";";
+	        str = str+ "Filter:shadow(";	
+	if ( table_form.S_COLOR2.value !="0000000") str = str + "color=" +table_form.S_COLOR2.value+"" ;
+	 else   str = str  + table_form.S_COLOR.value 
+	        str = str      + ",";
+	         str = str +" direction=" + table_form.AGL.value 
+	          + ")\""; 
+	         str = str + ">";
+	
+	str = str + table_form.STRONG.value 
+	          			
+	str = str + "<pre>";
+	str = str + "<font "+ table_form.FACE.value;
+	str = str + ">";
+	str = str +"<"+ table_form.T_ALIGN.value + "" ;
+	str = str + ">";
+	str = str + table_form.UL.value 
+	str = str + table_form.TEXT.value ;
+	str = str + "</ul>";
+	str = str + "</span>";
+	str = str + "</pre></font></marquee>";
+	str = str + "</center>";
+	str = str + "</tr></td></table>";
+	str = str + "</tr></td></table>";
+	str = str + "</tr></td></table>";
+	str = str + "</tr></td></table>";
+	str = str + "</tr></td></table>";
+	str = str + "<font size=2><center>";;
+	str = str + "<embed src=";
+	if ( table_form.S_SRC.value !="") str = str + "\""+table_form.S_SRC.value + "\""
+	                   str = str + " hidden= "+ table_form.HIDDEN.value +"" 
+		                  + " loop= "+ table_form.LOOP.value + "" ;
+			
+	str = str + ">";
+	 
+	targets.document.write(str);
+	
+	targets.document.write("<p><span style=\"font-size:14pt; background-color:green;\">아래 부분을 복사하여 연습장에 올려보세요 .</span></p>");
+
+ str = " <form name=\"form4\"><p><textarea name=\"result\" rows=\"7\" cols=\"50\"> "+ str; 
+ +" </textarea></p> </form>"
+ targets.document.write(str);
+}
+// -->
+</script>
+<style type="text/css">
+<!--
+a:hover { text-decoration:none; }
+a:active { text-decoration:none; }
+a:link { text-decoration:none; }
+-->
+</style>
+<script language="JavaScript">
+<!--
+function na_call(str)
+{
+  eval(str);
+}
+
+// -->
+</script>
+</head>
+<body bgcolor="white" text="black" link="#000033" vlink="black" alink="black" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" background="../../jpg/back3.jpg">
+
+<p style="border-collapse:collapse;" align="center">&nbsp;</p>
+<form name="table_form" action="JavaScript:table_submit()">
+    
+  <table cellpadding="0" cellspacing="0" width="730" align="center" bordercolordark="white" bordercolorlight="black">
+        <tr>
+      <td width="730"> 
+  <table cellspacing="0" width="680" align="center" border="1" bordercolordark="#999999" bordercolorlight="#999999" bordercolor="#999999">
+    <tr> 
+      <td width="680" height="80" align="left" valign="middle" colspan="6"> 
+                            <p><img src="si123.gif" width="680" height="80" border="0"></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="680" height="45" align="left" valign="middle" colspan="6"> 
+        <p> <img src="simenu1.gif" width="430" height="40" border="0"></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="680" height="40" bgcolor="#fff1ff" colspan="6"> 
+               <center>     <INPUT TYPE="button" NAME="" VALUE="html1 연습장" onClick="window.open('edit.html')"> 
+                            <INPUT TYPE="button" NAME="" VALUE="html2 연습장" onClick="window.open('edit1.htm')"> 
+                            <INPUT TYPE="button" NAME="" VALUE="색상표" onClick="window.open('mjr.htm')"> 
+                            <INPUT TYPE="button" NAME="" VALUE="도움말" onClick="window.open('help.htm')"> 
+                            </p>
+                            </center>      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center" style="text-decoration:none;"><font face="돋움" color="black"><span style="font-size:10pt;">&nbsp;</span></font><span style="font-size:10pt;"><font face="돋움" color="black">&nbsp;가로 너비<br>직접입력 </font></span></p>
+      </td>
+      <td width="200" height="40"> 
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="T_WIDTH" value="600" maxlength="4" size="4"></p>
+      </td>
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">세로 너비<br>직접입력 </font></span></p>
+      </td>
+      <td height="40" colspan="3" width="200"> 
+        <p align="left"> 
+          
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="T_HEIGHT" value="450" maxlength="4" size="4"></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움" color="black">가로넓이 
+                선택</font></span></p>
+      </td>
+      <td width="200" height="40"> 
+                <p><span style="font-size:9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="T_WIDTH2" size="1">
+            <option>설정안함</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="75">75</option>
+            <option value="100">100</option>
+            <option value="150">150</option>
+            <option value="200">200</option>
+	    <option value="250">250</option>
+            <option value="300">300</option>
+	    <option value="350">350</option>
+            <option value="400">400</option>
+	    <option value="450">450</option>
+            <option value="500">500</option>
+	    <option value="550" selected>550</option>
+	    <option value="600">600</option>
+            <option value="640">640</option>
+	    <option value="700">700</option>
+	    <option value="750">750</option>
+	    <option value="800">800</option>
+	    <option value="850">850</option>
+            <option value="1024">1024</option>
+          </select></span></p>
+      </td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">&nbsp;</font></span><font face="돋움"><span style="font-size:10pt;">세로길이<br>선택</span></font></p>
+      </td>
+      <td width="200" height="40" colspan="3"> 
+                <p><span style="font-size:9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="T_HEIGHT2" size="1">
+            <option>설정안함</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="75">75</option>
+            <option value="100">100</option>
+            <option value="150">150</option>
+            <option value="200">200</option>
+	    <option value="250">250</option>
+            <option value="300">300</option>
+	    <option value="350">350</option>
+            <option value="400">400</option>
+	    <option value="450">450</option>
+            <option value="500" selected>500</option>
+	    <option value="550">550</option>
+	    <option value="600">600</option>
+            <option value="640">640</option>
+	    <option value="700">700</option>
+	    <option value="750">750</option>
+	    <option value="800">800</option>
+	    <option value="850">850</option>
+            <option value="1024">1024</option>
+          </select></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="321" height="45" align="right" colspan="2" bgcolor="#eff3ff"> 
+                <p align="center"> <span style="font-size:10pt;"><font face="돋움">위의 
+                            설정값을 변경후 클릭 &nbsp;</font></span><input type="button" name="TABLE_CHANGE" value="설정값바꾸기" OnClick="na_call('table_change()');"></p>
+      </td>
+      <td width="359" height="45" align="right" colspan="4" bgcolor="#eff3ff"> 
+                <p align="center"> <span style="font-size:10pt;"><font face="돋움">위의 
+                            설정값을 변경후 클릭 &nbsp;</font></span><input type="button" name="TABLE_CHANGE2" value="설정값바꾸기" OnClick="na_call('table_change2()');"></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">정렬하기</span></font></p>
+      </td>
+      <td width="540" height="40" colspan="5"> 
+                <p>&nbsp;&nbsp;<select name="ALIGN" size="1">
+                <option value='align="right"'>오른쪽</option>
+                <option value='align="lift"'>왼쪽</option>
+                <option value='align="center"' selected>가운데</option>
+                </select></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><font face="돋움"><span style="font-size:10pt;">&nbsp;테두리</span></font><font face="돋움" color="#eff3ff"><span style="font-size:10pt;">아래쪽</span></font><font face="돋움"><span style="font-size:10pt;">칼라</span></font><span style="font-size:10pt;"><font face="돋움"> </font></span></p>
+      </td>
+      <td width="200" height="40"> 
+        <p>&nbsp;<span style="font-size:9pt;"> 
+          <select name="BORGERCOLOR" size="1">
+            <option>설정없음</option>
+            <option value='bordercolordark="white"'>흰색</option>
+            <option value='bordercolordark="black"'>검정</option>
+            <option value='bordercolordark="red"'>빨강</option>
+            <option value='bordercolordark="blue"'>파랑</option>
+            <option value='bordercolordark="green"'>녹색</option>
+            <option value='bordercolordark="yellow"'>노랑</option>
+            <option value='bordercolordark="gray"'>회색</option>
+	    <option value='bordercolordark="#A56908"'>연밤색</option>
+	    <option value='bordercolordark="#cccccc"'>엷은 회색</option>
+            <option value='bordercolordark="#333333"'>진한회색</option>
+	     <option value='bordercolordark="#634D7B"' selected>진한청색보라</option>
+	     <option value='bordercolordark="#BDA6D6"'>연한청색보라</option>
+	     <option value='bordercolordark="#427973"'>진한청녹색</option> 
+	    <option value='bordercolordark="#A5DBD6"'>연한청녹색</option>  
+	    <option value='bordercolordark="#396129"'>진초록색</option>
+	    <option value='bordercolordark="#BDE7AD"'>연초록색</option>
+	    <option value='bordercolordark="#182C4A"'>진남색</option>
+	     <option value='bordercolordark="#94AACE"'>연남색</option>
+	      <option value='bordercolordark="#7B3029"'>진한구리색</option>
+	      <option value='bordercolordark="#E79E94"'>연한구리색</option>
+            <option value='bordercolordark="navy"'>남색</option>
+            <option value='bordercolordark="marron"'>밤색</option>
+            <option value='bordercolordark="#cccccc"'>엷은 회색</option>
+            <option value='bordercolordark="#333333"'>진한회색</option>
+            <option value='bordercolordark="#ccccff"'>엷은청보라</option>
+            <option value='bordercolordark="#6666cc"'>짙은 청보라</option>
+            <option value='bordercolordark="#ffccff"'>옅은 적보라</option>
+            <option value='bordercolordark="#cc99cc"'>진한적보라</option>
+	    <option value='bordercolordark="#ffffcc"'>살색</option>
+            <option value='bordercolordark="#ff99cc"'>핑크색</option>
+            <option value='bordercolordark="#ccffcc"'>옅은 녹색</option>
+            <option value='bordercolordark="#66cc99"'>청녹색</option></select></span></p>
+      </td>
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"> 
+<span style="font-size:10pt;"><font face="돋움">색상표이용 
+          </font></span></p>
+      </td>
+      <td width="200" height="40" align="right" colspan="3"> 
+        <p align="left"> 
+          
+          <span style="font-size:9pt;">&nbsp;<input type="text" name="BGCOLOR2" value="0000000" maxlength="7" size="7"></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">테두리</span></font><font face="돋움" color="#eff3ff"><span style="font-size:10pt;">위쪽</span></font><font face="돋움"><span style="font-size:10pt;">칼라</span></font></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="BORGERCOLOR2" size="1">
+            <option>설정없음</option>
+            <option value='bordercolorlight="white"'>흰색</option>
+            <option value='bordercolorlight="black"'>검정</option>
+            <option value='bordercolorlight="red"'>빨강</option>
+            <option value='bordercolorlight="blue"'>파랑</option>
+            <option value='bordercolorlight="green"'>녹색</option>
+            <option value='bordercolorlight="yellow"'>노랑</option>
+            <option value='bordercolorlight="gray"'>회색</option>
+            <option value='bordercolorlight="navy"'>남색</option>
+	    <option value='bordercolorlight="#A56908"'>연밤색</option>
+	    <option value='bordercolorlight="#cccccc"'>엷은 회색</option>
+            <option value='bordercolorlight="#333333"'>진한회색</option>
+	     <option value='bordercolorlight="#634D7B"'>진한청색보라</option>
+	     <option value='bordercolorlight="#BDA6D6"' selected>연한청색보라</option>
+	     <option value='bordercolorlight="#427973"'>진한청녹색</option> 
+	    <option value='bordercolorlight="#A5DBD6"'>연한청녹색</option>  
+	    <option value='bordercolorlight="#396129"'>진초록색</option>
+	    <option value='bordercolorlight="#BDE7AD"'>연초록색</option>
+	    <option value='bordercolorlight="#182C4A"'>진남색</option>
+	     <option value='bordercolorlight="#94AACE"'>연남색</option>
+	      <option value='bordercolorlight="#7B3029"'>진한구리색</option>
+	      <option value='bordercolorlight="#E79E94"'>연한구리색</option>
+            <option value='bordercolorlight="marron"'>밤색</option>
+            <option value='bordercolorlight="#cccccc"'>엷은 회색</option>
+            <option value='bordercolorlight="#333333"'>진한회색</option>
+	    <option value='bordercolorlight="#ccccff"'>엷은청보라</option>
+            <option value='bordercolorlight="#6666cc"'>짙은 청보라</option>
+            <option value='bordercolorlight="#ffccff"'>옅은 적보라</option>
+            <option value='bordercolorlight="#cc99cc"'>진한적보라</option>
+	    <option value='bordercolorlight="#ffffcc"'>살색</option>
+            <option value='bordercolorlight="#ff99cc"'>핑크색</option>
+            <option value='bordercolorlight="#ccffcc"'>옅은 녹색</option>
+            <option value='bordercolorlight="#66cc99"'>청녹색</option>
+          </select></span></p>
+</td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+        <p align="center"> 
+<span style="font-size:10pt;"><font face="돋움">색상표이용</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+        <p align="left"> 
+<span style="font-size:9pt;">&nbsp;<input type="text" name="BGCOLOR3" value="0000000" maxlength="7" size="7"></span></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">셀간격</font></span></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<input type="text" name="cellpa" value="25" maxlength="3" size="3"></p>
+</td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">셀안쪽여백</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+                <p>&nbsp;<input type="text" name="cellspa" value="0" maxlength="2" size="2"></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">&nbsp;</span></font><span style="font-size:10pt;"><font face="돋움">테두리크기</font></span></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="BORDER" size="1">
+                  <option>0</option>
+                  <option value=' border="1"'>1</option>
+                  <option value=' border="2"'>2</option>
+                  <option value=' border="3"'>3</option>
+                  <option value=' border="4"'>4</option>
+                  <option value=' border="5"'>5</option>
+                  <option value=' border="6"' selected>6</option>
+                  <option value=' border="7"'>7</option>
+		  <option value=' border="8"'>8</option>
+		  <option value=' border="9"'>9</option>
+		  <option value=' border="10"'>10</option>
+		  <option value=' border="11"'>11</option>
+                  <option value=' border="12"'>12</option>
+		  <option value=' border="13"'>13</option>
+		  <option value=' border="14"'>14</option>
+                  <option value=' border="15"'>15</option>
+		  <option value=' border="16"'>16</option>
+		  <option value=' border="17"'>17</option>
+		  <option value=' border="18"'>18</option>
+		  <option value=' border="19"'>19</option>
+                  <option value=' border="20"'>20</option>
+                </select></span></p>
+</td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">배경이미지</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+                <p>&nbsp;<select name="IMG_URL2" size="1">
+                <option value="http://fallen58.okjys.net/note/images/blueb001.jpg">블루노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb003.jpg">회색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/desire_mainlayer.jpg">짙은청보라노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/desire_strip.jpg">보라반짝이</option>
+                <option value="http://fallen58.okjys.net/note/images/arany.jpg">황금색</option>
+                <option value="http://fallen58.okjys.net/note/images/aeg2.jpg">녹색노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/aeg1.jpg">적회색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb002.jpg">진청줄무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb005.jpg">백녹색 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/p001.jpg">보라흰물결</option>
+                <option value="http://fallen58.okjys.net/note/images/p002.jpg">진한보라흰물결</option>
+                <option value="http://fallen58.okjys.net/note/images/Dreambg1.jpg">진녹노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb004.jpg">진청띠</option>
+                <option value="http://fallen58.okjys.net/note/images/yelb001.jpg">황금노이즈띠</option>
+                <option value="http://fallen58.okjys.net/note/images/sand01b.gif">진녹물결</option>
+                <option value="http://fallen58.okjys.net/note/images/ssbg1.jpg">황색물결</option>
+		<option value="http://fallen58.okjys.net/note/images/brick001.jpg">벽돌무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/img001.gif">쥐색줄무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/febric021.jpg">연보라비단</option>
+                <option value="http://fallen58.okjys.net/note/images/febric022.jpg">회색체크무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/febric061.jpg">연청보라</option>
+                <option value="http://fallen58.okjys.net/note/images/green.gif">그린색</option>
+                <option value="http://fallen58.okjys.net/note/images/leaf029.jpg">빨간장미꽃잎</option>
+                <option value="http://fallen58.okjys.net/note/images/leaf049.jpg">수초잎(녹색)</option>
+                <option value="http://fallen58.okjys.net/note/images/marble005.jpg">연황색마블</option>
+		<option value="http://fallen58.okjys.net/note/images/metal011.jpg">메탈회색체크</option>
+                <option value="http://fallen58.okjys.net/note/images/others038.jpg">주황색무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/others056.jpg">하늘색방울무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/paper001.jpg">종이무늬1</option>
+                <option value="http://fallen58.okjys.net/note/images/paper015.jpg">종이무늬2</option>
+                <option value="http://fallen58.okjys.net/note/images/paper01a.gif">종이무늬3</option>
+                <option value="http://fallen58.okjys.net/note/images/paper01d.gif">종이무늬4</option>
+		<option value="http://fallen58.okjys.net/note/images/paper05.gif">그린얼룩</option>
+                <option value="http://fallen58.okjys.net/note/images/patrn16a.gif">골판지무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/tile017.jpg">붉은타일무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/wall007.jpg">돌맹이모음</option>
+		<option value="http://fallen58.okjys.net/note/images/water05.jpg">바다물결</option>
+                <option value="http://fallen58.okjys.net/note/images/wood006.jpg">나무결1</option>
+                <option value="http://fallen58.okjys.net/note/images/wood01.gif">나무결2</option>
+		<option value="http://fallen58.okjys.net/note/images/wood02.gif">나무결3</option>
+                <option value="http://fallen58.okjys.net/note/images/wood046.jpg">나무결4</option>               <option value="http://fallen58.okjys.net/note/images/wood05.gif">나무결5</option>
+                <option value="http://fallen58.okjys.net/note/images/wood056.jpg">나무결6</option>
+		 <option value="http://fallen58.okjys.net/note/images/wood06.gif">나무결7</option>
+                <option value="http://fallen58.okjys.net/note/images/plue073.jpg">파란그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue001.jpg">진보라그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue2.jpg">청줄무니</option>
+		<option value="http://fallen58.okjys.net/note/images/plue003.jpg">진녹줄무니그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue004.jpg">진황색그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue011.jpg">연황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue014.jpg">진녹그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue015.jpg">청록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue016.jpg">연청록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue017.jpg">연하늘그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue018.jpg">남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue019.jpg">핑크빛보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue020.jpg">연하늘빛 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue021.jpg">연구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue022.jpg">연구리빛2</option>
+                <option value="http://fallen58.okjys.net/note/images/plue023.jpg">진한구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue024.jpg">더진한구리빛</option>
+                <option value="http://fallen58.okjys.net/note/images/plue025.jpg">진한밤색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue026.jpg">쉐도우황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue027.jpg">연한노란색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue028.jpg">진한황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue029.jpg">아주찐한황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue030.jpg">쉐도우녹색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue031.jpg">연황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue032.jpg">녹황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue033.jpg">진녹황색 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue034.jpg">아주찐한녹황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue035.jpg">연초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue036.jpg">초록색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue037.jpg">진초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue038.jpg">아주진한초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue039.jpg">남색쉐도우</option>
+                <option value="http://fallen58.okjys.net/note/images/plue040.jpg">남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue041.jpg">진남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue042.jpg">아주진한남색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue043.jpg">어두운 남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue044.jpg">청보라쉐도우</option>
+                <option value="http://fallen58.okjys.net/note/images/plue047.jpg">진한청보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue048.jpg" selected>어두운청보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue053.jpg">붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue054.jpg">진한붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue055.jpg">어두운붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue057.jpg">연구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue061.jpg">붉은구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue065.jpg">밤색그라데이션</option>
+                </select></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="680" height="40" bgcolor="#fff1ff" colspan="6">                <p align="center"><input type="button" value ="결과보기" OnClick="na_call('table_submit()');"><input type="reset" value="다시입력" name="reset"></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="680" height="45" colspan="6" align="left"> 
+        <p> <img src="simenu2.gif" width="430" height="40" border="0"></p>
+</td>
+        </tr>
+<tr>
+<td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center" style="text-decoration:none;"><font face="돋움"><span style="font-size:10pt;">&nbsp;</span></font><span style="font-size:10pt;"><font face="돋움">&nbsp;가로 너비 </font></span></p>
+      </td>
+      <td width="200" height="40"> 
+        <p>&nbsp;<span style="font-size:9pt;"> 
+          <input type="text" name="T3_WIDTH" value="570" size="4">
+          </span></p>
+      </td>
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">세로 너비 </font></span></p>
+      </td>
+      <td height="40" colspan="3" width="200"> 
+        <p align="left"> 
+          &nbsp;<span style="font-size:9pt;"><input type="text" name="T3_HEIGHT" value="420" size="4">
+          </span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">정렬하기</span></font></p>
+      </td>
+      <td width="540" height="40" colspan="5"> 
+                <p>&nbsp;&nbsp;<select name="T3_ALIGN" size="1">
+                <option value='align="right"'>오른쪽</option>
+                <option value='align="lift"'>왼쪽</option>
+                <option value='align="center"' selected>가운데</option>
+                </select></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><font face="돋움"><span style="font-size:10pt;">&nbsp;테두리</span></font><font face="돋움" color="#eff3ff"><span style="font-size:10pt;">아래쪽</span></font><font face="돋움"><span style="font-size:10pt;">칼라</span></font><span style="font-size:10pt;"><font face="돋움"> </font></span></p>
+      </td>
+      <td width="200" height="40"> 
+        <p>&nbsp;<span style="font-size:9pt;"> 
+          <select name="T3_BORGERCOLOR" size="1">
+            <option>설정없음</option>
+            <option value='bordercolordark="white"'>흰색</option>
+            <option value='bordercolordark="black"'>검정</option>
+            <option value='bordercolordark="red"'>빨강</option>
+            <option value='bordercolordark="blue"'>파랑</option>
+            <option value='bordercolordark="green"'>녹색</option>
+            <option value='bordercolordark="yellow"'>노랑</option>
+            <option value='bordercolordark="gray"'>회색</option>
+	    <option value='bordercolordark="#A56908"'>연밤색</option>
+	    <option value='bordercolordark="#cccccc"'>엷은 회색</option>
+            <option value='bordercolordark="#333333"'>진한회색</option>
+	     <option value='bordercolordark="#634D7B"'>진한청색보라</option>
+	     <option value='bordercolordark="#BDA6D6"' selected>연한청색보라</option>
+	     <option value='bordercolordark="#427973"'>진한청녹색</option> 
+	    <option value='bordercolordark="#A5DBD6"'>연한청녹색</option>  
+	    <option value='bordercolordark="#396129"'>진초록색</option>
+	    <option value='bordercolordark="#BDE7AD"'>연초록색</option>
+	    <option value='bordercolordark="#182C4A"'>진남색</option>
+	     <option value='bordercolordark="#94AACE"'>연남색</option>
+	      <option value='bordercolordark="#7B3029"'>진한구리색</option>
+	      <option value='bordercolordark="#E79E94"'>연한구리색</option>
+            <option value='bordercolordark="navy"'>남색</option>
+            <option value='bordercolordark="marron"'>밤색</option>
+            <option value='bordercolordark="#cccccc"'>엷은 회색</option>
+            <option value='bordercolordark="#333333"'>진한회색</option>
+            <option value='bordercolordark="#ccccff"'>엷은청보라</option>
+            <option value='bordercolordark="#6666cc"'>짙은 청보라</option>
+            <option value='bordercolordark="#ffccff"'>옅은 적보라</option>
+            <option value='bordercolordark="#cc99cc"'>진한적보라</option>
+	    <option value='bordercolordark="#ffffcc"'>살색</option>
+            <option value='bordercolordark="#ff99cc"'>핑크색</option>
+            <option value='bordercolordark="#ccffcc"'>옅은 녹색</option>
+            <option value='bordercolordark="#66cc99"'>청녹색</option>
+          </select>
+          </span></p>
+      </td>
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"> 
+<span style="font-size:10pt;"><font face="돋움">색상표이용 
+          </font></span></p>
+      </td>
+      <td width="200" height="40" align="right" colspan="3"> 
+        <p align="left"> 
+          
+          <span style="font-size:9pt;">&nbsp;<input type="text" name="T3_BGCOLOR2" value="0000000" maxlength="7" size="7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">테두리</span></font><font face="돋움" color="#0000CC"><span style="font-size:10pt;">위쪽</span></font><font face="돋움"><span style="font-size:10pt;">칼라</span></font></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="T3_BORGERCOLOR2" size="1">
+            <option>설정없음</option>
+            <option value='bordercolorlight="white"'>흰색</option>
+            <option value='bordercolorlight="black"'>검정</option>
+            <option value='bordercolorlight="red"'>빨강</option>
+            <option value='bordercolorlight="blue"'>파랑</option>
+            <option value='bordercolorlight="green"'>녹색</option>
+            <option value='bordercolorlight="yellow"'>노랑</option>
+            <option value='bordercolorlight="gray"'>회색</option>
+            <option value='bordercolorlight="navy"'>남색</option>
+	    <option value='bordercolorlight="#A56908"'>연밤색</option>
+	    <option value='bordercolorlight="#cccccc"'>엷은 회색</option>
+            <option value='bordercolorlight="#333333"'>진한회색</option>
+	     <option value='bordercolorlight="#634D7B"' selected>진한청색보라</option>
+	     <option value='bordercolorlight="#BDA6D6"'>연한청색보라</option>
+	     <option value='bordercolorlight="#427973"'>진한청녹색</option> 
+	    <option value='bordercolorlight="#A5DBD6"'>연한청녹색</option>  
+	    <option value='bordercolorlight="#396129"'>진초록색</option>
+	    <option value='bordercolorlight="#BDE7AD"'>연초록색</option>
+	    <option value='bordercolorlight="#182C4A"'>진남색</option>
+	     <option value='bordercolorlight="#94AACE"'>연남색</option>
+	      <option value='bordercolorlight="#7B3029"'>진한구리색</option>
+	      <option value='bordercolorlight="#E79E94"'>연한구리색</option>
+            <option value='bordercolorlight="marron"'>밤색</option>
+            <option value='bordercolorlight="#cccccc"'>엷은 회색</option>
+            <option value='bordercolorlight="#333333"'>진한회색</option>
+	    <option value='bordercolorlight="#ccccff"'>엷은청보라</option>
+            <option value='bordercolorlight="#ffccff"'>옅은 적보라</option>
+            <option value='bordercolorlight="#cc99cc"'>진한적보라</option>
+	    <option value='bordercolorlight="#ffffcc"'>살색</option>
+            <option value='bordercolorlight="#ff99cc"'>핑크색</option>
+            <option value='bordercolorlight="#ccffcc"'>옅은 녹색</option>
+            <option value='bordercolorlight="#66cc99"'>청녹색</option>
+          </select></span></p>
+</td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+        <p align="center"> 
+<span style="font-size:10pt;"><font face="돋움">색상표이용</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+        <p align="left"> 
+<span style="font-size:9pt;">&nbsp;<input type="text" name="T3_BGCOLOR3" value="0000000" maxlength="7" size="7"></span></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">셀간격</font></span></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<input type="text" name="cellpa2" value="10" maxlength="3" size="3"></p>
+</td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">셀안쪽여백</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+                <p>&nbsp;<input type="text" name="cellspa2" value="0" maxlength="2" size="2"></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">&nbsp;</span></font><span style="font-size:10pt;"><font face="돋움">테두리크기</font></span></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="T3_BORDER" size="1">
+                  <option>0</option>
+                  <option value=' border="1"' selected>1</option>
+                  <option value=' border="2"'>2</option>
+                  <option value=' border="3"'>3</option>
+                  <option value=' border="4"'>4</option>
+                  <option value=' border="5"'>5</option>
+                  <option value=' border="6"'>6</option>
+                  <option value=' border="7"'>7</option>
+		  <option value=' border="8"'>8</option>
+		  <option value=' border="9"'>9</option>
+		  <option value=' border="10"'>10</option>
+		  <option value=' border="11"'>11</option>
+                  <option value=' border="12"'>12</option>
+		  <option value=' border="13"'>13</option>
+		  <option value=' border="14"'>14</option>
+                  <option value=' border="15"'>15</option>
+		  <option value=' border="16"'>16</option>
+		  <option value=' border="17"'>17</option>
+		  <option value=' border="18"'>18</option>
+		  <option value=' border="19"'>19</option>
+                  <option value=' border="20"'>20</option>
+                </select></span></p>
+</td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">배경이미지</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+                <p>&nbsp;<select name="IMG_URL3" size="1">
+                <option value="http://fallen58.okjys.net/note/images/blueb001.jpg">블루노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb003.jpg">회색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/desire_mainlayer.jpg">짙은청보라노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/desire_strip.jpg">보라반짝이</option>
+                <option value="http://fallen58.okjys.net/note/images/arany.jpg">황금색</option>
+                <option value="http://fallen58.okjys.net/note/images/aeg2.jpg">녹색노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/aeg1.jpg">적회색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb002.jpg" selected>진청줄무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb005.jpg">백녹색 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/p001.jpg">보라흰물결</option>
+                <option value="http://fallen58.okjys.net/note/images/p002.jpg">진한보라흰물결</option>
+                <option value="http://fallen58.okjys.net/note/images/Dreambg1.jpg">진녹노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb004.jpg">진청띠</option>
+                <option value="http://fallen58.okjys.net/note/images/yelb001.jpg">황금노이즈띠</option>
+                <option value="http://fallen58.okjys.net/note/images/sand01b.gif">진녹물결</option>
+                <option value="http://fallen58.okjys.net/note/images/ssbg1.jpg">황색물결</option>
+		<option value="http://fallen58.okjys.net/note/images/brick001.jpg">벽돌무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/img001.gif">쥐색줄무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/febric021.jpg">연보라비단</option>
+                <option value="http://fallen58.okjys.net/note/images/febric022.jpg">회색체크무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/febric061.jpg">연청보라</option>
+                <option value="http://fallen58.okjys.net/note/images/green.gif">그린색</option>
+                <option value="http://fallen58.okjys.net/note/images/leaf029.jpg">빨간장미꽃잎</option>
+                <option value="http://fallen58.okjys.net/note/images/leaf049.jpg">수초잎(녹색)</option>
+                <option value="http://fallen58.okjys.net/note/images/marble005.jpg">연황색마블</option>
+		<option value="http://fallen58.okjys.net/note/images/metal011.jpg">메탈회색체크</option>
+                <option value="http://fallen58.okjys.net/note/images/others038.jpg">주황색무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/others056.jpg">하늘색방울무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/paper001.jpg">종이무늬1</option>
+                <option value="http://fallen58.okjys.net/note/images/paper015.jpg">종이무늬2</option>
+                <option value="http://fallen58.okjys.net/note/images/paper01a.gif">종이무늬3</option>
+                <option value="http://fallen58.okjys.net/note/images/paper01d.gif">종이무늬4</option>
+		<option value="http://fallen58.okjys.net/note/images/paper05.gif">그린얼룩</option>
+                <option value="http://fallen58.okjys.net/note/images/patrn16a.gif">골판지무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/tile017.jpg">붉은타일무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/wall007.jpg">돌맹이모음</option>
+		<option value="http://fallen58.okjys.net/note/images/water05.jpg">바다물결</option>
+                <option value="http://fallen58.okjys.net/note/images/wood006.jpg">나무결1</option>
+                <option value="http://fallen58.okjys.net/note/images/wood01.gif">나무결2</option>
+		<option value="http://fallen58.okjys.net/note/images/wood02.gif">나무결3</option>
+                <option value="http://fallen58.okjys.net/note/images/wood046.jpg">나무결4</option>               <option value="http://fallen58.okjys.net/note/images/wood05.gif">나무결5</option>
+                <option value="http://fallen58.okjys.net/note/images/wood056.jpg">나무결6</option>
+		 <option value="http://fallen58.okjys.net/note/images/wood06.gif">나무결7</option>
+                <option value="http://fallen58.okjys.net/note/images/plue073.jpg">파란그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue001.jpg">진보라그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue2.jpg">청줄무니</option>
+		<option value="http://fallen58.okjys.net/note/images/plue003.jpg">진녹줄무니그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue004.jpg">진황색그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue011.jpg">연황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue014.jpg">진녹그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue015.jpg">청록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue016.jpg">연청록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue017.jpg">연하늘그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue018.jpg">남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue019.jpg">핑크빛보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue020.jpg">연하늘빛 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue021.jpg">연구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue022.jpg">연구리빛2</option>
+                <option value="http://fallen58.okjys.net/note/images/plue023.jpg">진한구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue024.jpg">더진한구리빛</option>
+                <option value="http://fallen58.okjys.net/note/images/plue025.jpg">진한밤색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue026.jpg">쉐도우황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue027.jpg">연한노란색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue028.jpg">진한황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue029.jpg">아주찐한황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue030.jpg">쉐도우녹색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue031.jpg">연황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue032.jpg">녹황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue033.jpg">진녹황색 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue034.jpg">아주찐한녹황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue035.jpg">연초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue036.jpg">초록색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue037.jpg">진초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue038.jpg">아주진한초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue039.jpg">남색쉐도우</option>
+                <option value="http://fallen58.okjys.net/note/images/plue040.jpg">남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue041.jpg">진남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue042.jpg">아주진한남색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue043.jpg">어두운 남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue044.jpg">청보라쉐도우</option>
+                <option value="http://fallen58.okjys.net/note/images/plue047.jpg">진한청보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue048.jpg">어두운청보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue053.jpg">붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue054.jpg">진한붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue055.jpg">어두운붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue057.jpg">연구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue061.jpg">붉은구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue065.jpg">밤색그라데이션</option>
+                </select></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="680" height="40" bgcolor="#fff1ff" colspan="6">                <p align="center"><input type="button" value ="결과보기" OnClick="na_call('table_submit()');"><input type="reset" value="다시입력" name="reset"></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="680" height="45" colspan="6" align="left"> 
+        <p> <img src="simenu3.gif" width="430" height="40" border="0"></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center" style="text-decoration:none;"><span style="font-size:10pt;"><font face="돋움">가로 너비 </font></span></p>
+      </td>
+      <td width="200" height="40"> 
+        <p>&nbsp;<span style="font-size:9pt;"> 
+          <input type="text" name="T2_WIDTH" value="510" size="4">
+          </span></p>
+      </td>
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">세로 너비 </font></span></p>
+      </td>
+      <td height="40" colspan="3" width="200"> 
+        <p align="left"> 
+          <span style="font-size:9pt;"><input type="text" name="T2_HEIGHT" value="360" size="4">
+          </span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">정렬하기</span></font></p>
+      </td>
+      <td width="540" height="40" colspan="5"> 
+                <p>&nbsp;&nbsp;<select name="T2_ALIGN" size="1">
+                <option value='align="right"'>오른쪽</option>
+                <option value='align="lift"'>왼쪽</option>
+                <option value='align="center"' selected>가운데</option>
+                </select></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><font face="돋움"><span style="font-size:10pt;">테두리</span></font><font face="돋움" color="#0000CC"><span style="font-size:10pt;">아래쪽</span></font><font face="돋움"><span style="font-size:10pt;">칼라</span></font><span style="font-size:10pt;"><font face="돋움"> </font></span></p>
+      </td>
+      <td width="200" height="40"> 
+        <p>&nbsp;<span style="font-size:9pt;"> 
+          <select name="T2_BORGERCOLOR" size="1">
+            <option>설정없음</option>
+            <option value='bordercolordark="white"'>흰색</option>
+            <option value='bordercolordark="black"'>검정</option>
+            <option value='bordercolordark="red"'>빨강</option>
+            <option value='bordercolordark="blue"'>파랑</option>
+            <option value='bordercolordark="green"'>녹색</option>
+            <option value='bordercolordark="yellow"'>노랑</option>
+            <option value='bordercolordark="gray"'>회색</option>
+	    <option value='bordercolordark="#A56908"'>연밤색</option>
+	    <option value='bordercolordark="#cccccc"'>엷은 회색</option>
+            <option value='bordercolordark="#333333"'>진한회색</option>
+	     <option value='bordercolordark="#634D7B"'>진한청색보라</option>
+	     <option value='bordercolordark="#BDA6D6"' selected>연한청색보라</option>
+	     <option value='bordercolordark="#427973"'>진한청녹색</option> 
+	    <option value='bordercolordark="#A5DBD6"'>연한청녹색</option>  
+	    <option value='bordercolordark="#396129"'>진초록색</option>
+	    <option value='bordercolordark="#BDE7AD"'>연초록색</option>
+	    <option value='bordercolordark="#182C4A"'>진남색</option>
+	     <option value='bordercolordark="#94AACE"'>연남색</option>
+	      <option value='bordercolordark="#7B3029"'>진한구리색</option>
+	      <option value='bordercolordark="#E79E94"'>연한구리색</option>
+            <option value='bordercolordark="navy"'>남색</option>
+            <option value='bordercolordark="marron"'>밤색</option>
+            <option value='bordercolordark="#cccccc"'>엷은 회색</option>
+            <option value='bordercolordark="#333333"'>진한회색</option>
+            <option value='bordercolordark="#ccccff"'>엷은청보라</option>
+            <option value='bordercolordark="#6666cc"'>짙은 청보라</option>
+            <option value='bordercolordark="#ffccff"'>옅은 적보라</option>
+            <option value='bordercolordark="#cc99cc"'>진한적보라</option>
+	    <option value='bordercolordark="#ffffcc"'>살색</option>
+            <option value='bordercolordark="#ff99cc"'>핑크색</option>
+            <option value='bordercolordark="#ccffcc"'>옅은 녹색</option>
+            <option value='bordercolordark="#66cc99"'>청녹색</option>
+          </select>
+          </span></p>
+      </td>
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"> 
+<span style="font-size:10pt;"><font face="돋움">색상표이용 
+          </font></span></p>
+      </td>
+      <td width="200" height="40" align="right" colspan="3"> 
+        <p align="left"> 
+          
+          <span style="font-size:9pt;">&nbsp;<input type="text" name="T2_BGCOLOR2" value="0000000" maxlength="7" size="7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">테두리</span></font><font face="돋움" color="#0000CC"><span style="font-size:10pt;">위쪽</span></font><font face="돋움"><span style="font-size:10pt;">칼라</span></font></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="T2_BORGERCOLOR2" size="1">
+            <option>설정없음</option>
+            <option value='bordercolorlight="white"'>흰색</option>
+            <option value='bordercolorlight="black"'>검정</option>
+            <option value='bordercolorlight="red"'>빨강</option>
+            <option value='bordercolorlight="blue"'>파랑</option>
+            <option value='bordercolorlight="green"'>녹색</option>
+            <option value='bordercolorlight="yellow"'>노랑</option>
+            <option value='bordercolorlight="gray"'>회색</option>
+            <option value='bordercolorlight="navy"'>남색</option>
+	    <option value='bordercolorlight="#A56908"'>연밤색</option>
+	    <option value='bordercolorlight="#cccccc"'>엷은 회색</option>
+            <option value='bordercolorlight="#333333"'>진한회색</option>
+	     <option value='bordercolorlight="#634D7B"' selected>진한청색보라</option>
+	     <option value='bordercolorlight="#BDA6D6"'>연한청색보라</option>
+	     <option value='bordercolorlight="#427973"'>진한청녹색</option> 
+	    <option value='bordercolorlight="#A5DBD6"'>연한청녹색</option>  
+	    <option value='bordercolorlight="#396129"'>진초록색</option>
+	    <option value='bordercolorlight="#BDE7AD"'>연초록색</option>
+	    <option value='bordercolorlight="#182C4A"'>진남색</option>
+	     <option value='bordercolorlight="#94AACE"'>연남색</option>
+	      <option value='bordercolorlight="#7B3029"'>진한구리색</option>
+	      <option value='bordercolorlight="#E79E94"'>연한구리색</option>
+            <option value='bordercolorlight="marron"'>밤색</option>
+            <option value='bordercolorlight="#cccccc"'>엷은 회색</option>
+            <option value='bordercolorlight="#333333"'>진한회색</option>
+	    <option value='bordercolorlight="#ccccff"'>엷은청보라</option>
+            <option value='bordercolorlight="#6666cc"'>짙은 청보라</option>
+            <option value='bordercolorlight="#ffccff"'>옅은 적보라</option>
+            <option value='bordercolorlight="#cc99cc"'>진한적보라</option>
+	    <option value='bordercolorlight="#ffffcc"'>살색</option>
+            <option value='bordercolorlight="#ff99cc"'>핑크색</option>
+            <option value='bordercolorlight="#ccffcc"'>옅은 녹색</option>
+            <option value='bordercolorlight="#66cc99"'>청녹색</option>
+          </select></span></p>
+</td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+        <p align="center"> 
+<span style="font-size:10pt;"><font face="돋움">색상표이용</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+        <p align="left"> 
+<span style="font-size:9pt;">&nbsp;<input type="text" name="T2_BGCOLOR3" value="0000000" maxlength="7" size="7"></span></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">셀간격</font></span></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<input type="text" name="cellpa3" value="15" maxlength="3" size="3"></p>
+</td>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">셀안쪽여백</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+                <p>&nbsp;<input type="text" name="cellspa3" value="0" maxlength="2" size="2"></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">테두리크기</font></span></p>
+</td>
+      <td width="200" height="40">
+                <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="T2_BORDER" size="1">
+                  <option>0</option>
+                  <option value=' border="1"'>1</option>
+                  <option value=' border="2"'>2</option>
+                  <option value=' border="3"' selected>3</option>
+                  <option value=' border="4"'>4</option>
+                  <option value=' border="5"'>5</option>
+                  <option value=' border="6"'>6</option>
+                  <option value=' border="7"'>7</option>
+		  <option value=' border="8"'>8</option>
+		  <option value=' border="9"'>9</option>
+		  <option value=' border="10"'>10</option>
+		  <option value=' border="11"'>11</option>
+                  <option value=' border="12"'>12</option>
+		  <option value=' border="13"'>13</option>
+		  <option value=' border="14"'>14</option>
+                  <option value=' border="15"'>15</option>
+		  <option value=' border="16"'>16</option>
+		  <option value=' border="17"'>17</option>
+		  <option value=' border="18"'>18</option>
+		  <option value=' border="19"'>19</option>
+                  <option value=' border="20"'>20</option>
+                </select></span></p>
+</td>
+      <td width="140" height="40" bgcolor="#eff3ff">
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">&nbsp;배경이미지</font></span></p>
+</td>
+      <td width="200" height="40" colspan="3">
+                <p>&nbsp;<select name="IMG_URL4" size="1">
+                <option value="http://fallen58.okjys.net/note/images/blueb001.jpg">블루노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb003.jpg">회색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/desire_mainlayer.jpg" selected>짙은청보라노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/desire_strip.jpg">보라반짝이</option>
+                <option value="http://fallen58.okjys.net/note/images/arany.jpg">황금색</option>
+                <option value="http://fallen58.okjys.net/note/images/aeg2.jpg">녹색노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/aeg1.jpg">적회색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb002.jpg">진청줄무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb005.jpg">백녹색 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/p001.jpg">보라흰물결</option>
+                <option value="http://fallen58.okjys.net/note/images/p002.jpg">진한보라흰물결</option>
+                <option value="http://fallen58.okjys.net/note/images/Dreambg1.jpg">진녹노이즈</option>
+                <option value="http://fallen58.okjys.net/note/images/blueb004.jpg">진청띠</option>
+                <option value="http://fallen58.okjys.net/note/images/yelb001.jpg">황금노이즈띠</option>
+                <option value="http://fallen58.okjys.net/note/images/sand01b.gif">진녹물결</option>
+                <option value="http://fallen58.okjys.net/note/images/ssbg1.jpg">황색물결</option>
+		<option value="http://fallen58.okjys.net/note/images/brick001.jpg">벽돌무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/img001.gif">쥐색줄무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/febric021.jpg">연보라비단</option>
+                <option value="http://fallen58.okjys.net/note/images/febric022.jpg">회색체크무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/febric061.jpg">연청보라</option>
+                <option value="http://fallen58.okjys.net/note/images/green.gif">그린색</option>
+                <option value="http://fallen58.okjys.net/note/images/leaf029.jpg">빨간장미꽃잎</option>
+                <option value="http://fallen58.okjys.net/note/images/leaf049.jpg">수초잎(녹색)</option>
+                <option value="http://fallen58.okjys.net/note/images/marble005.jpg">연황색마블</option>
+		<option value="http://fallen58.okjys.net/note/images/metal011.jpg">메탈회색체크</option>
+                <option value="http://fallen58.okjys.net/note/images/others038.jpg">주황색무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/others056.jpg">하늘색방울무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/paper001.jpg">종이무늬1</option>
+                <option value="http://fallen58.okjys.net/note/images/paper015.jpg">종이무늬2</option>
+                <option value="http://fallen58.okjys.net/note/images/paper01a.gif">종이무늬3</option>
+                <option value="http://fallen58.okjys.net/note/images/paper01d.gif">종이무늬4</option>
+		<option value="http://fallen58.okjys.net/note/images/paper05.gif">그린얼룩</option>
+                <option value="http://fallen58.okjys.net/note/images/patrn16a.gif">골판지무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/tile017.jpg">붉은타일무늬</option>
+                <option value="http://fallen58.okjys.net/note/images/wall007.jpg">돌맹이모음</option>
+		<option value="http://fallen58.okjys.net/note/images/water05.jpg">바다물결</option>
+                <option value="http://fallen58.okjys.net/note/images/wood006.jpg">나무결1</option>
+                <option value="http://fallen58.okjys.net/note/images/wood01.gif">나무결2</option>
+		<option value="http://fallen58.okjys.net/note/images/wood02.gif">나무결3</option>
+                <option value="http://fallen58.okjys.net/note/images/wood046.jpg">나무결4</option>               <option value="http://fallen58.okjys.net/note/images/wood05.gif">나무결5</option>
+                <option value="http://fallen58.okjys.net/note/images/wood056.jpg">나무결6</option>
+		 <option value="http://fallen58.okjys.net/note/images/wood06.gif">나무결7</option>
+                <option value="http://fallen58.okjys.net/note/images/plue073.jpg">파란그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue001.jpg">진보라그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue2.jpg">청줄무니</option>
+		<option value="http://fallen58.okjys.net/note/images/plue003.jpg">진녹줄무니그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue004.jpg">진황색그라데이션</option>
+		<option value="http://fallen58.okjys.net/note/images/plue011.jpg">연황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue014.jpg">진녹그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue015.jpg">청록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue016.jpg">연청록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue017.jpg">연하늘그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue018.jpg">남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue019.jpg">핑크빛보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue020.jpg">연하늘빛 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue021.jpg">연구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue022.jpg">연구리빛2</option>
+                <option value="http://fallen58.okjys.net/note/images/plue023.jpg">진한구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue024.jpg">더진한구리빛</option>
+                <option value="http://fallen58.okjys.net/note/images/plue025.jpg">진한밤색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue026.jpg">쉐도우황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue027.jpg">연한노란색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue028.jpg">진한황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue029.jpg">아주찐한황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue030.jpg">쉐도우녹색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue031.jpg">연황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue032.jpg">녹황색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue033.jpg">진녹황색 그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue034.jpg">아주찐한녹황색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue035.jpg">연초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue036.jpg">초록색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue037.jpg">진초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue038.jpg">아주진한초록그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue039.jpg">남색쉐도우</option>
+                <option value="http://fallen58.okjys.net/note/images/plue040.jpg">남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue041.jpg">진남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue042.jpg">아주진한남색</option>
+                <option value="http://fallen58.okjys.net/note/images/plue043.jpg">어두운 남색그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue044.jpg">청보라쉐도우</option>
+                <option value="http://fallen58.okjys.net/note/images/plue047.jpg">진한청보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue048.jpg">어두운청보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue053.jpg">붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue054.jpg">진한붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue055.jpg">어두운붉은보라그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue057.jpg">연구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue061.jpg">붉은구리빛그라데이션</option>
+                <option value="http://fallen58.okjys.net/note/images/plue065.jpg">밤색그라데이션</option>
+                </select></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="680" height="40" bgcolor="#fff1ff" colspan="6">                <p align="center"><input type="button" value ="결과보기" OnClick="na_call('table_submit()');"><input type="reset" value="다시입력" name="reset"></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="680" height="45" colspan="6" align="left"> 
+        <p> <img src="simenu4.gif" width="430" height="40" border="0"></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">가로 너비</font></span></p>
+      </td>
+      <td width="200" height="40" align="left"> 
+        <p><span style="font-size:9pt;">&nbsp;<input type="text" name="T4_WIDTH" value="540" size="4"></span>&nbsp;</p>
+      </td>
+      <td width="140" height="38" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">세로 너비</font></span></p>
+      </td>
+      <td width="200" height="40" align="center" colspan="3"> 
+        <p align="left"> 
+<span style="font-size:9pt;">&nbsp;<input type="text" name="T4_HEIGHT" value="380" size="4"></span>&nbsp;</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">정렬하기</span></font></p>
+      </td>
+      <td width="540" height="40" align="left" colspan="5"> 
+                <p>&nbsp;<select name="T4_ALIGN" size="1">
+                <option value='align="right"'>오른쪽</option>
+                <option value='align="lift"'>왼쪽</option>
+                <option value='align="center"' selected>가운데</option>
+                </select></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">테두리</font><font color="#0000CC" face="돋움">아래쪽</font><font face="돋움">색상</font></span></p>
+      </td>
+      <td width="200" height="40" align="left"> 
+        <p><span style="font-size:9pt;">&nbsp;<select name="T5_BORGERCOLOR" size="1">
+            <option selected>설정없음</option>
+            <option value='bordercolordark="white"'>흰색</option>
+            <option value='bordercolordark="black"'>검정</option>
+            <option value='bordercolordark="red"'>빨강</option>
+            <option value='bordercolordark="blue"'>파랑</option>
+            <option value='bordercolordark="green"'>녹색</option>
+            <option value='bordercolordark="yellow"'>노랑</option>
+            <option value='bordercolordark="gray"'>회색</option>
+	    <option value='bordercolordark="#A56908"'>연밤색</option>
+	    <option value='bordercolordark="#cccccc"'>엷은 회색</option>
+            <option value='bordercolordark="#333333"'>진한회색</option>
+	     <option value='bordercolordark="#634D7B"'>진한청색보라</option>
+	     <option value='bordercolordark="#BDA6D6"'>연한청색보라</option>
+	     <option value='bordercolordark="#427973"'>진한청녹색</option> 
+	    <option value='bordercolordark="#A5DBD6"'>연한청녹색</option>  
+	    <option value='bordercolordark="#396129"'>진초록색</option>
+	    <option value='bordercolordark="#BDE7AD"'>연초록색</option>
+	    <option value='bordercolordark="#182C4A"'>진남색</option>
+	     <option value='bordercolordark="#94AACE"'>연남색</option>
+	      <option value='bordercolordark="#7B3029"'>진한구리색</option>
+	      <option value='bordercolordark="#E79E94"'>연한구리색</option>
+            <option value='bordercolordark="navy"'>남색</option>
+            <option value='bordercolordark="marron"'>밤색</option>
+            <option value='bordercolordark="#cccccc"'>엷은 회색</option>
+            <option value='bordercolordark="#333333"'>진한회색</option>
+            <option value='bordercolordark="#ccccff"' selected>엷은청보라</option>
+            <option value='bordercolordark="#6666cc"'>짙은 청보라</option>
+            <option value='bordercolordark="#ffccff"'>옅은 적보라</option>
+            <option value='bordercolordark="#cc99cc"'>진한적보라</option>
+	    <option value='bordercolordark="#ffffcc"'>살색</option>
+            <option value='bordercolordark="#ff99cc"'>핑크색</option>
+            <option value='bordercolordark="#ccffcc"'>옅은 녹색</option>
+            <option value='bordercolordark="#66cc99"'>청녹색</option>
+          </select></span></p>
+      </td>
+      <td width="140" height="38" align="center" bgcolor="#eff3ff"> 
+        
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">색상표이용&nbsp;</font></span></p>
+      </td>
+      <td width="200" height="40" align="left" colspan="3"> 
+                <p><span style="font-size:9pt;">&nbsp;<input type="text" name="T5_BGCOLOR2" value="0000000" maxlength="7" size="7"></span></p>
+      </td>
+    </tr>
+        <tr>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><font face="돋움"><span style="font-size:10pt;">테두리</span></font><font face="돋움" color="#0000CC"><span style="font-size:10pt;">위쪽</span></font><font face="돋움"><span style="font-size:10pt;">칼라</span></font></p>
+      </td>
+      <td width="200" height="40" align="left"> 
+                <p><span style="font-size:9pt;">&nbsp;<select name="T5_BORGERCOLOR2" size="1">
+            <option selected>설정없음</option>
+            <option value='bordercolorlight="white"'>흰색</option>
+            <option value='bordercolorlight="black"'>검정</option>
+            <option value='bordercolorlight="red"'>빨강</option>
+            <option value='bordercolorlight="blue"'>파랑</option>
+            <option value='bordercolorlight="green"'>녹색</option>
+            <option value='bordercolorlight="yellow"'>노랑</option>
+            <option value='bordercolorlight="gray"'>회색</option>
+            <option value='bordercolorlight="navy"'>남색</option>
+	    <option value='bordercolorlight="#A56908"'>연밤색</option>
+	    <option value='bordercolorlight="#cccccc"'>엷은 회색</option>
+            <option value='bordercolorlight="#333333"'>진한회색</option>
+	     <option value='bordercolorlight="#634D7B"'>진한청색보라</option>
+	     <option value='bordercolorlight="#BDA6D6"'>연한청색보라</option>
+	     <option value='bordercolorlight="#427973"'>진한청녹색</option> 
+	    <option value='bordercolorlight="#A5DBD6"'>연한청녹색</option>  
+	    <option value='bordercolorlight="#396129"'>진초록색</option>
+	    <option value='bordercolorlight="#BDE7AD"'>연초록색</option>
+	    <option value='bordercolorlight="#182C4A"'>진남색</option>
+	     <option value='bordercolorlight="#94AACE"'>연남색</option>
+	      <option value='bordercolorlight="#7B3029"'>진한구리색</option>
+	      <option value='bordercolorlight="#E79E94"'>연한구리색</option>
+            <option value='bordercolorlight="marron"'>밤색</option>
+            <option value='bordercolorlight="#cccccc"'>엷은 회색</option>
+            <option value='bordercolorlight="#333333"'>진한회색</option>
+	    <option value='bordercolorlight="#ccccff"'>엷은청보라</option>
+            <option value='bordercolorlight="#6666cc"' selected>짙은 청보라</option>
+            <option value='bordercolorlight="#ffccff"'>옅은 적보라</option>
+            <option value='bordercolorlight="#cc99cc"'>진한적보라</option>
+	    <option value='bordercolorlight="#ffffcc"'>살색</option>
+            <option value='bordercolorlight="#ff99cc"'>핑크색</option>
+            <option value='bordercolorlight="#ccffcc"'>옅은 녹색</option>
+            <option value='bordercolorlight="#66cc99"'>청녹색</option>
+          </select></span></p>
+      </td>
+      <td width="140" height="38" align="center" bgcolor="#eff3ff"> 
+       
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">색상표이용</font></span></p>
+      </td>
+      <td width="200" height="40" align="left" colspan="3"> 
+                <p>&nbsp;<span style="font-size:9pt;"><input type="text" name="T5_BGCOLOR3" value="0000000" maxlength="7" size="7"></span></p>
+      </td>
+        </tr>
+        <tr>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">셀 간격</font></span></p>
+      </td>
+      <td width="200" height="40" align="left"> 
+                <p>&nbsp;<input type="text" name="cellpa4" value="0" maxlength="3" size="3"></p>
+      </td>
+      <td width="140" height="38" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">셀안쪽여백</font></span></p>
+      </td>
+      <td width="200" height="40" align="left" colspan="3"> 
+                <p>&nbsp;<input type="text" name="cellspa4" value="0" maxlength="2" size="2">&nbsp;</p>
+      </td>
+        </tr>
+        <tr>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">테두리크기</font></span></p>
+      </td>
+      <td width="540" height="40" align="left" colspan="5"> 
+                <p><span style="font-size:9pt;">&nbsp;<select name="T4_BORDER" size="1">
+                  <option>0</option>
+                  <option value=' border="1"'>1</option>
+                  <option value=' border="2"'>2</option>
+                  <option value=' border="3"'>3</option>
+                  <option value=' border="4"'>4</option>
+                  <option value=' border="5"'>5</option>
+                  <option value=' border="6"'>6</option>
+                  <option value=' border="7"'>7</option>
+                  <option value=' border="9"'>9</option>
+                  <option value=' border="12"'>12</option>
+                  <option value=' border="15"'>15</option>
+                  <option value=' border="20"'>20</option>
+                </select></span></p>
+      </td>
+        </tr>
+        <tr>
+      <td width="680" height="40" colspan="6" bgcolor="#fff1ff"> 
+                <p align="center"><input type="button" value ="결과보기" OnClick="na_call('table_submit()');"><input type="reset" value="다시입력" name="reset"></p>
+      </td>
+        </tr>
+        <tr>
+      <td width="680" height="45" align="left" colspan="6"> 
+        <p><img src="simenu5.gif" width="430" height="40" border="0">  </p>
+      </td>
+        </tr>
+        <tr>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">텍스트 가로너비</font></span></p>
+      </td>
+      <td width="200" height="40" align="left"> 
+        <p><span style="font-size:9pt;">&nbsp;<input type="text" name="T5_WIDTH" value="460" size="4"></span></p>
+      </td>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p><span style="font-size:9pt;">텍스트세로너비</span></p>
+      </td>
+      <td width="60" height="40" align="center"> 
+        <p align="center"> 
+<span style="font-size:9pt;"><input type="text" name="T5_HEIGHT" value="350" size="4"></span></p>
+      </td>
+      <td width="80" height="40" align="center" bgcolor="#eff3ff"> 
+                <p><span style="font-size:9pt;">테이블두께</span></p>
+      </td>
+      <td width="60" height="40" align="center"> 
+                <p align="center"><span style="font-size:9pt;"><select name="IMG_BORDER" size="1">
+                  <option selected>0</option>
+                  <option value=' border="1"'>1</option>
+                  <option value=' border="2"'>2</option>
+                  <option value=' border="3"'>3</option>
+                  <option value=' border="4"'>4</option>
+                  <option value=' border="5"'>5</option>
+                  <option value=' border="6"'>6</option>
+                  <option value=' border="7"'>7</option>
+                  <option value=' border="9"'>9</option>
+                  <option value=' border="12"'>12</option>
+                  <option value=' border="15"'>15</option>
+                  <option value=' border="20"'>20</option>
+                </select></span></p>
+      </td>
+        </tr>
+        <tr>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">제목글씨모양</font></span></p>
+      </td>
+      <td width="200" height="40" align="left"> 
+                <p>&nbsp;<span style="font-size:9pt;"><select name="T_FACE" size="1">
+                <option>설정없음</option>
+                <option value='face="궁서체"'>궁서체</option>
+                <option value='face="솔체"'>솔체</option>
+		<option value='face="휴먼엽서"'>휴먼엽서</option>
+                <option value='face="가을체"' selected>가을체</option>
+                <option value='face="옛체"'>옛체</option>
+                <option value='face="사랑체"'>사랑체</option>
+                <option value='face="휴먼옛체"'>휴먼옛체</option>
+		<option value='face="바탕체"'>바탕체</option>
+		<option value='face="개성체"'>개성체</option>
+		
+                            
+        </select></span></p>
+      </td>
+      <td width="359" height="13" align="center" colspan="4"> 
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td width="60" height="40" bgcolor="#eff3ff">                            
+                                        <p align="center"><span style="font-size:9pt;">글씨<br>가로정렬</span></p>
+                        </td>
+                        <td width="90" height="40"><p align="center"><select name="T4_ALIGN2" size="1">
+                <option value='align="right"' selected>오른쪽</option>
+                <option value='align="lift"'>왼쪽</option>
+                <option value='align="center"'>가운데</option>
+                            <option>설정없음</option>
+                </select></p>
+                        </td>
+                        <td width="60" height="40" bgcolor="#eff3ff">                            <p align="center"><span style="font-size:9pt;">글씨<br>세로정렬</span></p>
+                        </td>
+                        <td width="130" height="40"><p>&nbsp;&nbsp;&nbsp;<select name="T4_ALIGN3" size="1">
+                <option value='valign="top"' selected>위</option>
+                <option value='valign="middle"'>중간</option>
+                <option value='valign="baseline"'>기준선</option>
+		<option value='valign="bottom"'>아래</option>
+                </select></p>
+                        </td>
+                    </tr>
+                </table>
+      </td>
+        </tr>
+        <tr>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">글씨색깔</font></span></p>
+      </td>
+      <td width="200" height="40" align="left"> 
+        <p><span style="font-size:9pt;">&nbsp;<select name="T4_COLOR" size="1">
+                            <option>설정없음</option>
+            <option value="color=black">검정</option>
+            <option value='color=red'>빨강</option>
+            <option value="color=blue">파랑</option>
+            <option value="color=green">녹색</option>
+            <option value='color=yellow'>노랑</option>
+            <option value='color=gray'>회색</option>
+            <option value="color=navy">남색</option>
+            <option value='color=marron'>밤색</option>
+            <option value="color=white" selected>흰색</option>
+          </select></span></p>
+      </td>
+      <td width="359" height="13" align="center" colspan="4"> 
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td width="60" align="right" height="40" bgcolor="#eff3ff">
+                            <p align="center"><span style="font-size:9pt;">제목크기</span></p>
+                        </td>
+                        <td width="90" height="40">                <p align="left"><span style="font-size:9pt;">&nbsp;&nbsp;&nbsp;<select name="T_SIZE" size="1">
+            <option value='size="1"'>1</option>
+            <option value='size="2"'>2</option>
+            <option value='size="3"'>3</option>
+            <option value='size="4"'>4</option>
+            <option value='size="5"' selected>5</option>
+            <option value='size="6"'>6</option>
+            <option value='size="7"'>7</option>
+          </select></span></p>
+                        </td>
+                        <td width="60" align="right" height="40" bgcolor="#eff3ff">
+                                        <p align="center"><span style="font-size:9pt;">글자두께</span></td>
+                        <td width="130" height="40">                <p align="center"><span style="font-size:9pt;"><select name="T_STRONG" size="1">
+                            <option selected>사용안함</option>
+                            <option value="<B>">진하게</option>
+                            <option value="<I>">기울기</option>
+                            <option value="<U>">밑줄</option>
+                            <option value="<B><U>">진하면서밑줄</option>
+                            <option value="<B><I>">진하면서기울기</option>
+                            <option value="<B><I><U>">모두사용</option>
+                            </select></span></p>
+                        </td>
+                    </tr>
+                </table>
+      </td>
+        </tr>
+    <tr> 
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:10pt;"><font face="돋움">제목쓰기</font></span></p>
+      </td>
+      <td width="200" height="40" align="left"> 
+                            <p>&nbsp;<input type="text" name="TXT1" value="여기에 제목을 쓰세요 " maxlength="20" size="20"></p>
+      </td>
+      <td width="140" height="40" align="center" bgcolor="#eff3ff"> 
+                <p><span style="font-size:9pt;">이름쓰기</span>&nbsp;</p>
+      </td>
+      <td width="200" height="40" align="left" colspan="3"> 
+                <p>&nbsp;&nbsp;<input type="text" name="NAME" value="이름 " maxlength="10" size="10"></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="480" height="40" align="center" bgcolor="#eff3ff" colspan="3"> 
+                <p align="center"><span style="font-size:9pt;"><font color="black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;시인이름을 한쪽으로 밀칩니다</font></span></p>
+      </td>
+      <td width="200" height="40" align="left" colspan="3"> 
+                <p>&nbsp;&nbsp;<select name="MAGIN" size="1">
+                <option>여백주기 없음</option>
+                <option value="&nbsp;">여백주기 1번</option>
+                <option value="&nbsp;&nbsp;">여백주기 2번</option>
+                <option value="&nbsp;&nbsp;&nbsp;">여백주기 3번</option>
+                <option value="&nbsp;&nbsp;&nbsp;&nbsp;" selected>여백주기네번</option>
+                <option value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">여백주기다섯번</option>
+                </select></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="680" height="45" colspan="6" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">주소줄에 
+                            다른곳에서 가져온 이미지 주소를 넣으셔도 됩니다</font></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><font face="바탕체"><span style="font-size:9pt;">배경그림주소</span></font><span style="font-size:9pt;"><font face="바탕체"> 입력</font></span></p>
+      </td>
+      <td colspan="5" height="40" width="540"> 
+ 
+                            <p align="left"><span style="font-size:9pt;">&nbsp;<input type="text" name="IMG_URL" maxlength="255" size="58" value="http://fallen58.okjys.net/note/photo/Jp_072.jpg"></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:9pt;"><font face="바탕체">배경그림</font></span></p>
+      </td>
+      <td width="540" height="40" colspan="5"> 
+        <p>&nbsp;<span style="font-size:9pt;"><select name="IMG_GR" size="1">
+                  <option value="http://fallen58.okjys.net/note/photo/Jp_072.jpg" selected>초원 
+                  </option>
+                  <option value="http://fallen58.okjys.net/note/photo/etc018.jpg">산호</option>
+                  <option value="http://fallen58.okjys.net/note/photo/p0156.jpg">잠자리 
+                  </option>
+                  <option value="http://fallen58.okjys.net/note/photo/Ko_082.jpg">폭포수와낙엽</option>
+                  <option value="http://fallen58.okjys.net/note/photo/Kr_083.jpg">초가집</option>
+                  <option value="http://fallen58.okjys.net/note/photo/021.jpg">기차길</option>
+                  <option value="http://fallen58.okjys.net/note/photo/cosmos.jpg">코스모스</option>
+                  <option value="http://fallen58.okjys.net/note/photo/p010-045.jpg">수채화 
+                  1</option>
+                  <option value="http://fallen58.okjys.net/note/photo/p010-044.jpg">수채화 
+                  2</option>
+                  <option value="http://fallen58.okjys.net/note/photo/p010-041.jpg">수채화 
+                  3</option>
+                  <option value="http://fallen58.okjys.net/note/photo/p010-038.jpg">수채화 
+                  4</option>
+                  <option value="http://fallen58.okjys.net/note/photo/p010-037.jpg">수채화 
+                  5</option>
+                  <option value="http://fallen58.okjys.net/note/photo/yey.jpg">말과여인스캐치</option>
+                  <option value="http://fallen58.okjys.net/note/photo/p049.jpg">서리꽃</option>
+                </select></span><span style="font-size:10pt;"><font face="돋움"> </font></span><font color="red" face="돋움"><span style="font-size:10pt;">(</span></font><span style="font-size:10pt;"><font color="red" face="돋움">그림 
+                선택후 그림설정하기 클릭.) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span><span style="font-size:9pt;"><input type="button" name="IMG_GRAPHIC" value="그림 설정하기" onclick="javascript:img_change()"></span></p>
+      </td>
+    </tr>
+        <tr>
+      <td height="40" width="140" align="right" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:9pt;"><font face="바탕체">이미지가로넓이</font></span></p>
+                </td>
+      <td height="40" width="200"> 
+            <div align="left"> 
+                    <p><span style="font-size:9pt;">&nbsp;<input type="text" name="IMG_WIDTH" value="0" size="4"></span></p>
+            </div>
+                </td>
+      <td height="40" width="140" align="right" bgcolor="#eff3ff"> 
+                <p align="center"><span style="font-size:9pt;"><font face="바탕체">세로길이</font></span></p>
+                </td>
+      <td height="40" width="200" colspan="3"> 
+            <div align="left"> 
+                    <p><span style="font-size:9pt;">&nbsp;&nbsp;<input type="text" name="IMG_HEIGHT" value="0" size="4"></span></p>
+            </div>
+                </td>
+        </tr>
+        <tr>
+      <td height="40" width="680" bgcolor="#fff1ff" colspan="6"> 
+                <p align="center"><input type="button" value ="결과보기" OnClick="na_call('table_submit()');"><input type="reset" value="다시입력" name="reset"></p>
+                </td>
+        </tr>
+  </table>
+                <table style="border-collapse:collapse;" align="center" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td width="720">
+                            <p>&nbsp;</p>
+                        </td>
+                    </tr>
+                </table>
+<table cellspacing="0" width="680" align="center" style="border-collapse:collapse;" border="1" bordercolordark="#999999" bordercolorlight="#999999" bordercolor="#999999">
+    <tr> 
+      <td width="680" height="40" colspan="4"> 
+                            <p><img src="simenu6.gif" width="430" height="40" border="0"></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">움직이는 방향</font></span></p>
+      </td>
+      <td colspan="3" height="40" width="540"> 
+        <p><span style="font-size:9pt;">&nbsp;&nbsp;<select name="M_MOVE" size="1">
+            <option value='direction="left"'>왼쪽</option>
+            <option value='direction="right"'>오른쪽</option>
+            <option value='direction="up"' selected>위로</option>
+            <option value='direction="down"'>아래로</option>
+          </select></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">방식</font></span></p>
+      </td>
+      <td colspan="3" width="540" height="40"> 
+        <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="M_BEHAVIOR" size="1">
+            <option selected>한방향으로</option>
+            <option value='behavior="alternate"'>왔다 갔다 장난하나?</option>
+            <option value='behavior="slide"'>움직이다가 멈춤</option>
+          </select>
+          </span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">반복횟수</font></span></p>
+      </td>
+      <td colspan="3" width="540" height="40"> 
+        <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="M_LOOP" size="1">
+            <option selected>무한번</option>
+            <option value='loop="1"'>한번</option>
+            <option value='loop="2"'>두번</option>
+            <option value='loop="3"'>세번</option>
+            <option value='loop="5"'>다섯번</option>
+          </select>
+          </span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">빠르기</font></span></p>
+      </td>
+      <td height="40" colspan="3" width="540"> 
+        <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="M_SCROLLAMOUNT" size="1">
+            <option value='scrollamount="1"' selected>1</option>
+            <option value='scrollamount="2"'>2</option>
+            <option value='scrollamount="3"'>3</option>
+            <option value='scrollamount="4"'>4</option>
+            <option value='scrollamount="5"'>5</option>
+            <option>6</option>
+            <option value='scrollamount="7"'>7</option>
+            <option value='scrollamount="8"'>8</option>
+            <option value='scrollamount="9"'>9</option>
+            <option value='scrollamount="10"'>10</option>
+            <option value='scrollamount="11"'>11</option>
+            <option value='scrollamount="12"'>12</option>
+            <option value='scrollamount="15"'>15</option>
+            <option value='scrollamount="25"'>25</option>
+            <option value='scrollamount="40"'>40</option>
+            <option value='scrollamount="50"'>50</option>
+            <option value='scrollamount="75"'>75</option>
+            <option value='scrollamount="100"'>100</option>
+          </select>
+          </span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"> <span style="font-size:10pt;"><font face="돋움">글자 색깔</font></span></p>
+      </td>
+      <td width="200" height="40"> 
+                            <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="COLOR" size="1">
+                            <option>설정없음</option>
+            <option value="color:black">검정</option>
+            <option value='color:red'>빨강</option>
+            <option value="color:blue">파랑</option>
+            <option value='color:green'>녹색</option>
+            <option value="color:yellow">노랑</option>
+            <option value='color:gray'>회색</option>
+            <option value='color:navy'>남색</option>
+            <option value='color:marron'>밤색</option>
+            <option value="color:white" selected>흰색</option>
+          </select></span></p>
+      </td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">색상표이용</font></span></p>
+      </td>
+      <td height="40" width="200"> 
+                            <p>&nbsp;&nbsp;<span style="font-size:9pt;"><input type="text" name="COLOR2" value="0000000" maxlength="7" size="7"></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">그림자넓이</font></span></p>
+      </td>
+      <td width="200" height="40"> 
+                            <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="M_WIDTH" size="1">
+            <option>설정안함</option>
+            <option value="width:25%">25</option>
+            <option value='width:30%'>30</option>
+            <option value='width:35%'>35</option>
+            <option value='width:40%'>40</option>
+            <option value='width:45%'>45</option>
+            <option value='width:50%'>50</option>
+            <option value='width:55%'>55</option>
+            <option value='width:60%'>60</option>
+            <option value='width:65%'>65</option>
+            <option value='width:70%'>70</option>
+            <option value='width:75%'>75</option>
+            <option value='width:80%'>80</option>
+            <option value='width:85%'>85</option>
+	    <option value='width:90%'>90</option>
+            <option value='width:95%'>95</option>
+            <option value="width:100%" selected>100</option>
+            <option value='width:150%'>150</option>
+            <option value='width:200%'>200</option>
+            
+          </select></span></p>
+      </td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">그림자길이</font></span></p>
+      </td>
+      <td height="40" width="200"> 
+                            <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="M_HEIGHT" size="1">
+            <option>설정안함</option>
+            <option value=' height:1'>1</option>
+            <option value=' height:2'>2</option>
+            <option value=' height:3'>3</option>
+            <option value=' height:4'>4</option>
+            <option value=' height:5'>5</option>
+            <option value=" height:6" selected>6</option>
+            <option value=' height:7'>7</option>
+            <option value=" height:8">8</option>
+            <option value=' height:9'>9</option>
+            <option value=' height:10'>10</option>
+            <option value=' height:11'>11</option>
+            <option value=' height:12'>12</option>
+            <option value=' height:13'>13</option>
+	    <option value=' height:14'>14</option>
+            <option value=' height:15'>15</option>
+            <option value=' height:16'>16</option>
+            <option value=' height:17'>17</option>
+	    <option value=' height:18'>18</option>
+	    <option value=' height:19'>19</option>
+            <option value=' height:20'>20</option>
+            <option value=' height:21'>21</option>
+            <option value=' height:22'>22</option>
+	    <option value=' height:23'>23</option>
+            <option value=' height:24'>24</option>
+            <option value=' height:25'>25</option>
+	    
+          </select></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">그림자각도</font></span></p>
+      </td>
+      <td width="540" height="40" colspan="3"> 
+                            <p>&nbsp;&nbsp;<input type="text" name="AGL" value="120" maxlength="5" size="5"> 
+                            <span style="font-size:10pt;"><font color="red" face="돋움">도(-가능 
+                            )</font></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">그림자색깔</font></span></p>
+      </td>
+      <td width="200" height="40"> 
+                            <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="S_COLOR" size="1">
+                            <option>설정없음</option>
+            <option value="color=black">검정</option>
+            <option value='color=red'>빨강</option>
+            <option value="color=blue" selected>파랑</option>
+            <option value="color=green">녹색</option>
+            <option value='color=yellow'>노랑</option>
+            <option value='color=gray'>회색</option>
+            <option value="color=navy">남색</option>
+            <option value='color=marron'>밤색</option>
+            <option value='color=white'>흰색</option>
+          </select></span></p>
+      </td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">색상표이용</font></span></p>
+      </td>
+      <td height="40" width="200"> 
+                            <p>&nbsp;&nbsp;<span style="font-size:9pt;"><input type="text" name="S_COLOR2" value="0000000" maxlength="7" size="7"></span></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">글자 크기 
+                            </font></span></p>
+      </td>
+      <td width="200" height="40"> 
+                            <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="SIZE" size="1">
+            <option value="font-size:8pt">8pt</option>
+	    <option value="font-size:9pt">9pt</option>
+	    <option value="font-size:10pt">10pt</option>
+	    <option value="font-size:11pt">11pt</option>
+	    <option value="font-size:12pt" selected>12pt</option>
+	    <option value="font-size:13pt">13pt</option>
+	    <option value="font-size:14pt">14pt</option>
+	    <option value="font-size:15pt">15pt</option>
+	    <option value="font-size:16pt">16pt</option>
+	    <option value="font-size:17pt">17pt</option>
+	    <option value="font-size:18pt">18pt</option>
+	    <option value="font-size:19pt">19pt</option>
+	    <option value="font-size:20pt">20pt</option>
+	    <option value="font-size:21pt">21pt</option>
+	    <option value="font-size:22pt">22pt</option>
+	    <option value="font-size:23pt">23pt</option>
+	    <option value="font-size:24pt">24pt</option>
+	    <option value="font-size:25pt">25pt</option>
+	                
+	                
+          </select></span>&nbsp;</p>
+      </td>
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">글씨들여쓰기</font></span></p>
+      </td>
+      <td height="40" width="200"> 
+                            <p>&nbsp;&nbsp;<select name="UL" size="1">
+                            <option value="<ul>">들여쓰기</option>
+                            <option selected>사용안함</option>
+                            </select></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:10pt;"><font face="돋움">글자모양</font></span>      </td>
+      <td width="200" height="40"> 
+        <p>&nbsp;&nbsp;<span style="font-size:9pt;"><select name="FACE" size="1">
+                <option>설정없음</option>
+                <option value='face="궁서체"'>궁서체</option>
+                <option value='face="솔체"' selected>솔체</option>
+		<option value='face="휴먼엽서"'>휴먼엽서</option>
+                <option value='face="가을체"'>가을체</option>
+                <option value='face="옛체"'>옛체</option>
+                <option value='face="사랑체"'>사랑체</option>
+                <option value='face="휴먼옛체"'>휴먼옛체</option>
+		<option value='face="바탕체"'>바탕체</option>
+		<option value='face="개성체"'>개성체</option>
+		
+                            
+        </select></span></p>
+      </td>
+      <td width="140" height="40" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">정렬하기</font></span></p>
+      </td>
+      <td height="40" width="200"> 
+        <p>&nbsp;&nbsp;<select name="T_ALIGN" size="1">
+                <option value="right" selected>오른쪽</option>
+                <option value="lift">왼쪽</option>
+                <option value="center">가운데</option>
+                </select></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" height="40" align="right" bgcolor="#eff3ff"> 
+<p align="center"><font face="돋움"><span style="font-size:10pt;">글자두께</span></font></p>
+</td>
+      <td width="540" height="40" colspan="3"> 
+        
+<span style="font-size:9pt;">&nbsp;&nbsp;<select name="STRONG" size="1">
+                            <option selected>사용안함</option>
+                            <option value="<B>">진하게</option>
+                            <option value="<I>">기울기</option>
+                            <option value="<U>">밑줄</option>
+                            <option value="<B><U>">진하면서 밑줄</option>
+                            <option value="<B><I>">진하면서 기울기</option>
+                            <option value="<B><I><U>">모두사용</option>
+                            </select></span></td>
+    </tr>
+    <tr> 
+      <td width="674" height="40" bgcolor="#fff1ff" colspan="4">
+                <p align="center"><input type="button" value ="결과보기" OnClick="na_call('table_submit()');"><input type="reset" value="다시입력" name="reset"></p>
+</td>
+    </tr>
+    <tr> 
+      <td width="680" height="40" bgcolor="#eff3ff" colspan="4"> 
+                            <p align="center"><font face="돋움"><span style="font-size:10pt;">넣고 
+                            싶은 글을 넣으세요</span></font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="140" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:10pt;"><font face="돋움">내용 입력</font></span></p>
+      </td>
+      <td colspan="3" height="13" align="center" valign="top" width="540"> 
+        <p align="center">&nbsp;</p>
+                            <p align="center"><span style="font-size:9pt;">&nbsp;<textarea name="TEXT" cols="60" rows="20">마우스 오른쪽 버튼 누르신 후에 모두선택을 하시면
+
+전체블록으로 지정됩니다.
+
+지정된후  delete키를 누르시면 모두 지워집니다 
+
+글을 넣으실때 글과 글 사이만 엔터를 쳐서 띄워주세요.
+
+글이 올라갈때 자동으로 넓게 떨어집니다
+
+줄과 줄 사이를 띄워주지 않으면 나란히 올라갑니다
+
+결과보기 새창 아래에 태그가 생성됩니다.
+
+태그를 복사하신후 해당게시판이나 메모장에 붙여넣기하시면
+
+영상시가 출력됩니다.
+
+
+
+
+
+
+
+
+
+
+
+</textarea></span></p>
+                            <p align="center">&nbsp;</p>
+      </td>
+    </tr>
+    <tr> 
+      <td height="40" width="680" align="right" bgcolor="#eff3ff" colspan="4"> 
+                            <p align="center"><font face="돋움"><span style="font-size:10pt;">주소줄에 
+                            다른곳에서 음악주소를 가져와서 넣으셔도 됩니다</span></font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td height="40" width="140" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:9pt;"><font face="바탕체">배경음악주소입력</font></span></p>
+      </td>
+      <td colspan="3" width="544"> 
+          
+                            <p><span style="font-size:9pt;">&nbsp;&nbsp;&nbsp;<input type="text" name="S_SRC" maxlength="255" size="58" value="http://www.didimmokgi.com/music/1.wma"></span>      </td>
+    </tr>
+    <tr> 
+      <td height="40" width="140" align="right" bgcolor="#eff3ff"> 
+        <p align="center"><span style="font-size:9pt;"><font face="바탕체">배경음악</font></span></p>
+      </td>
+      <td height="9" colspan="3" width="544"> 
+                            <p>&nbsp;&nbsp;<select name="S_SEM" size="1">
+                            <option value="http://www.didimmokgi.com/music/1.wma">1</option>
+                            <option value="http://www.didimmokgi.com/music/2.wma">2</option>
+                            <option value="http://www.didimmokgi.com/music/3.wma">3</option>
+                            <option value="http://www.didimmokgi.com/music/4.wma">4</option>
+                            <option value="http://www.didimmokgi.com/music/5.wma">5</option>
+                            <option selected>사용안함</option>
+                            <option value="http://www.didimmokgi.com/music/6.wma">6</option>
+                            <option value="http://www.didimmokgi.com/music/7.wma">7</option>
+                            <option value="http://www.didimmokgi.com/music/8.wma">8</option>
+                            <option value="http://www.didimmokgi.com/music/9.wma">9</option>
+                            <option value="http://www.didimmokgi.com/music/10.wma">10</option>
+                            <option value="http://www.didimmokgi.com/music/11.wma">11</option>
+                            <option value="http://www.didimmokgi.com/music/12.wma">12</option>
+                            <option value="http://www.didimmokgi.com/music/13.wma">13</option>
+                            <option value="http://www.didimmokgi.com/music/15.wma">15</option>
+                            <option value="http://www.didimmokgi.com/music/2-1.wma">2-1</option>
+                            <option value="http://www.didimmokgi.com/music/2-2.wma">2-2</option>
+                            <option value="http://www.didimmokgi.com/music/2-3.wma">2-3</option>
+                            <option value="http://www.didimmokgi.com/music/2-4.wma">2-4</option>
+                            <option value="http://www.didimmokgi.com/music/2-5.wma">2-5</option>
+                            <option value="http://www.didimmokgi.com/music/2-6.wma">2-6</option>
+                            </select> <span style="font-size:10pt;"><font color="red" face="돋움">(음악을 선택한후 음악설정하기클릭.)&nbsp;&nbsp;</font></span><input type="button" name="S_CHANG" value="음악설정하기" OnClick="na_call('sound_change()');"></p>
+      </td>
+    </tr>
+                    <tr>
+      <td height="40" width="140" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:9pt;"><font face="바탕체">미디어툴표시</font></span></p>
+      </td>
+      <td height="40" width="200"> 
+                            <p>&nbsp;&nbsp;<select name="HIDDEN" size="1">
+                            <option value="true" selected>숨기기</option>
+                            <option>보이기</option>
+                            </select></p>
+      </td>
+      <td height="40" width="140" align="right" bgcolor="#eff3ff"> 
+                            <p align="center"><span style="font-size:9pt;"><font face="바탕체">반복횟수</font></span></p>
+      </td>
+      <td height="40" width="200"> 
+                            <p align="center"><select name="LOOP" size="1">
+                            <option value="-1" selected>계속반복</option>
+                            <option value="1">한번연주</option>
+                            <option value="2">2회반복</option>
+                            <option value="3">세번반복</option>
+                            <option value="5">다섯번반복</option>
+                            <option value="10">10회반복</option>
+                            </select></p>
+      </td>
+                    </tr>
+                    <tr>
+      <td height="40" width="680" align="right" bgcolor="#fff1ff" colspan="4"> 
+                <p align="center"><input type="button" value ="결과보기" OnClick="na_call('table_submit()');"><input type="reset" value="다시입력" name="reset"></p>
+      </td>
+                    </tr>
+  </table>                
+                </td>
+        </tr>
+  </table>
+  </form>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>
+

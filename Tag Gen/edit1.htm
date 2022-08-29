@@ -1,0 +1,460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>태그 연습장 -마법사-</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<META name="keywords" content="태그, tag, html, 소스, 홈페이지제작, 태그의 모든것, 자바, 스크립트 "> 
+</head>
+
+<body text=#ff00ff vlink=#0000ff link=#0000ff leftmargin="0" marginwidth="0" topmargin="30" marginheight="30" bgcolor="white">
+
+<Script language="Javascript">
+<!--
+var body=0;
+linkvar = 0;
+function colors() {
+body=1;
+document.Form1.none.value=document.Form1.none.value + '<Body BGcolor=' + 
+document.Form1.Bgcolor.options[document.Form1.Bgcolor.selectedIndex].value + '\rTEXT=' +
+document.Form1.text.options[document.Form1.text.selectedIndex].value + '\rVlink=' + 
+document.Form1.vlink.options[document.Form1.vlink.selectedIndex].value + '\rAlink=' +
+document.Form1.alink.options[document.Form1.alink.selectedIndex].value + '\rLink=' + 
+document.Form1.links.options[document.Form1.links.selectedIndex].value + '>'
+}
+function Background(hexNumber)
+{
+	document.bgColor=hexNumber
+}
+function list(type) {
+num = prompt('How many list items', "");
+if (num != "" || null) {document.Form1.none.value=document.Form1.none.value + '<' + type+ '>\r'}
+for (i = 0; i < num; i++){
+item=prompt('please type an item',"");
+if (item != "" || null) {
+document.Form1.none.value=document.Form1.none.value + '<LI>' + item + '\r'}
+}
+document.Form1.none.value=document.Form1.none.value + '</' + type + '>\r'
+}
+function prompt2(String , msg, tags, tags2) {
+String=prompt(msg, "");
+if (String != "" || null) {document.Form1.none.value=document.Form1.none.value + tags + String + tags2 + '\r'
+}
+}
+function prompt3(String , msg, tags, tags2) {
+String=prompt(msg, "");
+if (String != "" || null) {document.Form1.none.value=document.Form1.none.value + tags + '"' + String + '"' + tags2 + '\r'
+}
+}
+function addlink() {
+var L=prompt('링크하고 싶은 URL 주소를 완전하게 써 넣으세요 . EX)http://myhome.naver.com/gandt/ ',"");
+var N=prompt('링크한 주소가 나타낼 이름을 적어 넣으세요 </a>를 같이 써 넣으시기 바랍니다 EX) 태그의 모든것 </a>',"");
+if (L || N != "" || null) {document.Form1.none.value=document.Form1.none.value + '<A HREF="' + L + '">' + N + '</A>' + '\r'
+}
+}
+function end() {
+if (body == 0) { addtag('</HTML>') }
+else { addtag('</BODY></HTML>') }
+}
+function writ() {
+f = window.open();
+f.document.write(document.Form1.none.value);
+f.document.close();
+}
+function addtag(tag) {
+document.Form1.none.value=document.Form1.none.value + tag + '\r'
+}
+function ClearText(form1) {
+        form1.editor.value="";
+        return;
+}
+function hr() {
+var size=prompt('가로선의 사이즈',"");
+if (size != "" || null) {document.Form1.none.value=document.Form1.none.value + '<HR size=' + size + '>\r'
+}
+}
+function addform() {
+if (confirm("Do you want to give this form an action and a method?")) {
+var action = prompt('what action', "");
+var method = prompt('What Method' , "");
+document.Form1.none.value = document.Form1.none.value + "<Form action=" + action + "\nMethod=" + method + ">"}
+else { document.Form1.none.value = document.Form1.none.value + "<form>" }
+}
+function addformbutt() {
+var buttname = prompt('Button Name' , "");
+var buttvalue = prompt('Buttons Label' , "");
+document.Form1.none.value = document.Form1.none.value + "<Input type=Button name=" + buttname + 
+'\rValue="' + buttvalue + '">';
+}
+function addformtext() {
+if (confirm("Are you Sure")) {
+var textname = prompt("Text name" , "");
+document.Form1.none.value = document.Form1.none.value + '<Input type = Text name=' + textname + '\nvalue=""' + '>'
+}
+else { alert("stopping Text generation"); }
+}
+function addformtextarea() {
+if (confirm("Are you sure?")) {
+var textareaname = prompt("Textarea name" , "");
+var textcols = prompt("How many Text Columns?", "");
+var textrows = prompt("How many Text Rows?" , "");
+document.Form1.none.value = document.Form1.none.value + '<Textarea name=' + textareaname + '\nCOLS="' + textcols + '"' + '\nRows="' + textrows + '"' + '></Textarea>'
+}
+else { alert("Stopping Textarea") }
+}
+function addformselect() {
+if (confirm("Are you sure")) {
+var selectname = prompt('What is the name of the select?' , "");
+document.Form1.none.value = document.Form1.none.value + '<Select name=' + selectname + '>\n'
+var selectobjs = prompt('How many select box items?', "");
+for (s = 0; s < selectobjs; s++) {
+var selitems = prompt('Please type an item' , "");
+document.Form1.none.value = document.Form1.none.value + '<Option>' + selitems + '\n'
+}
+} else { alert("process stopped") }
+document.Form1.none.value = document.Form1.none.value + '</select>'
+}
+function addformcheck() {
+if (confirm("Are you sure")) {
+var checkname = prompt('Check Box Name' , "");
+document.Form1.none.value = document.Form1.none.value + 
+'<INPUT TYPE=checkbox name=' + checkname + '>' 
+}else { alert("Process stopped"); }
+}
+function addformradio() {
+if (confirm("Are you sure")) {
+var radioname = prompt('What is the name of your radio button??' , "");
+document.Form1.none.value = document.Form1.none.value + '<INPUT TYPE=radio name=' + radioname + '>'
+}
+}
+//-->
+</script>
+<script>
+function addurl(){
+  var ress=window.prompt("보고싶은 HTML 페이지 URL 을 적으세요.");
+  window.location="view-source:"+ress;
+}
+</script><FORM name=Form1>
+
+<table  cellspacing="0" cellpadding="0" width="700" bordercolordark="white" bordercolorlight="black" align="center">
+<tr>
+<td valign="center" width="150" bgcolor="#CCCCFF"> 
+<p>&nbsp;<p>
+<Input type=button value="문서작성<title>" onclick="prompt2('a', '여러분의 홈페이지 타이틀을 적으세요 </title></head>가 나타나지 않으면 같이 써넣으시기 바랍니다.' , '<HTML><Head><Title>', '</Title></Head>')" style="WIDTH: 162px; HEIGHT: 25px" size=19><br><SELECT NAME="Bgcolor" onChange="Background(this.form.Bgcolor.options[this.form.Bgcolor.selectedIndex].value)" style="WIDTH: 150px; HEIGHT: 25px">
+<OPTION SELECTED VALUE="#002261">bgcolor
+<OPTION VALUE="#000000">Black
+<OPTION VALUE="#FFFFFF">White
+<OPTION VALUE="#0000FF">Blue
+<OPTION VALUE="#FF0000">Red
+<OPTION VALUE="#00FF00">Green
+<OPTION VALUE="#FFD700">Gold
+<OPTION VALUE="#696969">Darkgrey
+<OPTION VALUE="#D2691C">Light Brown
+<OPTION VALUE="#000080">Navy
+<OPTION VALUE="#461E50">Purple
+<OPTION VALUE="#FFDAB9">Peach
+<OPTION VALUE="#FFFAF0">Off White
+<OPTION VALUE="#FFE4B5">darker peach
+<OPTION VALUE="#6614AA">Dark Purple
+<OPTION VALUE="#B0C4DE">Light blue
+<OPTION VALUE="#FFA07A">Salmon
+<OPTION VALUE="#FF14458">kinda hot pink
+<OPTION VALUE="#F5DEB3">More Off White
+<OPTION VALUE="#A0522D">Sienna
+<OPTION VALUE="#EEEAAA">Grean Beige
+<OPTION VALUE="#FFDEAD">Brownish off white
+<OPTION VALUE="#8B0000">Dark red
+<OPTION VALUE="#1E90FE">Sky Blue
+<OPTION VALUE="#9932144">pinkish red
+<OPTION VALUE="#FF8C00">Dark orange
+<OPTION VALUE="#5F9EA0">Greenich Grey
+<OPTION VALUE="#00FFFF">Aqua
+<OPTION VALUE="#B4EE69">Green
+<OPTION VALUE="#7F80D3">Lavander
+<OPTION VALUE="#FFFF00">Yellow
+<OPTION VALUE="#008080">Teal
+<OPTION VALUE="#FFFAFA">Barely off white
+<OPTION VALUE="#BC2B2B">Brownish Red
+<OPTION VALUE="#B0E01E">Ugly Green
+<OPTION VALUE="#BF7AB8">Light purple
+<OPTION VALUE="#69A920">Olive
+<OPTION VALUE="#505050">Very Dark grey
+<OPTION VALUE="#4B001E">Indiglo
+<OPTION VALUE="#145C5C">Nice Green
+<OPTION VALUE="#191970">midnight blue
+<OPTION VALUE="#A052FF">Bright puple
+<OPTION VALUE="#FFA500">Orange
+<OPTION VALUE="#00bFff">Baby Blue
+<OPTION VALUE="#7FFF00">Bright obnoxious green
+<OPTION VALUE="#B22222">Brick
+<OPTION VALUE="#DCDCDC">Light grey
+<OPTION VALUE="#FF1493">Hot Pink
+<OPTION VALUE="#9400D3">Pure purple
+<OPTION VALUE="#0014149">kinda nice blue
+<OPTION VALUE="#2BBC2B">sea green
+</SELECT><br>
+
+<SELECT NAME="links" style="WIDTH: 150px; HEIGHT: 25px">
+<OPTION SELECTED VALUE=" ">link
+<OPTION VALUE="#000000">Black
+<OPTION VALUE="#FFFFFF">White
+<OPTION VALUE="#0000FF">Blue
+<OPTION VALUE="#FF0000">Red
+<OPTION VALUE="#00FF00">Green
+<OPTION VALUE="#FFD700">Gold
+<OPTION VALUE="#696969">Darkgrey
+<OPTION VALUE="#D2691C">Light Brown
+<OPTION VALUE="#000080">Navy
+<OPTION VALUE="#461E50">Purple
+<OPTION VALUE="#FFDAB9">Peach
+<OPTION VALUE="#FFFAF0">Off White
+<OPTION VALUE="#FFE4B5">darker peach
+<OPTION VALUE="#6614AA">Dark Purple
+<OPTION VALUE="#B0C4DE">Light blue
+<OPTION VALUE="#FFA07A">Salmon
+<OPTION VALUE="#FF14458">kinda hot pink
+<OPTION VALUE="#F5DEB3">More Off White
+<OPTION VALUE="#A0522D">Sienna
+<OPTION VALUE="#EEEAAA">Grean Beige
+<OPTION VALUE="#FFDEAD">Brownish off white
+<OPTION VALUE="#8B0000">Dark red
+<OPTION VALUE="#1E90FE">Sky Blue
+<OPTION VALUE="#9932144">pinkish red
+<OPTION VALUE="#FF8C00">Dark orange
+<OPTION VALUE="#5F9EA0">Greenich Grey
+<OPTION VALUE="#00FFFF">Aqua
+<OPTION VALUE="#B4EE69">Green
+<OPTION VALUE="#7F80D3">Lavander
+<OPTION VALUE="#FFFF00">Yellow
+<OPTION VALUE="#008080">Teal
+<OPTION VALUE="#FFFAFA">Barely off white
+<OPTION VALUE="#BC2B2B">Brownish Red
+<OPTION VALUE="#B0E01E">Ugly Green
+<OPTION VALUE="#BF7AB8">Light purple
+<OPTION VALUE="#69A920">Olive
+<OPTION VALUE="#505050">Very Dark grey
+<OPTION VALUE="#4B001E">Indiglo
+<OPTION VALUE="#145C5C">Nice Green
+<OPTION VALUE="#191970">midnight blue
+<OPTION VALUE="#A052FF">Bright puple
+<OPTION VALUE="#FFA500">Orange
+<OPTION VALUE="#00bFff">Baby Blue
+<OPTION VALUE="#7FFF00">Bright obnoxious green
+<OPTION VALUE="#B22222">Brick
+<OPTION VALUE="#DCDCDC">Light grey
+<OPTION VALUE="#FF1493">Hot Pink
+<OPTION VALUE="#9400D3">Pure purple
+<OPTION VALUE="#0014149">kinda nice blue
+<OPTION VALUE="#2BBC2B">sea green
+</SELECT><br>
+
+<SELECT NAME="alink" style="WIDTH: 150px; HEIGHT: 25px">
+<OPTION SELECTED VALUE=" ">alink
+<OPTION VALUE="#000000">Black
+<OPTION VALUE="#FFFFFF">White
+<OPTION VALUE="#0000FF">Blue
+<OPTION VALUE="#FF0000">Red
+<OPTION VALUE="#00FF00">Green
+<OPTION VALUE="#FFD700">Gold
+<OPTION VALUE="#696969">Darkgrey
+<OPTION VALUE="#D2691C">Light Brown
+<OPTION VALUE="#000080">Navy
+<OPTION VALUE="#461E50">Purple
+<OPTION VALUE="#FFDAB9">Peach
+<OPTION VALUE="#FFFAF0">Off White
+<OPTION VALUE="#FFE4B5">darker peach
+<OPTION VALUE="#6614AA">Dark Purple
+<OPTION VALUE="#B0C4DE">Light blue
+<OPTION VALUE="#FFA07A">Salmon
+<OPTION VALUE="#FF14458">kinda hot pink
+<OPTION VALUE="#F5DEB3">More Off White
+<OPTION VALUE="#A0522D">Sienna
+<OPTION VALUE="#EEEAAA">Grean Beige
+<OPTION VALUE="#FFDEAD">Brownish off white
+<OPTION VALUE="#8B0000">Dark red
+<OPTION VALUE="#1E90FE">Sky Blue
+<OPTION VALUE="#9932144">pinkish red
+<OPTION VALUE="#FF8C00">Dark orange
+<OPTION VALUE="#5F9EA0">Greenich Grey
+<OPTION VALUE="#00FFFF">Aqua
+<OPTION VALUE="#B4EE69">Green
+<OPTION VALUE="#7F80D3">Lavander
+<OPTION VALUE="#FFFF00">Yellow
+<OPTION VALUE="#008080">Teal
+<OPTION VALUE="#FFFAFA">Barely off white
+<OPTION VALUE="#BC2B2B">Brownish Red
+<OPTION VALUE="#B0E01E">Ugly Green
+<OPTION VALUE="#BF7AB8">Light purple
+<OPTION VALUE="#69A920">Olive
+<OPTION VALUE="#505050">Very Dark grey
+<OPTION VALUE="#4B001E">Indiglo
+<OPTION VALUE="#145C5C">Nice Green
+<OPTION VALUE="#191970">midnight blue
+<OPTION VALUE="#A052FF">Bright puple
+<OPTION VALUE="#FFA500">Orange
+<OPTION VALUE="#00bFff">Baby Blue
+<OPTION VALUE="#7FFF00">Bright obnoxious green
+<OPTION VALUE="#B22222">Brick
+<OPTION VALUE="#DCDCDC">Light grey
+<OPTION VALUE="#FF1493">Hot Pink
+<OPTION VALUE="#9400D3">Pure purple
+<OPTION VALUE="#0014149">kinda nice blue
+<OPTION VALUE="#2BBC2B">sea green
+</SELECT><br>
+
+<SELECT NAME="text" style="WIDTH: 150px; HEIGHT: 25px">
+<OPTION SELECTED VALUE=" ">text
+<OPTION VALUE="#000000">Black
+<OPTION VALUE="#FFFFFF">White
+<OPTION VALUE="#0000FF">Blue
+<OPTION VALUE="#FF0000">Red
+<OPTION VALUE="#00FF00">Green
+<OPTION VALUE="#FFD700">Gold
+<OPTION VALUE="#696969">Darkgrey
+<OPTION VALUE="#D2691C">Light Brown
+<OPTION VALUE="#000080">Navy
+<OPTION VALUE="#461E50">Purple
+<OPTION VALUE="#FFDAB9">Peach
+<OPTION VALUE="#FFFAF0">Off White
+<OPTION VALUE="#FFE4B5">darker peach
+<OPTION VALUE="#6614AA">Dark Purple
+<OPTION VALUE="#B0C4DE">Light blue
+<OPTION VALUE="#FFA07A">Salmon
+<OPTION VALUE="#FF14458">kinda hot pink
+<OPTION VALUE="#F5DEB3">More Off White
+<OPTION VALUE="#A0522D">Sienna
+<OPTION VALUE="#EEEAAA">Grean Beige
+<OPTION VALUE="#FFDEAD">Brownish off white
+<OPTION VALUE="#8B0000">Dark red
+<OPTION VALUE="#1E90FE">Sky Blue
+<OPTION VALUE="#9932144">pinkish red
+<OPTION VALUE="#FF8C00">Dark orange
+<OPTION VALUE="#5F9EA0">Greenich Grey
+<OPTION VALUE="#00FFFF">Aqua
+<OPTION VALUE="#B4EE69">Green
+<OPTION VALUE="#7F80D3">Lavander
+<OPTION VALUE="#FFFF00">Yellow
+<OPTION VALUE="#008080">Teal
+<OPTION VALUE="#FFFAFA">Barely off white
+<OPTION VALUE="#BC2B2B">Brownish Red
+<OPTION VALUE="#B0E01E">Ugly Green
+<OPTION VALUE="#BF7AB8">Light purple
+<OPTION VALUE="#69A920">Olive
+<OPTION VALUE="#505050">Very Dark grey
+<OPTION VALUE="#4B001E">Indiglo
+<OPTION VALUE="#145C5C">Nice Green
+<OPTION VALUE="#191970">midnight blue
+<OPTION VALUE="#A052FF">Bright puple
+<OPTION VALUE="#FFA500">Orange
+<OPTION VALUE="#00bFff">Baby Blue
+<OPTION VALUE="#7FFF00">Bright obnoxious green
+<OPTION VALUE="#B22222">Brick
+<OPTION VALUE="#DCDCDC">Light grey
+<OPTION VALUE="#FF1493">Hot Pink
+<OPTION VALUE="#9400D3">Pure purple
+<OPTION VALUE="#0014149">kinda nice blue
+<OPTION VALUE="#2BBC2B">sea green
+</SELECT><br>
+
+<SELECT NAME="vlink" style="WIDTH: 150px; HEIGHT: 25px">
+<OPTION SELECTED VALUE=" ">vlink
+<OPTION VALUE="#000000">Black
+<OPTION VALUE="#FFFFFF">White
+<OPTION VALUE="#0000FF">Blue
+<OPTION VALUE="#FF0000">Red
+<OPTION VALUE="#00FF00">Green
+<OPTION VALUE="#FFD700">Gold
+<OPTION VALUE="#696969">Darkgrey
+<OPTION VALUE="#D2691C">Light Brown
+<OPTION VALUE="#000080">Navy
+<OPTION VALUE="#461E50">Purple
+<OPTION VALUE="#FFDAB9">Peach
+<OPTION VALUE="#FFFAF0">Off White
+<OPTION VALUE="#FFE4B5">darker peach
+<OPTION VALUE="#6614AA">Dark Purple
+<OPTION VALUE="#B0C4DE">Light blue
+<OPTION VALUE="#FFA07A">Salmon
+<OPTION VALUE="#FF14458">kinda hot pink
+<OPTION VALUE="#F5DEB3">More Off White
+<OPTION VALUE="#A0522D">Sienna
+<OPTION VALUE="#EEEAAA">Grean Beige
+<OPTION VALUE="#FFDEAD">Brownish off white
+<OPTION VALUE="#8B0000">Dark red
+<OPTION VALUE="#1E90FE">Sky Blue
+<OPTION VALUE="#9932144">pinkish red
+<OPTION VALUE="#FF8C00">Dark orange
+<OPTION VALUE="#5F9EA0">Greenich Grey
+<OPTION VALUE="#00FFFF">Aqua
+<OPTION VALUE="#B4EE69">Green
+<OPTION VALUE="#7F80D3">Lavander
+<OPTION VALUE="#FFFF00">Yellow
+<OPTION VALUE="#008080">Teal
+<OPTION VALUE="#FFFAFA">Barely off white
+<OPTION VALUE="#BC2B2B">Brownish Red
+<OPTION VALUE="#B0E01E">Ugly Green
+<OPTION VALUE="#BF7AB8">Light purple
+<OPTION VALUE="#69A920">Olive
+<OPTION VALUE="#505050">Very Dark grey
+<OPTION VALUE="#4B001E">Indiglo
+<OPTION VALUE="#145C5C">Nice Green
+<OPTION VALUE="#191970">midnight blue
+<OPTION VALUE="#A052FF">Bright puple
+<OPTION VALUE="#FFA500">Orange
+<OPTION VALUE="#00bFff">Baby Blue
+<OPTION VALUE="#7FFF00">Bright obnoxious green
+<OPTION VALUE="#B22222">Brick
+<OPTION VALUE="#DCDCDC">Light grey
+<OPTION VALUE="#FF1493">Hot Pink
+<OPTION VALUE="#9400D3">Pure purple
+<OPTION VALUE="#0014149">kinda nice blue
+<OPTION VALUE="#2BBC2B">sea green
+</SELECT><br>
+
+<Input type=button value="색상 선택 후 확인" onclick="colors()" style="WIDTH: 162px; HEIGHT: 25px" size=19><br>
+
+<input type=button name=none5 Value="<Center>" onclick="addtag('<Center>')" style="WIDTH: 162px; HEIGHT: 25px" size=19><br>
+<input type=button name=none6 Value="</Center>" onclick="addtag('</Center>')" style="WIDTH: 162px; HEIGHT: 25px" size=19><br>
+<input type=button name=none2 value="<a href=url>" onclick="addlink()" style="WIDTH: 162px; HEIGHT: 25px" size=19><br>
+<input type=button name=none4 value="<img src=url>" onclick="prompt3('Imag', '이미지가 저장되어 있는 주소나 폴더를 입력하세요 EX)image/title.jpg  http:www.~.~/image/title.jpg', '<Img SRC=', '>' )" style="WIDTH: 162px; HEIGHT: 25px" size=19><br>
+<input type=button name=HR value="가 로 선" onclick="hr()" style="WIDTH: 162px; HEIGHT: 25px" size=19><br>
+<input type=button name=BR value="<BR>" onclick="addtag('<BR>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><input type=button name=P value="<p>" onclick="addtag('<P>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><br>
+<input type=button name=Pre value="<PRE>" onclick="addtag('<Pre>pre formatted text goes here</pre>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><input type=button name=norm value="<text>" onclick="prompt2('text', '글자를 입력하세요', '', '')" style="WIDTH: 75px; HEIGHT: 25px" size=19><br>
+<Input type=button name=Nlist value="<OL>" onclick="list('OL')" style="WIDTH: 75px; HEIGHT: 25px" size=19><input type=button name=unNlist value="<UL>" onclick="list('UL')" style="WIDTH: 75px; HEIGHT: 25px" size=19><br>
+<input type=button name=ital value="<I>" onclick="prompt2('ital', '글자를 입력하세요', '<I>', '</I>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><input type=button name=bold value="<B>" onclick="prompt2('bold', '글자를 입력하세요', '<B>', '</B>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><br>
+<input type=button value="<H1>" onclick="prompt2('one', '글자를 입력하세요', '<H1>', '</H1>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><input type=button value="<H2>" onclick="prompt2('two', '글자를 입력하세요', '<H2>', '</H2>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><br>
+<input type=button value="<H3>" onclick="prompt2('three', '글자를 입력하세요', '<H3>', '</H3>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><input type=button value="<H4>" onclick="prompt2('four', '글자를 입력하세요', '<H4>', '</H4>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><br>
+<input type=button value="<H5>" onclick="prompt2('five', '글자를 입력하세요', '<H5>', '</H5>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><input type=button value="<H6>" onclick="prompt2('six', '글자를 입력하세요', '<H6>', '</H6>')" style="WIDTH: 75px; HEIGHT: 25px" size=19><br>
+<INPUT TYPE=button name=none3 value="문서작성</title>" onclick="end('</BODY></HTML>')" style="WIDTH: 162px; HEIGHT: 25px" size=19>
+                <p>&nbsp;</p>
+</td>
+            <th width="550" nowrap bgcolor="#99CC00">
+                <p align="center">&nbsp;</p>
+                <p align="center"><font face="돋움" color="blue"><span style="font-size:18pt;"><b><img src="img.gif" width="354" height="40" border="0"></b></span></font></p>
+                <p align="center">&nbsp;</p>
+                <p align="center"><input type="button" name=none4 value="미리보기" onclick="writ()">
+<INPUT TYPE="Reset" NAME="     Restart    " VALUE="모두삭제">
+<INPUT TYPE="button" NAME="     Usage    " VALUE="사용법" onClick="{
+alert('1. 문서작성<title> 버튼을 누른 후 타이틀을 화면에 출력 하세요..!!');
+alert('2. 각각의 칼라를 선택 하신 후 색상확인을 눌러 색상을 화면에 출력 하세요..!!');
+alert('3. 각각의 태그 소스를 넣으세요..!!');
+alert('4. 문서작성</title> 버튼을 눌러 작성을 마치고 봅시다를 누르시면 됩니다..!!');
+alert('5. 간단하죠. 바로 연습해 보세요..!!');
+alert('6. 많은 도움이 되시길..!!')}">
+<INPUT TYPE="button" NAME="  " VALUE="기본형" onClick="window.open('http://fallen58.okjys.net/html/edit.html')">
+<INPUT TYPE="button" NAME="  " VALUE="웹 불러오기" onClick="addurl()"></p>
+<center>
+
+
+<p>
+
+
+<TEXTAREA Name=none COLS="58" ROWS="18"></TEXTAREA></center>
+
+                <p align="center">&nbsp;</p>
+                <p align="center">&nbsp;</p>
+</FORM>
+
+        </th>
+</tr> 
+</body>
+</html>
+    </table>
