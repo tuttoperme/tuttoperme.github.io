@@ -1,150 +1,2313 @@
-<?php
-/*
-    Yopp is a very fast way to transfer a file from phone to computer and vice versa.
-
-    author:   Joseph Ernest (twitter: @JosephErnest)
-    url:      https://github.com/josephernest/yopp
-    license:  MIT license
-*/
-
-$maxsize = 50*1024*1024;       // 50 MB
-$thefiledata = 'thefiledata';  // file which contains the data
-$thefilename = 'thefilename';  // file which contains only the filename
-$thetextfile = 'thetextfile';  // file which text from the input
-$autoeraseafterdownload = 1;   // delete file after a download
-$savetexttimeout = 300;   // debounce milliseconds for text saving
-
-if (isset($_POST['type']) && $_POST['type'] === 'text')
-{
-    file_put_contents($thetextfile, $_POST['data']);
-    die('DONE');
-}
-
-if (isset($_POST['type']) && $_POST['type'] === 'upload')
-{
-    if (empty($_FILES['data']['tmp_name'])) { die('ERROR'); }          // no file sent
-    if (!empty($_POST['email'])) { die('ERROR'); }                     // spam honeypot
-    if ($_POST['fname'] !== $_FILES['data']['name']) { die('ERROR'); } // someone wants to cheat?
-    if ($_FILES['data']['size'] > $maxsize) { die('TOO BIG!'); }       // too big file
-
-    $localfname = $_POST['fname'];
-
-    $data = file_get_contents($_FILES['data']['tmp_name']);
-
-    $file = fopen($thefiledata, 'wb');
-    fwrite($file, $data);
-    fclose($file);
-
-    $filename = fopen($thefilename, 'wb');
-    fwrite($filename, $localfname);
-    fclose($filename);
-
-    die('DONE');
-}
-
-if (isset($_GET['type']) && $_GET['type'] === 'download')
-{
-    if (!file_exists($thefiledata) || !file_exists($thefilename))
-    {
-        echo '<html><head><meta content="width=device-width, initial-scale=1.0" name="viewport"><style type="text/css">*{color:white;font-family:sans-serif;padding:0;margin:0;cursor:pointer;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}body{width:100%;top:0;position:absolute;background-color:#f90;height:100%;left:0}a{position:absolute;top:0;height:100%;text-align:center;width:100%;text-decoration:none;display:block}a div{position:relative;top:45%;height:auto;text-align:center;width:100%;font-size:2.5em;text-decoration:none}a span{font-size:70%}</style><title></title></head><body> <a href="./"><div>NO FILE UPLOADED YET<br /><span>CLICK TO RELOAD</span></div></a></body></html>';
-        exit;
-    }
-    $fname = file_get_contents($thefilename);
-    header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="' . $fname . '"');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate');
-    header('Pragma: public');
-    header('Content-Length: ' . filesize($thefiledata));
-    readfile($thefiledata);
-
-    if ($autoeraseafterdownload)
-    {
-        unlink($thefiledata);
-        unlink($thefilename);
-    }
-    exit;
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset=utf-8>
-<meta name="viewport" content="width=device-width, initial-scale=0.41, maximum-scale=1" />
-<title>Yopp</title>
-<style type="text/css">
-* { color: white; font-family: sans-serif;  padding: 0; margin: 0; cursor: pointer; -webkit-touch-callout: none; box-sizing: border-box; }
-#upload { width: 100%; top: 0; position: absolute; background-color: #f44242; height: 33.3%; }
-#download { width: 100%; top: 33.3%; position: absolute; background-color: #42a1f4; height: 33.3%; left: 0; }
-#text { border: 0; top: 66.6%; width: 100%; height: 33.3%; position: absolute; background-color: #eee; color: black; font-size: 3em; text-align: center; padding-top: 13vh; }
-.text { position: absolute; top: 40%; text-align: center; width: 100%; font-size: 3em; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-#email_addr { display:none; }
-#file { display:none; }
-</style>
+<title>즐겨찾기</title>
 </head>
-<body>
-<input type='file' id='file' />
-<div id="upload"><div class="text" id="uploadtext">UPLOAD</div></div>
-
-<?php $text = file_exists($thetextfile) ? file_get_contents($thetextfile) : ''; ?>
-<textarea type="text" id="text" placeholder="TEXT"><?php echo $text; ?></textarea>
-
-<a href="index.php?type=download" id="download"><div class="text">DOWNLOAD</div></a>
-<input id="email_addr" name="email" size="25" value="" autocomplete="off" />
-<script>
-var saveTextTimeout;
-var upload = document.getElementById('upload');
-var uploadtext = document.getElementById('uploadtext');
-var fileelt = document.getElementById('file');
-var text = document.getElementById('text');
-
-var previousTextValue = text.value;
-
-upload.onclick = function() { fileelt.click(); };
-
-function readfiles(files) {
-    if (files[0].size > <?php echo $maxsize; ?>) { uploadtext.innerHTML = 'TOO BIG!'; return; }
-    var formData = new FormData();
-    formData.append('type', 'upload');
-    formData.append('fname', files[0].name);
-    formData.append('data', files[0]);
-    formData.append('email', document.getElementById('email_addr').value);
-    uploadtext.innerHTML = 'BEGINNING UPLOAD';
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '.');
-    xhr.onload = function() { uploadtext.innerHTML =  xhr.responseText; };
-    xhr.upload.onprogress = function(event) {
-        if (event.lengthComputable) {
-            var complete = (event.loaded / event.total * 100 | 0);
-            uploadtext.innerHTML = 'UPLOADING<br>PROGRESS '+ complete + '%';
-        }
-    };
-    xhr.send(formData);
-}
-
-function savetext(text) {
-    var request = new XMLHttpRequest();
-    request.open('POST', 'index.php', true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.send('type=text&data=' + text);
-}
-
-function updatetext(event) {
-    if (previousTextValue === text.value) return;
-    clearTimeout(saveTextTimeout);
-    saveTextTimeout = setTimeout(function() {
-        previousTextValue = text.value;
-        savetext(text.value);
-    }, <?php echo $savetexttimeout; ?>);
-}
-
-document.body.ondragover = function() { uploadtext.innerHTML = 'DROP YOUR FILE HERE'; return false; };
-document.body.ondrop = function(e) { e.preventDefault();  readfiles(e.dataTransfer.files); };
-
-fileelt.addEventListener("change", function() { readfiles(fileelt.files); })
-text.addEventListener("keyup", updatetext);
-text.addEventListener("change", updatetext);
-</script>
+ 
+<body style="color: rgb(0, 0, 0); background-color: rgb(0, 0, 0);"
+ alink="#000099" link="#000099" vlink="#990099">
+<table style="background-color: rgb(0, 0, 0); font-weight: bold;"
+ class="cke_show_border" align="center" bgcolor="#666666"
+ bordercolor="#666666" width="1132">
+  <tbody>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ href="https://www.msn.com/ko-kr" target="_blank"
+ class="c_hlp c_nootl" data-cke-pa-onclick="this.click()"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">MSN</font></span></a><span
+ class="c_hlp c_nootl"><span style="color: white;"><font
+ color="white" face="Arial" size="2">
+&nbsp; </font></span></span><a
+ data-cke-saved-href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ target="_blank" class="c_hlp c_nootl"
+ data-cke-pa-onclick="this.click()"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">Windows </font></span>
+      </a><a
+ data-cke-saved-href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ target="_blank" data-cke-pa-onclick="this.click()"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">onedrive</font></span></a><a
+ data-cke-saved-href="http://pappino.blogspot.com/"
+ href="http://pappino.blogspot.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: red;"></span></font></a>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.mediafire.com/"
+ href="http://www.mediafire.com/" target="_blank"><span
+ style="color: yellow;"><font color="lime"
+ face="Arial" size="2">MediaFire(파일공유)</font></span></a><span
+ style="color: yellow;"><font color="lime"
+ face="Arial" size="2">&nbsp;&nbsp;&nbsp;&nbsp;</font></span><a
+ href="https://file.kiwi/" target="_blank"><span
+ style="color: yellow;"><font color="lime"
+ face="Arial" size="2">파일키위</font></span></a>
+      </td>
+      <td
+ style="width: 224px; color: rgb(255, 255, 255); background-color: rgb(0, 0, 0);"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <small><a
+ href="https://chrome.google.com/webstore/category/extensions"
+ target="_blank"><span style="color: rgb(255, 255, 0);">웹스토어</span></a></small><br>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="http://speller.cs.pusan.ac.kr/" target="_blank"><font
+ color="white" face="Arial" size="2">한국어맞춤법/문법검사기</font></a> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <span style="color: rgb(0, 176, 80);"><a
+ data-cke-saved-href="https://dhlottery.co.kr/gameResult.do?method=win520"
+ href="https://www.dhlottery.co.kr/lt645/result" target="_blank"><font
+ color="yellow" face="Arial" size="2">로또</font></a></span><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: rgb(0, 176, 80);">&nbsp;&nbsp;</span></font><span
+ style="color: rgb(0, 176, 80);"><a
+ href="https://www.dhlottery.co.kr/pt720/result" target="_blank"><font
+ color="yellow" face="Arial" size="2">연금</font></a></span><span
+ style="color: rgb(0, 176, 80);"><font color="yellow"
+ face="Arial" size="2"> &nbsp;&nbsp;</font></span></td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://keep.google.com/"
+ href="https://keep.google.com/" target="_blank"><font></font></a><font><a
+ data-cke-saved-href="https://wallpapers.microsoft.design/"
+ href="https://wallpapers.microsoft.design/" target="_blank"><font
+ face="Arial" size="2"><span
+ style="color: rgb(0, 176, 240);">마소배경화면</span></font></a></font><a
+ data-cke-saved-href="http://www.memonotepad.com/"
+ href="http://www.memonotepad.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: red;"></span></font></a>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://www.last.fm/login"
+ href="https://www.last.fm/login" target="_blank"><span
+ style="color: yellow;"><font color="lime"
+ face="Arial" size="2">last.fm
+radio</font></span></a><span style="color: yellow;"><font
+ color="lime" face="Arial" size="2">&nbsp;&nbsp;&nbsp;&nbsp;</font></span><a
+ href="https://file.pizza" target="_blank"><font
+ color="lime" face="Arial" size="2">파일공유
+[file.pizza]</font></a> </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://windowsforum.kr/"
+ href="http://windowsforum.kr/" target="_blank"><font
+ face="Arial" size="2"><span style="color: white;">윈도우관련(윈도우포럼)</span></font></a> </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.zonmal.com/"
+ href="http://www.zonmal.com/" target="_blank"><span
+ style="color: aqua;"><font color="white"
+ face="Arial" size="2">한자사전</font></span></a><span
+ style="color: lime;"><font color="white"
+ face="Arial" size="2">&nbsp;&nbsp;&nbsp;&nbsp;</font></span><a
+ data-cke-saved-href="http://www.hanja.pe.kr/"
+ href="http://www.hanja.pe.kr/" target="_blank"><span
+ style="color: lime;"><font color="white"
+ face="Arial" size="2">한자여행</font></span></a><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">&nbsp;&nbsp;&nbsp;&nbsp;</font></span><a
+ data-cke-saved-href="http://cybergosa.net/"
+ href="http://cybergosa.net/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">고사성어</font></span></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://huyang.forest.go.kr/kfsweb/kfs/subIdx/Index.do?mn=HUYG"
+ href="https://huyang.forest.go.kr/kfsweb/kfs/subIdx/Index.do?mn=HUYG"
+ target="_blank"><span style="color: white;"><font
+ color="#92d050" face="Arial" size="2">국립자연휴양림관리소</font></span></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://www.neowin.net/software/"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">neowin</font></a><font
+ color="#ffc000" face="Arial" size="2">
+&nbsp; </font><a href="https://crackzero.com/"
+ target="_blank"><font color="#ffc000" face="Arial"
+ size="2">crackzero</font></a><font color="red"
+ face="Arial" size="2"> &nbsp;</font><a
+ data-cke-saved-href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ target="_blank" data-cke-pa-onclick="this.click()"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"></font></span></a>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.datafilehost.com/"
+ href="http://www.datafilehost.com/" target="_blank"><span
+ style="color: yellow;"><font color="lime"
+ face="Arial" size="2">DataFileHost(파일공유)</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <font><font><a
+ data-cke-saved-href="http://pyj0526.dothome.co.kr/googlewebdesigner_win.exe"
+ href="../googlewebdesigner_win.exe" target="_blank"><span
+ style="color: yellow;"><font color="white"
+ face="Arial" size="2">google
+web designer</font></span></a></font></font>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://hanja.dict.naver.com/#/main"
+ target="_blank"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><font
+ color="white" face="Arial" size="2">한자필기검색</font></span></a><span
+ style="font-family: Arial,Helvetica,sans-serif;"><font
+ color="white" face="Arial" size="2">&nbsp;&nbsp;&nbsp;&nbsp;</font></span><a
+ style="color: rgb(255, 0, 0);"
+ href="https://talktyper.com/%20%20" target="_blank"><font
+ face="Arial" size="2">음성타이핑</font></a> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 255, 0);"
+ href="https://www.freeconvert.com/ko/mp3-compressor"
+ target="_blank"><small>MP3압축</small></a><span
+ style="color: rgb(255, 255, 0);"><small> &nbsp;
+&nbsp;</small></span> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://pyj0526.dothome.co.kr/googlewebdesigner_win.exe"
+ href="../googlewebdesigner_win.exe" target="_blank"><font><font></font></font></a><font><font><a
+ href="https://karancrack.com/category/portable-apps/"
+ target="_blank"><font color="red" face="Arial"
+ size="2">karancrack</font></a></font></font>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://nofile.io/"
+ href="https://nofile.io/" target="_blank"><span
+ style="color: white;"><font color="lime"
+ face="Arial" size="2">nofile.io[파일공유]</font></span></a><span
+ style="color: white;"></span><span
+ style="color: white;"><font color="lime"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://ba.net/screen"
+ href="https://ba.net/screen" target="_blank"><span
+ style="color: white;"><font color="lime"
+ face="Arial" size="2">스크린공유</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://wepplication.github.io/"
+ href="https://wepplication.github.io/" target="_blank"><font
+ color="aqua" face="Arial" size="2"><span
+ style="color: yellow;">Wepplication</span></font></a><font
+ color="aqua" face="Arial" size="2"><span
+ style="color: yellow;"></span></font><font
+ color="aqua" face="Arial" size="2"><span
+ style="color: yellow;"> &nbsp; </span></font><a
+ data-cke-saved-href="https://wepplication.github.io/"
+ href="https://github.com/wepplication" target="_blank"><font
+ color="aqua" face="Arial" size="2"><span
+ style="color: yellow;">github</span></font></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(51, 255, 51);"
+ data-cke-saved-href="http://www.midomi.com/"
+ href="http://www.midomi.com/" target="_blank"><font
+ face="Arial" size="2">소리로음악검색</font></a><span
+ style="color: rgb(0, 176, 240);"></span><span
+ style="font-family: Arial,Helvetica,sans-serif;"><font
+ color="white" face="Arial" size="2">
+&nbsp; </font></span><a
+ style="color: rgb(51, 204, 255);" href="https://faxzero.com"
+ target="_blank"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><font
+ face="Arial" size="2">Free Fax</font></span></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.youtube.co.kr/"
+ href="https://www.youtube.com/" target="_blank"><span
+ style="color: red;"><font color="red" face="Arial"
+ size="2">YOUTUBE</font></span></a><span
+ style="color: white;"></span><span
+ style="color: white;"><font color="red"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://www.nsfwyoutube.com/"
+ href="http://www.nsfwyoutube.com/" target="_blank"><span
+ style="color: white;"><font color="red"
+ face="Arial" size="2">nsfw</font></span></a><span
+ style="color: white;"></span><span
+ style="color: white;"><font color="red"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://www.youtube.com/user/pyj0526"
+ href="https://www.youtube.com/user/pyj0526" target="_blank"><span
+ style="color: white;"><font color="red"
+ face="Arial" size="2">내채널</font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ href="https://www.msn.com/ko-kr" target="_blank"
+ class="c_hlp c_nootl" data-cke-pa-onclick="this.click()"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"><br>
+      </font></span></a><a
+ data-cke-saved-href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1426460008&amp;rver=6.4.6456.0&amp;wp=MBI_SSL_SHARED&amp;wreply=https:%2F%2Fonedrive.live.com%3Fgologin%3D1%26mkt%3Dko-KR&amp;lc=1042&amp;id=250206&amp;cbcxt=sky&amp;mkt=ko-KR&amp;username=yj_park_0526@hotmail.com"
+ target="_blank" data-cke-pa-onclick="this.click()"><span
+ style="color: white;"></span></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://tmpstorage.com/"
+ href="https://tmpstorage.com/" target="_blank"><span
+ style="color: rgb(229, 185, 183);"><font color="lime"
+ face="Arial" size="2">임시저장소</font></span></a><span
+ style="color: rgb(229, 185, 183);"></span><span
+ style="color: rgb(151, 253, 3);"></span><span
+ style="color: white;"><font color="lime"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://sendycloud.com/cloud/mydrive/"
+ href="https://sendycloud.com/cloud/mydrive/" target="_blank"><span
+ style="color: white;"><font color="lime"
+ face="Arial" size="2">Sendy</font></span></a><span
+ style="color: white;"></span><span
+ style="color: white;"></span><font color="lime"
+ face="Arial" size="2"> &nbsp; </font><a
+ href="https://anonfiles.com/kr" target="_blank"><font
+ color="lime" face="Arial" size="2">AnonFiles</font></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 0, 0);"
+ href="https://tuttoperme.github.io/" target="_self"><font
+ face="Arial" size="2">tuttoperme 홈</font></a><font color="fuchsia" face="Arial"
+ size="2"> &nbsp; </font><a
+ href="https://github.com/tuttoperme" target="_blank"><font
+ color="fuchsia" face="Arial" size="2">github</font></a><span
+ style="color: rgb(255, 255, 153);"><font color="fuchsia"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ href="https://github.com/tuttoperme/tuttoperme.github.io/blob/master/Yopp/index.php"
+ target="_blank"><span style="color: rgb(255, 255, 153);"><font
+ color="fuchsia" face="Arial" size="2">yopp</font></span></a><span
+ style="color: rgb(255, 255, 153);"></span><span
+ style="color: rgb(255, 255, 153);"><font color="fuchsia"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ href="https://gist.github.com/" target="_blank"><span
+ style="color: rgb(255, 255, 153);"><font color="fuchsia"
+ face="Arial" size="2">note</font></span></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 255, 0);"
+ href="https://www.cardscanner.co/ko/image-to-text"
+ target="_blank"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><font
+ face="Arial" size="2">이미지텍스트추출</font></span></a><span
+ style="font-family: Arial,Helvetica,sans-serif;"><font
+ color="white" face="Arial" size="2">
+&nbsp; </font></span><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span><a
+ style="color: rgb(255, 0, 0);" href="https://copychar.cc"
+ target="_blank"><font face="Arial" size="2">특수문자</font></a> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://en.savefrom.net/"
+ href="http://en.savefrom.net/" target="_blank"><span
+ style="color: yellow;"><font color="red"
+ face="Arial" size="2">유튜브영상다운</font></span></a><span
+ style="color: yellow;"><font color="red"
+ face="Arial" size="2"> &nbsp; &nbsp;</font></span><span
+ style="color: yellow;"></span><a
+ data-cke-saved-href="https://www.yewtu.be/"
+ href="https://www.yewtu.be/" target="_blank"><span
+ style="color: rgb(255, 192, 0);"></span></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <font><a data-cke-saved-href="http://megadownload.net/"
+ href="http://megadownload.net/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">Mega
+Rapid 검색</font></span></a></font> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://www.sendspace.com/"
+ href="https://www.sendspace.com/" target="_blank"><span
+ style="color: white;"><font color="lime"
+ face="Arial" size="2">www.sendspace.com</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <span style="font-size: 10pt;"><a
+ href="https://tuttoperme.github.io/Live-Code-Editor/"
+ target="_blank"><font color="fuchsia" face="Arial">github
+editor</font></a></span> </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><small>
+      <a target="_blank" style="color: rgb(255, 255, 255);"
+ href="https://krdict.korean.go.kr/kor/mainAction">한국어기초사전</a>
+      </small></td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(51, 255, 51);"
+ data-cke-saved-href="http://2conv.com/kr/"
+ href="https://media.ytmp3.gg/ko/"><font face="Arial"
+ size="2">유튜브-mp3</font></a><span
+ style="color: rgb(255, 153, 255);"></span><span
+ style="color: rgb(255, 255, 255);"><span
+ style="color: rgb(255, 153, 255);"><font color="red"
+ face="Arial" size="2"> &nbsp; </font></span></span><a
+ data-cke-saved-href="http://www.flvto.biz/kr/"
+ href="https://v7.www-y2mate.com/"
+ style="color: rgb(51, 255, 51);"><font face="Arial"
+ size="2">유튜브-mp3</font></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://www.4shared.com/account/home.jsp"
+ href="https://www.4shared.com/account/home.jsp" target="_blank"><span
+ style="color: rgb(0, 176, 80);"><font color="white"
+ face="Arial" size="2">4shared</font></span></a><span
+ style="color: blue;"></span><span
+ style="color: yellow;"></span><span
+ style="color: yellow;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://www.4shared.com/"
+ href="https://www.4shared.com/" target="_blank"><span
+ style="color: yellow;"><font color="white"
+ face="Arial" size="2">4shared파일검색</font></span></a>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="http://vank.prkorea.com/?page_id=3905"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">반크</font></a><font color="yellow"
+ face="Arial" size="2"> &nbsp;&nbsp;</font>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 0, 0);"
+ href="http://pyj0526.dothome.co.kr/" target="_self"><font
+ face="Arial" size="2">dothome홈</font></a><span
+ style="color: white;"><font color="fuchsia"
+ face="Arial" size="2"> &nbsp; </font></span><span
+ style="color: white;"></span><span
+ style="color: white;"></span><a
+ data-cke-saved-href="http://dothome.co.kr/"
+ href="https://www.dothome.co.kr/" target="_blank"><span
+ style="color: white;"><font color="fuchsia"
+ face="Arial" size="2">dothome</font></span></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://ko.flitto.com/crowd"
+ href="https://ko.flitto.com/crowd" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">FLITTO</font></span></a><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">(번역)</font></span><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ href="https://papago.naver.com/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">파파고</font></span></a><span
+ style="color: white;"></span><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ href="https://translate.google.com/?source=gtx" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">구글번역</font></span></a><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://codegena.com/generator/Youtube-Embed-Code-Generator"
+ href="http://codegena.com/generator/Youtube-Embed-Code-Generator"
+ target="_blank"><span style="color: lime;"><font
+ color="red" face="Arial" size="2">유튜브embed</font></span></a><span
+ style="color: lime;"></span><span
+ style="color: blue;"><font color="red" face="Arial"
+ size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://www.tools4noobs.com/online_tools/youtube_xhtml/"
+ href="https://www.tools4noobs.com/online_tools/youtube_xhtml/"
+ target="_blank"><span style="color: blue;"><font
+ color="red" face="Arial" size="2">유튜브embed</font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://www.searchshared.com/rapidshare.com/"
+ href="http://www.searchshared.com/rapidshare.com/"
+ target="_blank"><span style="color: rgb(51, 255, 51);"><font
+ color="white" face="Arial" size="2">RapidShare
+files</font></span></a><span
+ style="color: rgb(255, 255, 51);"><font color="white"
+ face="Arial" size="2">검색</font></span> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://www.instagram.com/"
+ href="https://www.instagram.com/paparino105561/" target="_blank"><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2"><br>
+      </font></span></a><a
+ data-cke-saved-href="https://tweetdeck.twitter.com/"
+ href="https://tweetdeck.twitter.com/" target="_blank"><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2"></font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <span style="color: rgb(102, 255, 255);"><a
+ href="https://translate.yandex.com/" target="_blank"><font
+ color="white" face="Arial" size="2">Yandex번역</font></a><font
+ color="white" face="Arial" size="2">
+&nbsp; </font></span><a
+ style="color: rgb(51, 255, 51);" href="https://archive.ph/"
+ target="_blank"><font face="Arial" size="2">웹페이지캡쳐</font></a> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.noteboardapp.com/board"
+ href="https://cloudconvert.com/webm-to-mkv" target="_blank"><font
+ face="Arial" size="2"><span style="color: red;">webm
+to mkv</span></font></a><font face="Arial"
+ size="2"><span style="color: red;"> &nbsp;
+&nbsp;</span></font><a
+ data-cke-saved-href="http://www.noteboardapp.com/board"
+ href="https://www.movavi.com/video-converter/convert-webm-to-mkv.html"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: red;">webm to mkv<br>
+      </span></font></a><a
+ data-cke-saved-href="http://www.noteboardapp.com/board"
+ href="https://cloudconvert.com/webm-to-mkv" target="_blank"><font
+ face="Arial" size="2"><span style="color: red;">
+      </span></font></a><a
+ data-cke-saved-href="http://www.noteboardapp.com/board"
+ href="https://cloudconvert.com/webm-to-mkv" target="_blank"><font
+ face="Arial" size="2"><span style="color: red;"></span></font></a><a
+ data-cke-saved-href="http://pappino.blogspot.com/"
+ href="http://pappino.blogspot.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: red;"></span></font></a></td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://megadownload.net/"
+ href="http://megadownload.net/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> </font></span></a>
+      <a href="https://www.neowin.net/software/"
+ target="_blank"><font></font></a><font><a
+ data-cke-saved-href="https://sendit.cloud/"
+ href="https://sendit.cloud/" target="_blank"><font
+ face="Arial" size="2"><span
+ style="color: rgb(247, 150, 70);">Send
+It[cloud]</span></font></a></font><font
+ color="red" face="Arial" size="2"></font></td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://www.instagram.com/"
+ href="https://www.instagram.com/paparino105561/" target="_blank"><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2">Instagram</font></span></a><span
+ style="color: rgb(255, 252, 7);"></span><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ style="color: rgb(51, 204, 255);"
+ data-cke-saved-href="https://www.facebook.com/"
+ href="https://www.facebook.com/watch" target="_blank"><font
+ face="Arial" size="2">페이스북</font></a><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2"> &nbsp; </font></span><span
+ style="color: red;"></span><span style="color: red;"></span><a
+ style="color: rgb(255, 255, 255);"
+ data-cke-saved-href="https://tweetdeck.twitter.com/"
+ href="https://tweetdeck.twitter.com/" target="_blank"><font
+ face="Arial" size="2">Tweetdeck</font></a></td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://app.box.com/files"
+ href="https://app.box.com/files" target="_blank"><span
+ style="color: red;"><font color="red" face="Arial"
+ size="2">Box</font></span></a><span
+ style="color: red;"></span><span style="color: red;"><font
+ color="red" face="Arial" size="2"> &nbsp; <a
+ style="color: rgb(255, 0, 0);" href="https://mega.co.nz/"
+ target="_blank">Mega</a>&nbsp; &nbsp;</font></span><span
+ style="color: red;"><font color="red" face="Arial"
+ size="2"> </font></span><a
+ data-cke-saved-href="https://www.terabox.com/"
+ href="https://www.terabox.com/" target="_blank"><span
+ style="color: red;"><font color="red" face="Arial"
+ size="2">terabox.com</font></span></a><span
+ style="color: yellow;"> </span> </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(51, 255, 51);"
+ data-cke-saved-href="http://ko.online-qrcode-generator.com/"
+ href="http://ko.online-qrcode-generator.com/" target="_blank"><font
+ face="Arial" size="2">QR코드생성기</font></a><span
+ style="color: rgb(51, 255, 51);"><font color="#00b050"
+ face="Arial" size="2"> &nbsp; </font></span><font
+ color="#00b050" face="Arial" size="2"><span
+ style="color: rgb(51, 255, 51);"></span></font><a
+ style="color: rgb(51, 255, 51);"
+ data-cke-saved-href="https://www.remove.bg/ko"
+ href="https://www.remove.bg/ko"><font face="Arial"
+ size="2">배경제거</font></a> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=sokdak"
+ href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=sokdak"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">속닥게시판</font></span></a><span
+ style="color: lime;"></span><span
+ style="color: lime;"></span><span
+ style="color: lime;"><font color="#66ff99"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://db.blueweb.co.kr/bluecgi/rIndex.html"
+ href="http://db.blueweb.co.kr/bluecgi/rIndex.html"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">게시판만들기</font></span></a></td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://karancrack.com/category/portable-apps/"
+ target="_blank"><font></font></a><font><a
+ data-cke-saved-href="https://portableapps.com/"
+ href="https://portableapps.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: rgb(247, 150, 70);">Portableapps</span></font></a></font></td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://paparino.cox.kr/"
+ href="http://cox.kr/" target="_blank"><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2">COX</font></span></a><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2"> &nbsp; </font><a
+ data-cke-saved-href="http://paparino.trand.co.kr/"
+ href="http://trand.co.kr/" target="_blank"><font
+ color="fuchsia" face="Arial" size="2">Trand</font></a><font
+ color="fuchsia" face="Arial" size="2">
+&nbsp; </font></span><span style="color: red;"></span><a
+ data-cke-saved-href="http://paparino.page.co.kr/"
+ href="http://page.co.kr/" target="_blank"><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2">Page</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.blueb.co.kr/blueb/"
+ href="http://www.blueb.co.kr/blueb/" target="_blank"><span
+ style="color: lime;"><font color="red" face="Arial"
+ size="2">블루비</font></span></a><span
+ style="color: lime;"></span><span
+ style="color: rgb(102, 255, 153);"><font color="red"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://prezi.com/dashboard/"
+ href="https://prezi.com/dashboard/" target="_blank"><span
+ style="color: rgb(102, 255, 153);"><font color="red"
+ face="Arial" size="2">내프레지</font></span></a><font
+ color="red" face="Arial" size="2"><span
+ style="color: rgb(102, 255, 153);"></span></font><span
+ style="color: rgb(102, 255, 153);"><font color="#ffc000"
+ face="Arial" size="2"> &nbsp; </font><a
+ href="https://uup.rg-adguard.net/" target="_blank"><font
+ color="#ffc000" face="Arial" size="2">UUP</font></a></span>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://korean.visitkorea.or.kr/main/main.do"
+ target="_blank"><small><span
+ style="color: rgb(255, 255, 0);">대한민국구석구석</span></small></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://db.blueweb.co.kr/bluecgi/rIndex.html"
+ href="http://db.blueweb.co.kr/bluecgi/rIndex.html"
+ target="_blank"><span style="color: rgb(247, 150, 70);"><font
+ color="#00ff99" face="Arial" size="2">블루웹호스팅</font></span></a><span
+ style="color: rgb(51, 255, 51);"></span><a
+ data-cke-saved-href="http://db.blueweb.co.kr/bluecgi/myservice.html"
+ href="http://db.blueweb.co.kr/bluecgi/myservice.html"
+ target="_blank"><span style="color: yellow;"><font
+ color="#00ff99" face="Arial" size="2">서비스내역</font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.newspaper.co.kr/v2/"
+ href="http://www.newspaper.co.kr/v2/" target="_blank"><font></font></a><font><a
+ data-cke-saved-href="http://portableappz.blogspot.com/"
+ href="http://portableappz.blogspot.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: white;">PortableAppz</span></font></a></font><span
+ style="color: blue;"><a
+ href="https://www.jigsawexplorer.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2"></font></a></span>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://pyj0526.egloos.com/"
+ href="http://pyj0526.egloos.com/" target="_blank"><span
+ style="color: red;"></span></a><span
+ style="color: red;"></span><a
+ data-cke-saved-href="http://pyj0526.egloos.com/"
+ href="http://pyj0526.egloos.com/" target="_blank"><span
+ style="color: red;"></span></a><span
+ style="color: red;"></span><a
+ data-cke-saved-href="https://story.kakao.com/"
+ href="https://story.kakao.com/" target="_blank"><span
+ style="color: white;"><font color="fuchsia"
+ face="Arial" size="2">카카오스토리</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(51, 255, 51);"
+ data-cke-saved-href="http://www.newspaper.co.kr/v2/"
+ href="http://www.newspaper.co.kr/v2/" target="_blank"><font
+ face="Arial" size="2">신문가게</font></a><span
+ style="color: blue;"><font color="yellow"
+ face="Arial" size="2"> &nbsp; </font></span><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: blue;"></span></font><span
+ style="color: blue;"><a
+ href="https://www.jigsawexplorer.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2">Jigsaw퍼즐</font></a></span></td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://www.airbnb.co.kr/"
+ href="https://www.airbnb.co.kr/" target="_blank"
+ style="color: rgb(255, 255, 153);"><span
+ style="color: yellow;"><font color="white"
+ face="Arial" size="2">Airbnb
+에어비엔비</font></span></a><span style="color: yellow;"></span><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://www.culture.go.kr/tradition/designPatternList.do"
+ href="http://www.culture.go.kr/tradition/designPatternList.do"
+ target="_blank"><span style="color: white;"><font
+ color="white" face="Arial" size="2">전통문양</font></span></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=goodies1"
+ href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=goodies1"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">좋은글모음</font></span></a><span
+ style="color: lime;"><font color="#66ff99"
+ face="Arial" size="2"> &nbsp; </font></span><span
+ style="color: lime;"></span><span
+ style="color: lime;"></span><a
+ title="각종 이미지모음 겔러리입니다."
+ data-cke-saved-href="http://photo.blueweb.co.kr/bluecgi/photo/photo.php?id=paparino&amp;dbname=paparino0"
+ href="http://photo.blueweb.co.kr/bluecgi/photo/photo.php?id=paparino&amp;dbname=paparino0"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">사진방1</font></span></a><span
+ style="color: lime;"></span><span
+ style="color: lime;"><font color="#66ff99"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=mywork1"
+ href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=mywork1"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">호작질</font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <font><a
+ data-cke-saved-href="https://www.fcportables.com/"
+ href="https://www.fcportables.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: rgb(0, 176, 240);">Fcportables</span></font></a></font></td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://www.evernote.com/Home.action?login=true#n=a9e0c5cb-caf5-4ca1-89ca-04039fabb753&amp;s=s193&amp;ses=4&amp;sh=2&amp;sds=5&amp;"
+ href="https://www.evernote.com/Home.action?login=true#n=a9e0c5cb-caf5-4ca1-89ca-04039fabb753&amp;s=s193&amp;ses=4&amp;sh=2&amp;sds=5&amp;"
+ target="_blank" style="color: rgb(35, 238, 10);"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></a><span
+ style="color: red;"></span><a
+ data-cke-saved-href="https://twitter.com/papparino"
+ href="https://twitter.com/papparino" target="_blank"><span
+ style="color: red;"><font color="fuchsia"
+ face="Arial" size="2">트위터(papparino)</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://ko.wikihow.com/%ED%8A%B9%EC%88%98:CategoryListing"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">방법찾기</font></a><font color="yellow"
+ face="Arial" size="2"> &nbsp; </font><a
+ href="https://zipago.net/main/index.html" target="_blank"><font
+ color="yellow" face="Arial" size="2">집파고</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp; </font><a
+ href="https://www.safetyreport.go.kr/#main" target="_blank"><font
+ color="yellow" face="Arial" size="2">안전신문고</font></a></td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://ko.cooltext.com/"
+ href="https://ko.cooltext.com/" target="_blank"><span
+ style="color: rgb(247, 150, 70);"><font color="white"
+ face="Arial" size="2">로고생성기</font></span></a><span
+ style="color: rgb(247, 150, 70);"></span><span
+ style="color: lime;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://pyj0526.dothome.co.kr/sally/sallyedit.htm"
+ href="http://pyj0526.dothome.co.kr/sally/sallyedit.htm"
+ target="_blank"><span style="color: lime;"><font
+ color="white" face="Arial" size="2">셀리연습장</font></span></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=photoshopstudy"
+ href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=photoshopstudy"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">포토샵공부방</font></span></a><span
+ style="color: lime;"><font color="#66ff99"
+ face="Arial" size="2"> &nbsp; </font></span><span
+ style="color: lime;"></span><span
+ style="color: lime;"></span><a
+ data-cke-saved-href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=swishstudy"
+ href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=swishstudy"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">스위시공부방</font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://karancrack.com/category/portable-apps/"
+ target="_blank"><font></font></a><font><a
+ data-cke-saved-href="https://portable4pc.com/"
+ href="https://portable4pc.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: rgb(146, 208, 80);">Portable4pc</span></font></a></font>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://www.google.com/maps/search/%EA%B3%B5%EC%98%81%EC%A3%BC%EC%B0%A8%EC%9E%A5/data=%214m2%212m1%216e2?entry=ttu&amp;g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D"
+ target="_blank"><font color="#ffc000" face="Arial"
+ size="2">공영주차장지도</font></a> </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://xn--4i2by9fe3g.com/?fbclid=IwAR3JWy-Y41MvcM_8vHiPB4bVgWcUzL7LL4Oref1SGMVqJHkEwugOmHThciQ"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">신바람쇼핑몰</font></a><font color="yellow"
+ face="Arial" size="2"> &nbsp; </font><a
+ href="https://offday.co.kr/content/product/calandar4"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">오늘은휴식</font></a><font color="yellow"
+ face="Arial" size="2">(반찬배달)</font></td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://pan.baidu.com/disk/home#/all?path=%2F&amp;vmode=list"
+ href="https://pan.baidu.com/disk/home#/all?path=%2F&amp;vmode=list"
+ target="_blank"><span style="color: yellow;"><font
+ color="white" face="Arial" size="2">바이두</font></span></a><span
+ style="color: yellow;"></span><span
+ style="color: yellow;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://pyj0526.dothome.co.kr/Tag%20Gen/my.htm"
+ href="http://pyj0526.dothome.co.kr/Tag%20Gen/my.htm"
+ target="_blank"><span style="color: yellow;"><font
+ color="white" face="Arial" size="2">영상시 제작기</font></span></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=htmlstudy"
+ href="http://board-4.blueweb.co.kr/board.cgi?id=paparino&amp;bname=htmlstudy"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">홈페이지팁</font></span></a><span
+ style="color: lime;"></span><span
+ style="color: lime;"><font color="#66ff99"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ title="홈페이지 방문소감 안부 등을 간단히..기록할 수 있도록 하는 공간입니다."
+ data-cke-saved-href="http://note.blueweb.co.kr/bluecgi/guestbook/guest.php?dbname=paparino0"
+ href="http://note.blueweb.co.kr/bluecgi/guestbook/guest.php?dbname=paparino0"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2">안부게시판</font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://portableapps.com/"
+ href="https://portableapps.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: rgb(247, 150, 70);"><br>
+      </span></font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://www.google.com/maps/d/viewer?mid=1BPq6wbB16W-oVb5GcAL2T0tDcpQ&amp;ll=37.60620886317437%2C126.71105427070114&amp;z=19"
+ target="_blank"><font color="#ffc000" face="Arial"
+ size="2">전국맛집</font></a><font color="#ffc000"
+ face="Arial" size="2"> &nbsp; </font><a
+ href="https://www.kofood.net/guidemaps" target="_blank"><font
+ color="#ffc000" face="Arial" size="2">맛집가이드</font></a><font
+ color="#ffc000" face="Arial" size="2">
+&nbsp; </font><a href="http://dogumaster.com/map/tv"
+ target="_blank"><font color="#ffc000" face="Arial"
+ size="2">맛집지도</font></a> </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <small><span style="color: rgb(255, 255, 0);"><a
+ style="color: rgb(255, 255, 0);"
+ href="https://www.zipbanchan.co.kr/shop/main/index.php"
+ target="_blank">집반찬연구소</a><span
+ style="color: rgb(255, 255, 0);"> &nbsp; </span></span></small></td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://mdbootstrap.com/builder"
+ href="https://mdbootstrap.com/builder" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">온라인웹빌더</font></span></a><span
+ style="color: white;"></span><span
+ style="color: white;"></span><span
+ style="color: rgb(255, 255, 51);"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://pngimg.com/"
+ href="http://pngimg.com/" target="_blank"><span
+ style="color: rgb(255, 255, 51);"><font color="white"
+ face="Arial" size="2">png 이미지</font></span></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://solomoon.com/"
+ href="http://solomoon.com/" target="_blank"><span
+ style="color: lime;"><font color="yellow"
+ face="Arial" size="2">솔로문</font></span></a><span
+ style="color: lime;"><font color="yellow"
+ face="Arial" size="2"> &nbsp; </font></span><span
+ style="color: lime;"></span><span
+ style="color: rgb(255, 192, 0);"></span><a
+ data-cke-saved-href="https://ko.wiktionary.org/"
+ href="https://ko.wiktionary.org/" target="_blank"><span
+ style="color: rgb(255, 192, 0);"><font color="yellow"
+ face="Arial" size="2">위키낱말사전</font></span></a><a
+ data-cke-saved-href="http://db.blueweb.co.kr/bluecgi/rIndex.html"
+ href="http://db.blueweb.co.kr/bluecgi/rIndex.html"
+ target="_blank"><span style="color: lime;"><font
+ color="#66ff99" face="Arial" size="2"></font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://portableappz.blogspot.com/"
+ href="http://portableappz.blogspot.com/" target="_blank"><font></font></a><font><a
+ href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-7.0.0-windows-x64-installer"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">.NET Runtime</font></a></font> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://zum.com/" target="_blank"><font
+ color="#ffc000" face="Arial" size="2">줌</font></a><font
+ color="#ffc000" face="Arial" size="2">
+&nbsp; </font><a href="https://www.nate.com/"
+ target="_blank"><font color="#ffc000" face="Arial"
+ size="2">네이트</font></a><font color="#ffc000"
+ face="Arial" size="2"> &nbsp; </font><a
+ href="https://www.bing.com/" target="_blank"><font
+ color="#ffc000" face="Arial" size="2">빙</font></a><font
+ color="#ffc000" face="Arial" size="2">
+&nbsp; </font><a href="https://duckduckgo.com/"
+ target="_blank"><font color="#ffc000" face="Arial"
+ size="2">덕고</font></a> </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><a
+ href="https://ko.anotepad.com/notes/s8fgesy6" target="_blank"><font
+ color="yellow" face="Arial" size="2">온라인메모</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp;&nbsp;</font> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://www.name21.co.kr/namedesc/namedesc1.html"
+ href="https://www.name21.co.kr/namedesc/namedesc1.html"><span
+ style="color: white;"><font color="yellow"
+ face="Arial" size="2">무료이름풀이</font></span></a><span
+ style="color: blue;"></span><span
+ style="color: blue;"><font color="yellow"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://www.rootsinfo.co.kr/"
+ href="http://www.rootsinfo.co.kr/" target="_blank"><span
+ style="color: blue;"><font color="yellow"
+ face="Arial" size="2">뿌리를찾아서</font></span></a></td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://portable4pc.com/"
+ href="https://portable4pc.com/" target="_blank"><font></font></a><font><a
+ href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.0-windows-x64-installer"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">.NET Desktop Runtime</font></a></font>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://local.naver.com/"
+ href="http://local.naver.com/" target="_blank"><span
+ style="color: yellow;"><font color="fuchsia"
+ face="Arial" size="2">네이버지도</font></span></a><span
+ style="color: yellow;"></span><span
+ style="color: yellow;"></span><span
+ style="color: aqua;"></span><span
+ style="color: rgb(146, 208, 80);"><font color="fuchsia"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://news.naver.com/"
+ href="https://news.naver.com/" target="_blank"><span
+ style="color: rgb(146, 208, 80);"><font color="fuchsia"
+ face="Arial" size="2">네이버뉴스</font></span></a><span
+ style="color: rgb(146, 208, 80);"></span><font
+ color="fuchsia" face="Arial" size="2">
+&nbsp; </font><a style="color: rgb(255, 204, 0);"
+ href="https://naver.com" target="_blank"><font
+ face="Arial" size="2">네이버</font></a> </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://ko.wikihow.com/%ED%8A%B9%EC%88%98:CategoryListing"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2"><br>
+      </font></a><a
+ href="https://www.safetyreport.go.kr#main" target="_blank"><font
+ color="yellow" face="Arial" size="2"></font></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://westciv.com/tools/audio/"
+ href="http://westciv.com/tools/audio/" target="_blank"><span
+ style="color: rgb(255, 255, 51);"><font color="#00b0f0"
+ face="Arial" size="2">mp3 code maker</font></span></a> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://solomoon.com/"
+ href="http://solomoon.com/" target="_blank"><span
+ style="color: lime;"><font color="yellow"
+ face="Arial" size="2"><br>
+      </font></span></a><a
+ data-cke-saved-href="https://ko.wiktionary.org/"
+ href="https://ko.wiktionary.org/" target="_blank"><span
+ style="color: rgb(255, 192, 0);"><font color="yellow"
+ face="Arial" size="2"></font></span></a><a
+ data-cke-saved-href="http://www.rootsinfo.co.kr/"
+ href="http://www.rootsinfo.co.kr/" target="_blank"><span
+ style="color: blue;"><font color="yellow"
+ face="Arial" size="2"></font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://www.fcportables.com/"
+ href="https://www.fcportables.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: rgb(0, 176, 240);"><br>
+      </span></font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://map.daum.net/"
+ href="http://map.daum.net/" target="_blank"><span
+ style="color: aqua;"><font color="fuchsia"
+ face="Arial" size="2">다음지도</font></span></a><span
+ style="color: aqua;"></span><span
+ style="color: aqua;"></span><span
+ style="color: rgb(146, 208, 80);"><font color="fuchsia"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://news.daum.net/"
+ href="https://news.daum.net/" target="_blank"><span
+ style="color: rgb(146, 208, 80);"><font color="fuchsia"
+ face="Arial" size="2">다음뉴스</font></span></a><span
+ style="color: rgb(146, 208, 80);"></span><font
+ color="fuchsia" face="Arial" size="2">
+&nbsp; </font><a style="color: rgb(255, 204, 0);"
+ href="https://www.daum.net/" target="_blank"><font
+ face="Arial" size="2">다음</font></a><font
+ color="fuchsia" face="Arial" size="2">
+&nbsp;&nbsp;</font> </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.funshop.co.kr/"
+ href="http://www.funshop.co.kr/" target="_blank"><font
+ face="Arial" size="2"><span style="color: lime;"></span></font></a><a
+ data-cke-saved-href="http://www.jikgure.com/"
+ href="https://www.daangn.com/search/%ED%92%8D%EB%AC%B4%EB%8F%99"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: lime;"></span></font></a><font
+ face="Arial" size="2"><span style="color: lime;"></span></font>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.strangecube.com/audioplay/"
+ href="http://www.strangecube.com/audioplay/" target="_blank"><span
+ style="color: rgb(0, 255, 51);"><font color="#00b0f0"
+ face="Arial" size="2">mp3 code maker</font></span></a> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.similarsitesearch.com/"
+ href="https://www.sitelike.org/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">sitelike</font></span></a><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> &nbsp;&nbsp;</font></span><a
+ href="https://earth.nullschool.net/ko/#current/wind/surface/level/orthographic=-228.28,36.64,2540"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">earth</font></a><font color="yellow"
+ face="Arial" size="2"> &nbsp; </font><a
+ href="https://www.windy.com/?2024110218,31.233,-149.836,3"
+ target="_blank"><font color="#92d050" face="Arial"
+ size="2">Windy</font></a><a
+ data-cke-saved-href="https://ko.wiktionary.org/"
+ href="https://ko.wiktionary.org/" target="_blank"><span
+ style="color: rgb(255, 192, 0);"><font color="yellow"
+ face="Arial" size="2"></font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td
+ style="background-color: black; height: 24px; text-align: left; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://www.cgv.co.kr/movies/finder.aspx"
+ href="http://www.cgv.co.kr/movies/finder.aspx" target="_blank"><font
+ face="Arial" size="2"><span style="color: white;"></span></font></a>
+      <font><a
+ data-cke-saved-href="http://pyj0526.dothome.co.kr/SWFObject%202%20HTML%20and%20JavaScript%20generator%20v1_2.htm"
+ href="../SWFObject%202%20HTML%20and%20JavaScript%20generator%20v1_2.htm"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: white;">JavaScript generator</span></font></a></font></td>
+      <td
+ style="background-color: black; height: 24px; text-align: left; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://map.naver.com/v5/subway/1000/-/-/-?c=14105701.2654747,4523384.1291905,15,0,0,0,dh"
+ href="https://map.naver.com/v5/subway/1000/-/-/-?c=14105701.2654747,4523384.1291905,15,0,0,0,dh"
+ target="_blank"><font color="lime" face="Arial"
+ size="2"><span style="color: rgb(0, 176, 240);"></span></font></a><font
+ color="lime" face="Arial" size="2"><span
+ style="color: rgb(0, 176, 240);"></span></font><a
+ data-cke-saved-href="https://map.naver.com/v5/subway/1000/-/-/-?c=14105701.2654747,4523384.1291905,15,0,0,0,dh"
+ href="https://map.naver.com/v5/subway/1000/-/-/-?c=14105701.2654747,4523384.1291905,15,0,0,0,dh"
+ target="_blank"><font></font></a><a
+ href="http://paparino.tistory.com/" target="_blank"><font
+ color="fuchsia" face="Arial" size="2">tistory</font></a><font
+ color="fuchsia" face="Arial" size="2">
+&nbsp;&nbsp;</font><a
+ href="https://www.waze.com/ko/live-map" target="_blank"
+ title="waze지도"><font color="#4bacc6" face="Arial"
+ size="2">waze지도</font></a><a
+ data-cke-saved-href="http://www.kma.go.kr/"
+ href="http://www.kma.go.kr/" target="_blank"><font
+ face="Arial" size="2"><span style="color: yellow;"></span></font></a>
+      </td>
+      <td
+ style="background-color: black; height: 24px; text-align: left; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.jikgure.com/"
+ href="http://www.jikgure.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: lime;"><br>
+      </span></font></a><a
+ data-cke-saved-href="http://www.jikgure.com/"
+ href="https://m.bunjang.co.kr/" target="_blank"><font
+ face="Arial" size="2"><span style="color: lime;"></span></font></a>
+      </td>
+      <td
+ style="background-color: black; height: 24px; text-align: left; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://flash-mp3-player.net/players/maxi/generator/"
+ href="http://flash-mp3-player.net/players/maxi/generator/"
+ target="_blank"><span style="color: blue;"><font
+ color="#00b0f0" face="Arial" size="2">mp3 code maker</font></span></a> </td>
+      <td
+ style="background-color: black; height: 24px; text-align: left; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 153, 0);"
+ href="https://www.sitesimilar.net/"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">sitesimilar</font></span></a><span
+ style="color: white;"></span><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://www.similarsitesearch.com/"
+ href="https://www.similarsites.com/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">similarsites</font></span></a></td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://wallpapers.microsoft.design/"
+ href="https://wallpapers.microsoft.design/" target="_blank"><font></font></a><font><a
+ data-cke-saved-href="http://pyj0526.dothome.co.kr/SWF-embed-code-generator.swf"
+ href="../SWF-embed-code-generator.swf" target="_blank"><font
+ face="Arial" size="2"><span
+ style="color: rgb(255, 255, 51);">swfembed code generator</span></font></a></font> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://map.naver.com/v5/subway/1000/-/-/-?c=14105701.2654747,4523384.1291905,15,0,0,0,dh"
+ href="https://map.naver.com/v5/subway/1000/-/-/-?c=14105701.2654747,4523384.1291905,15,0,0,0,dh"
+ target="_blank"><font color="lime" face="Arial"
+ size="2"><span style="color: rgb(0, 176, 240);">지하철노선</span></font></a><font color="lime"
+ face="Arial" size="2"><span
+ style="color: rgb(0, 176, 240);"> &nbsp; </span></font><font
+ face="Arial" size="2"><span
+ style="color: rgb(0, 176, 240);"></span></font><font
+ face="Arial" size="2"><span style="color: yellow;"></span></font><a
+ data-cke-saved-href="http://www.kma.go.kr/"
+ href="http://www.kma.go.kr/" target="_blank"><font
+ face="Arial" size="2"><span style="color: yellow;">기상청날씨</span></font></a></td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <span style="font-family: Arial,Helvetica,sans-serif;"></span>
+      <font><a href="https://justpaste.it/AutoHotkey_ahk"
+ target="_blank"><font color="#f79646" face="Arial"
+ size="2">https://justpaste.it/AutoHotkey_ahk</font></a></font></td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://cafe.naver.com/ArticleRead.nhn?clubid=11212436&amp;menuid=71&amp;boardtype=L&amp;page=2&amp;articleid=630"
+ href="http://cafe.naver.com/ArticleRead.nhn?clubid=11212436&amp;menuid=71&amp;boardtype=L&amp;page=2&amp;articleid=630"
+ target="_blank"><font color="#ccff66" face="Arial"
+ size="2"><span style="color: lime;">스위시소스모음</span></font></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://steampeek.hu/"
+ href="https://steampeek.hu/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">similar Game</font></span></a><font
+ color="white" face="Arial" size="2"><span
+ style="color: white;"></span></font><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://alternativeto.net/"
+ href="https://alternativeto.net/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">similar software</font></span></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://stellarium-web.org/"
+ href="https://stellarium-web.org/" target="_blank"><font
+ face="Arial" size="2"><span style="color: yellow;">stellarium-web.org</span></font></a>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://imweb.me/"
+ href="https://imweb.me/" target="_blank"><span
+ style="color: rgb(255, 255, 102);"><font color="white"
+ face="Arial" size="2">imweb.me</font></span></a><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span><span
+ style="color: rgb(255, 255, 102);"><span
+ style="color: rgb(255, 255, 102);"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span></span><a
+ data-cke-saved-href="http://paparino.imweb.me/admin/"
+ href="http://paparino.imweb.me/admin/" target="_blank"
+ style="color: rgb(255, 255, 102);"><span
+ style="color: rgb(255, 255, 102);"><font color="white"
+ face="Arial" size="2">admin</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://justpaste.it/homework"
+ href="http://justpaste.it/homework" target="_blank"><font
+ face="Arial" size="2"><span style="color: white;">http://justpaste.it/homework</span></font></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://www.canva.com/"
+ href="https://www.canva.com/"><font color="#ccff66"
+ face="Arial" size="2"><span style="color: white;">온라인배너제작</span></font></a> </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.similarsitesearch.com/"
+ href="https://www.sitelike.org/" target="_blank"><span
+ style="color: white;"></span></a><a
+ style="color: rgb(255, 255, 0);"
+ data-cke-saved-href="http://www.noteboardapp.com/board"
+ href="http://www.noteboardapp.com/board" target="_blank"><font
+ face="Arial" size="2">노트보드앱</font></a><font
+ style="color: rgb(255, 255, 0);" face="Arial" size="2">&nbsp;&nbsp;&nbsp;&nbsp;</font><a
+ style="color: rgb(255, 255, 0);"
+ data-cke-saved-href="http://pappino.blogspot.com/"
+ href="http://pappino.blogspot.com/" target="_blank"><font
+ face="Arial" size="2">구글블로그</font></a><a
+ data-cke-saved-href="http://www.similarsitesearch.com/"
+ href="https://www.similarsites.com/" target="_blank"><span
+ style="color: white;"></span></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.ilovefreesoftware.com/"
+ href="http://www.ilovefreesoftware.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: white;">ilovefreesoftware</span></font></a>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://pyj0526.wixsite.com/paparino"
+ href="http://pyj0526.wixsite.com/paparino" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">wix블로그</font></span></a><span style="color: white;"></span><span
+ style="color: white;"></span><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://ko.wix.com/"
+ href="http://ko.wix.com/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">wix.com</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://justpaste.it/studyroom"
+ href="http://justpaste.it/studyroom" target="_blank"><font
+ face="Arial" size="2"><span style="color: white;">http://justpaste.it/studyroom</span></font></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://korean.visitkorea.or.kr/kor/inut/addOn/main/publish/index.jsp"
+ href="http://korean.visitkorea.or.kr/kor/inut/addOn/main/publish/index.jsp"
+ target="_blank"><font color="#ccff66" face="Arial"
+ size="2"><span style="color: yellow;">한국관광공사</span></font></a><font
+ color="#ccff66" face="Arial" size="2"><span
+ style="color: yellow;"></span></font><font
+ color="#ccff66" face="Arial" size="2"><span
+ style="color: lime;"> &nbsp; </span></font><a
+ data-cke-saved-href="http://www.korail.com/"
+ href="http://www.korail.com/" target="_blank"><font
+ color="#ccff66" face="Arial" size="2"><span
+ style="color: lime;">Korail</span></font></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(51, 51, 255);"
+ data-cke-saved-href="https://keep.google.com/"
+ href="https://keep.google.com/" target="_blank"><font
+ face="Arial" size="2">구글킵</font></a><font
+ face="Arial" size="2"><span style="color: red;">&nbsp;&nbsp;&nbsp;&nbsp;</span></font><a
+ style="color: rgb(255, 255, 0);"
+ data-cke-saved-href="http://www.memonotepad.com/"
+ href="http://www.memonotepad.com/" target="_blank"><font
+ face="Arial" size="2">메모노트패드</font></a><font
+ face="Arial" size="2"><span style="color: red;">
+&nbsp; &nbsp;<a style="color: rgb(255, 204, 0);"
+ href="https://notebooklm.google.com/" target="_blank">Note LM</a></span></font><span style="color: white;"></span><a
+ style="color: rgb(255, 153, 0);"
+ href="https://www.sitesimilar.net/"><span
+ style="color: white;"></span></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.giveawayoftheday.com/"
+ href="http://www.giveawayoftheday.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: lime;">Giveaway of the day</span></font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://ko.wix.com/my-account?view=site&amp;metaSiteId=9813b8f8-59f3-4b48-a3ac-91badd5c1261"
+ href="http://ko.wix.com/my-account?view=site&amp;metaSiteId=9813b8f8-59f3-4b48-a3ac-91badd5c1261"
+ target="_blank"><span style="color: white;"><font
+ color="white" face="Arial" size="2">wix사이트편집</font></span></a> </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://justpaste.it/comstudy"
+ href="http://justpaste.it/comstudy" target="_blank"><font
+ face="Arial" size="2"><span style="color: white;">http://justpaste.it/comstudy</span></font></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="http://www.lunapic.com/editor/" target="_blank"><font
+ color="#ccff66" face="Arial" size="2"><span
+ style="color: lime;">lunapic</span></font></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://contacts.google.com" target="_blank"><small><span
+ style="color: rgb(255, 255, 0);">구글주소록</span></small></a><font
+ color="yellow" face="Arial" size="2"><a
+ href="Google+%C1%D6%BC%D2%B7%CF" target="_blank"><small>
+      </small></a>&nbsp; </font><a
+ style="color: rgb(51, 51, 255);"
+ href="https://www.google.co.kr/" target="_blank"><font
+ face="Arial" size="2">구글</font></a><font
+ color="red" face="Arial" size="2"> &nbsp; </font><a
+ style="color: rgb(51, 51, 255);"
+ href="https://mail.google.com/mail/u/0/#inbox" target="_blank"><font
+ face="Arial" size="2">지메일</font></a><span
+ style="color: rgb(51, 51, 255);"><font face="Arial"
+ size="2"> &nbsp; <a style="color: rgb(51, 102, 255);"
+ href="https://photos.google.com/" target="_blank">포토</a></font></span>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://pyj0526.dothome.co.kr/SWF-embed-code-generator.swf"
+ href="http://pyj0526.dothome.co.kr/SWF-embed-code-generator.swf"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: rgb(255, 255, 51);"><br>
+      </span></font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <span style="font-family: Arial,Helvetica,sans-serif;"><a
+ href="https://hogangnono.com/apt/6vv81/0/3" target="_blank"><font
+ color="#9bbb59" face="Arial" size="2">부동산</font></a><a
+ href="https://hogangnono.com/apt/3Xb71/0/16" target="_blank"><font
+ color="#ffc000" face="Arial" size="2">지도</font></a></span><span
+ style="color: red;"><font color="lime" face="Arial"
+ size="2"> &nbsp;</font></span><a
+ data-cke-saved-href="http://mar.gar.in/"
+ href="http://mar.gar.in/" target="_blank"><span
+ style="color: red;"></span></a><span
+ style="color: red;"><font color="lime" face="Arial"
+ size="2"> &nbsp; </font></span><span
+ style="color: red;"></span><span
+ style="color: white;"></span><a
+ data-cke-saved-href="https://www.altools.co.kr/Download/ALYac.aspx"
+ href="https://www.altools.co.kr/Download/ALYac.aspx"
+ target="_blank"><span style="color: white;"><font
+ color="white" face="Arial" size="2">알약설치</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://justpaste.it/spic"
+ href="http://justpaste.it/spic" target="_blank"><font
+ face="Arial" size="2"><span style="color: white;">http://justpaste.it/spic</span></font></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.poporo.co.kr/"
+ href="http://www.poporo.co.kr/" target="_blank"><u><font
+ color="#ccff66" face="Arial" size="2"><span
+ style="color: lime;">poporo.co.kr</span></font></u></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 255, 0);"
+ href="https://www.google.co.kr/maps/?hl=ko" target="_blank"><font
+ face="Arial" size="2">구글지도</font></a><span
+ style="color: aqua;"><font color="red" face="Arial"
+ size="2"> &nbsp; </font></span><span
+ style="color: aqua;"></span><span
+ style="color: rgb(0, 176, 80);"></span><a
+ style="color: rgb(255, 255, 0);"
+ data-cke-saved-href="https://news.google.com/topstories?hl=ko&amp;gl=KR&amp;ceid=KR:ko"
+ href="https://news.google.com/topstories?hl=ko&amp;gl=KR&amp;ceid=KR:ko"
+ target="_blank"><font face="Arial" size="2">구글뉴스</font></a><span style="color: rgb(0, 176, 80);"><font
+ color="red" face="Arial" size="2"> &nbsp; </font></span><span
+ style="color: rgb(0, 176, 80);"></span><span
+ style="color: rgb(247, 150, 70);"></span><a
+ style="color: rgb(255, 255, 51);"
+ data-cke-saved-href="https://earth.google.com/web/@0,7.658201,0a,22251752d,35y,0h,0t,0r/data=CgAoAQ"
+ href="https://earth.google.com/web/@0,7.658201,0a,22251752d,35y,0h,0t,0r/data=CgAoAQ"
+ target="_blank"><font face="Arial" size="2">구글어스</font></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://sendit.cloud/"
+ href="https://sendit.cloud/" target="_blank"><font
+ face="Arial" size="2"><span
+ style="color: rgb(247, 150, 70);"><br>
+      </span></font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://www.mobizen.com/?locale=ko"
+ href="https://www.mobizen.com/?locale=ko" target="_blank"><span
+ style="color: aqua;"><font color="white"
+ face="Arial" size="2">모비즌</font></span></a><span
+ style="color: aqua;"></span><span
+ style="color: aqua;"></span><span
+ style="color: aqua;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="https://online.cameyo.com/my"
+ href="https://online.cameyo.com/my" target="_blank"><span
+ style="color: aqua;"><font color="white"
+ face="Arial" size="2">Cameyo</font></span></a><span
+ style="color: aqua;"></span><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ data-cke-saved-href="http://www.atlan.co.kr/"
+ href="http://www.atlan.co.kr/" target="_blank"><span
+ style="color: white;"><font color="white"
+ face="Arial" size="2">아틀란</font></span></a>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://justpaste.it/paparino2"
+ href="http://justpaste.it/paparino2" target="_blank"><font
+ color="#ff9900" face="Arial" size="2"><span
+ style="color: white;">http://justpaste.it/paparino2</span></font></a>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.sumopaint.com/home/"
+ href="http://www.sumopaint.com/home/" target="_blank"><font
+ color="#ccff66" face="Arial" size="2"><span
+ style="color: lime;">Sumo paint</span></font></a>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 255, 0);"
+ data-cke-saved-href="https://www.google.co.kr/imghp?hl=ko"
+ href="https://www.google.co.kr/imghp?hl=ko" target="_blank"><font
+ face="Arial" size="2">구글이미지검색</font></a><span
+ style="color: white;"><font color="red"
+ face="Arial" size="2"> &nbsp; </font></span><span
+ style="color: white;"></span><span
+ style="color: white;"></span><a
+ style="color: rgb(255, 255, 0);"
+ href="https://drive.google.com/drive/my-drive" target="_blank"><font
+ face="Arial" size="2">구글드라이브</font></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://pyj0526.dothome.co.kr/SWFObject%202%20HTML%20and%20JavaScript%20generator%20v1_2.htm"
+ href="http://pyj0526.dothome.co.kr/SWFObject%202%20HTML%20and%20JavaScript%20generator%20v1_2.htm"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: white;"><br>
+      </span></font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="http://www.findjob.co.kr/job/category/areaJob.asp?HidArea=1211&amp;HidCate="
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">벼룩시장</font></a><font color="yellow"
+ face="Arial" size="2"> &nbsp; <a
+ style="color: rgb(255, 255, 0);"
+ href="http://bamgoguma.com/calendar/index.php" target="_blank">일정관리</a></font> </td>
+      <td
+ style="background-color: black; width: 224px; color: rgb(255, 255, 0); text-align: center;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><a
+ style="color: rgb(255, 255, 0);"
+ href="http://justpaste.it/paparino1" target="_blank">공유1</a><span style="color: rgb(255, 255, 0);">
+&nbsp;&nbsp;&nbsp;</span><a
+ style="color: rgb(255, 255, 0);"
+ href="https://justpaste.it/homework" target="_blank">공유2</a><span style="color: rgb(255, 255, 0);">
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><a
+ style="color: rgb(255, 204, 0);"
+ href="https://justpaste.it/edit/7302498/fc83f277"
+ target="_blank">1</a> &nbsp; <a
+ style="color: rgb(255, 204, 51);"
+ href="http://justpaste.it/edit/4824289/c0994050" target="_blank">2</a><span
+ style="font-size: 10pt; color: rgb(255, 255, 0);"></span>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 255, 0);"
+ data-cke-saved-href="https://books.google.co.kr/"
+ href="https://books.google.co.kr/" target="_blank"><font
+ face="Arial" size="2">구글도서</font></a><span
+ style="color: rgb(255, 192, 0);"></span><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span><span
+ style="color: yellow;"><font color="red"
+ face="Arial" size="2"> &nbsp; </font></span><a
+ style="color: rgb(255, 255, 0);"
+ data-cke-saved-href="https://books.google.co.kr/books?uid=108232337961070243602&amp;hl=ko"
+ href="https://books.google.co.kr/books?uid=108232337961070243602&amp;hl=ko"
+ target="_blank"><font face="Arial" size="2">내 라이브러리</font></a><span style="color: yellow;"></span><span
+ style="color: yellow;"><font color="red"
+ face="Arial" size="2"> &nbsp; <span
+ style="color: rgb(255, 0, 0);"></span><a
+ style="color: rgb(255, 255, 0);"
+ href="https://calendar.google.com/calendar/u/0/r"
+ target="_blank">캘린더</a></font></span> </td>
+    </tr>
+    <tr>
+      <td
+ style="background-color: black; height: 24px; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-7.0.0-windows-x64-installer"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2"><br>
+      </font></a></td>
+      <td
+ style="background-color: black; height: 24px; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://public-home.com/" target="_blank"><font
+ color="red" face="Arial" size="2">지도공공주택</font></a></td>
+      <td
+ style="background-color: black; height: 24px; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://justpaste.it/AutoHotkey_ahk"
+ target="_blank"><font color="#f79646" face="Arial"
+ size="2"><br>
+      </font></a> </td>
+      <td
+ style="background-color: black; height: 24px; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.missed-call.com/"
+ href="http://www.missed-call.com/" target="_blank"><font
+ face="Arial" size="2"><span
+ style="color: rgb(153, 255, 255);">찜찜전화</span></font>
+&nbsp; </a><a data-cke-saved-href="http://thecall.co.kr/"
+ href="http://thecall.co.kr/" target="_blank"><font
+ face="Arial" size="2"><span
+ style="color: rgb(153, 255, 255);">스팸전화확인</span></font></a>
+      </td>
+      <td
+ style="background-color: black; height: 24px; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://contacts.google.com/"
+ href="https://contacts.google.com/" target="_blank"><span
+ style="color: white;"><font color="red"
+ face="Arial" size="2">구글주소록</font></span></a><span
+ style="color: white;"><font color="red"
+ face="Arial" size="2"> &nbsp; </font></span><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span><span
+ style="color: rgb(255, 204, 255);"></span><span
+ style="color: rgb(255, 204, 255);"></span><a
+ style="color: rgb(255, 255, 0);"
+ data-cke-saved-href="https://support.google.com/?hl=ko"
+ href="https://support.google.com/?hl=ko" target="_blank"><font
+ face="Arial" size="2">구글고객센터</font></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-7.0.0-windows-x64-installer"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2"><br>
+      </font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 255, 0);"
+ href="https://www.google.com/maps/d/edit?mid=1b1rPm8DCRk_lMO3O9GYcVgnr_QWKivg&amp;ll=37.60592651976705%2C126.71053908543018&amp;z=19"
+ target="_blank"><font color="#00b050" face="Arial"
+ size="2">구글마이맵</font></a><font color="red"
+ face="Arial" size="2"> &nbsp; </font><a
+ style="color: rgb(255, 0, 0);"
+ href="https://translate.google.com/?hl=ko&amp;sl=auto&amp;tl=ko&amp;op=translate"
+ target="_blank"><font face="Arial" size="2">구글번역</font></a><font color="red" face="Arial"
+ size="2"> &nbsp;&nbsp;</font><font
+ color="red" face="Arial" size="2"><a
+ style="color: rgb(255, 255, 0);"
+ href="https://aistudio.google.com" target="_blank">AI스튜디오</a></font> <font color="#000099" face="Arial"
+ size="2"><span style="color: yellow;">&nbsp;</span></font><span
+ style="color: yellow;"><a
+ href="https://www.google.com/maps/d/u/0/edit?mid=1nkarDO4jyVVv09OG4FwgA2Z9xd2_ozg&amp;ll=37.02034567932952%2C127.32184674657813&amp;z=8"
+ target="_blank" title="toki Map"><font
+ color="#00b050" face="Arial" size="2">toki Map</font></a></span><font
+ color="#000099" face="Arial" size="2"><span
+ style="color: yellow;"> &nbsp;&nbsp;&nbsp;</span></font></td>
+    </tr>
+    <tr>
+      <td style="background-color: blue; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><small>
+      </small></td>
+      <td
+ style="background-color: blue; width: 212px; text-align: center;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><small>
+      <span style="color: rgb(255, 255, 255);">AI</span></small></td>
+      <td
+ style="background-color: blue; width: 224px; text-align: center;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><small>
+      <span style="color: rgb(255, 255, 255);">Movie
+&nbsp; &amp; &nbsp; TV</span></small></td>
+      <td
+ style="background-color: blue; width: 194px; text-align: center;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><small>
+      <span style="color: rgb(255, 255, 255);">쇼핑</span></small></td>
+      <td style="background-color: blue; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><small>
+      </small></td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://gainlink.com/%EB%AC%B4%EB%B9%84_%ED%86%A0%EB%9F%B0%ED%8A%B8"
+ href="http://gainlink.com/%EB%AC%B4%EB%B9%84_%ED%86%A0%EB%9F%B0%ED%8A%B8"
+ target="_blank"><font color="#92d050" face="Arial"
+ size="2"><span style="color: lime;">토렌트집합소1</span></font></a><font
+ color="#92d050" face="Arial" size="2"><span
+ style="color: lime;"></span></font><font
+ color="#92d050" face="Arial" size="2"><span
+ style="color: lime;"></span></font><span
+ style="color: lime;"><font color="red" face="Arial"
+ size="2"> &nbsp; </font><a
+ href="https://www.btranking2.top/?site_src=home" target="_blank"><font
+ color="red" face="Arial" size="2">토렌트랭킹</font></a></span>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.tving.com/main.do"
+ href="http://www.tving.com/main.do" target="_blank"><font
+ color="#ffc000" face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font></a><font
+ color="#ffc000" face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span>
+      <small><a style="color: rgb(255, 255, 0);"
+ href="https://hollymoviehd.cc/" target="_blank">홀리무비</a></small>&nbsp;
+&nbsp;<small><a style="color: rgb(255, 255, 0);"
+ href="https://xn--od5b1bz2ftj.com/" target="_blank">IcYoU</a></small>
+&nbsp; &nbsp;<small><a style="color: rgb(255, 255, 0);"
+ href="https://www.xn--od1ba225g1yu.tv/" target="_blank">누누TV</a><span style="color: rgb(255, 255, 0);">
+&nbsp; </span><a style="color: rgb(255, 255, 0);"
+ href="https://k21.dandm.tv/" target="_blank">드앤무</a></small></td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><small><a
+ href="https://ko.aliexpress.com/" target="_blank"><span
+ style="color: rgb(255, 255, 0);"> 알리</span></a></small><small><span
+ style="color: rgb(255, 255, 0);"></span><span
+ style="color: rgb(255, 255, 0);"></span></small><small><span
+ style="color: rgb(255, 255, 0);">&nbsp; </span></small><a
+ href="https://ko.aliexpress.com/" target="_blank"><small><span
+ style="color: rgb(255, 255, 0);"></span></small></a><small><a
+ target="_blank" style="color: rgb(255, 255, 0);"
+ href="https://www.temu.com/kr">테무</a><span
+ style="color: rgb(255, 255, 0);"> &nbsp; <a
+ style="color: rgb(255, 255, 0);"
+ href="https://www.amazon.co.jp/-/en/ref=nav_logo"
+ target="_blank">아마존</a></span></small></td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://www.thinstallsoft.com/" target="_blank"><font
+ color="yellow" face="Arial" size="2">ThinstallSoft</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp; </font><a
+ href="https://archive.org/details/softwarelibrary_flash_games"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">Software Library</font></a> </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://get.adobe.com/kr/flashplayer/completion/adm/?exitcode=0&amp;type=install&amp;re=0&amp;preinstalled=1"
+ href="https://get.adobe.com/kr/flashplayer/completion/adm/?exitcode=0&amp;type=install&amp;re=0&amp;preinstalled=1"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: rgb(255, 255, 102);">플래시작동확인</span></font></a><font
+ face="Arial" size="2"><span
+ style="color: rgb(255, 255, 102);"></span></font><span
+ style="color: rgb(255, 255, 102);"><font color="red"
+ face="Arial" size="2"> &nbsp; </font><a
+ href="https://rankers.info/" target="_blank"><font
+ color="red" face="Arial" size="2">사이트랭킹</font></a></span>
+      </td>
+      <td
+ style="background-color: black; width: 212px; color: rgb(255, 255, 51);"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(51, 204, 0);"
+ href="https://gemini.google.com/app"><font face="Arial"
+ size="2">Gemini</font></a><font color="yellow"
+ face="Arial" size="2"> </font><font
+ face="Arial" size="2">&nbsp;&nbsp; </font><a
+ href="https://chat.theb.ai/#/chat/1002"><font
+ color="yellow" face="Arial" size="2">BAI Chat</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp; &nbsp;<a style="color: rgb(255, 255, 0);"
+ href="https://openai.com/blog/start-using-chatgpt-instantly"
+ target="_blank">OpenAI</a></font></td>
+      <td
+ style="background-color: black; width: 224px; color: rgb(255, 255, 0);"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 255, 0); font-family: Arial;"
+ href="https://www.hotword.site/" target="_blank"><font
+ size="2">링크천국</font></a><font face="Arial"
+ size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> &nbsp;
+      </span></font><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><a
+ style="color: rgb(255, 255, 0);" href="http://poooo.ml/"
+ target="_blank"><font face="Arial" size="2">poooo</font></a><font
+ face="Arial" size="2">
+&nbsp; </font><a style="color: rgb(255, 0, 0);"
+ href="https://gutv24.com/" target="_blank"><font
+ face="Arial" size="2">실시간TV</font></a> </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="http://www.funshop.co.kr/"
+ href="http://www.funshop.co.kr/" target="_blank"><font
+ face="Arial" size="2"><span style="color: lime;"></span></font></a><font
+ color="lime" face="Arial" size="2"><span
+ style="color: yellow;"></span></font><a
+ style="text-decoration: underline;"
+ data-cke-saved-href="http://www.imbak.co.kr/shop/main/index.php"
+ href="http://www.imbak.co.kr/shop/main/index.php"
+ target="_blank"><font color="lime" face="Arial"
+ size="2"><span style="color: yellow;">임박몰</span></font></a><font
+ color="lime" face="Arial" size="2"><span
+ style="color: yellow;"> &nbsp; </span></font><font
+ face="Arial" size="2"><span style="color: yellow;"></span></font><font
+ face="Arial" size="2"><span style="color: lime;"></span></font><a
+ data-cke-saved-href="http://www.jikgure.com/"
+ href="https://www.daangn.com/search/%ED%92%8D%EB%AC%B4%EB%8F%99"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: lime;">당근마켓</span></font></a></td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://karanpc.com/windows/portable-soft/"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">karanpc</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp; </font><a href="https://www.sordum.net/"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">sordum</font></a><a
+ href="https://soft98.ir/software/" target="_blank"><font
+ color="yellow" face="Arial" size="2">soft98</font></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://get.adobe.com/kr/flashplayer/otherversions/"
+ href="http://get.adobe.com/kr/flashplayer/otherversions/"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: white;"></span></font></a></td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a style="color: rgb(255, 255, 0);"
+ href="https://copilot.microsoft.com/" target="_blank"><small>Copilot</small></a><span
+ style="color: rgb(255, 255, 0);"><small> &nbsp; <a
+ style="color: rgb(255, 255, 0);"
+ href="https://www.office.com/?auth=1" target="_blank">Microsoft365</a></small></span><span
+ style="color: rgb(70, 79, 235); font-family: SegoeUI-SemiBold-final,&quot;Segoe UI Semibold&quot;,SegoeUI-Regular-final,&quot;Segoe UI&quot;,&quot;Segoe UI Web (West European)&quot;,Segoe,-apple-system,BlinkMacSystemFont,Roboto,&quot;Helvetica Neue&quot;,Tahoma,Helvetica,Arial,sans-serif; font-size: 16px; font-style: normal; font-weight: 600; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: nowrap; background-color: rgb(240, 240, 240); display: inline ! important; float: none;"></span></td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://www.youtube.com/embed/FJfwehhzIhw?autoplay=1"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">YTN</font></a><font color="yellow"
+ face="Arial" size="2"> &nbsp; <a
+ style="color: rgb(255, 255, 0);"
+ href="https://www.youtube.com/embed/hxBTqmTT5gE?autoplay=1"
+ target="_blank">YTN2</a>&nbsp; &nbsp;<a
+ style="color: rgb(255, 255, 0);"
+ href="https://www.youtube.com/embed/vEO6wO0QsX8?autoplay=1"
+ target="_blank">YTN KOREAN</a> </font><a
+ href="https://www.youtube.com/embed/6QZ_qc75ihU?autoplay=1"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">&nbsp;연합뉴스</font></a> </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222"><a
+ data-cke-saved-href="http://www.jikgure.com/"
+ href="http://www.jikgure.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: lime;"></span></font></a><font
+ face="Arial" size="2"><span style="color: lime;"></span></font><font
+ face="Arial" size="2"><span style="color: red;"></span></font><span
+ style="color: blue;"></span><a
+ data-cke-saved-href="http://www.netpx.co.kr/"
+ href="http://www.netpx.co.kr/" target="_blank"><span
+ style="color: blue;"></span></a><font size="2"><span
+ style="color: blue;"></span></font><font
+ face="Arial" size="2"><span style="color: lime;"></span></font><a
+ data-cke-saved-href="http://www.jikgure.com/"
+ href="https://m.bunjang.co.kr/" target="_blank"><font
+ face="Arial" size="2"><span style="color: lime;"></span></font></a></td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://p30download.ir" target="_blank"><small><span
+ style="color: rgb(255, 255, 0);">p30download.com</span></small></a><small><span
+ style="color: rgb(255, 255, 0);"> &nbsp; <a
+ style="color: rgb(255, 255, 0);" href="https://p30-download.com"
+ target="_blank">2nd</a></span></small></td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a data-cke-saved-href="https://get.adobe.com/kr/flashplayer/"
+ href="https://get.adobe.com/kr/flashplayer/" target="_blank"><font
+ face="Arial" size="2"><span style="color: white;"></span></font></a>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <small><a
+ style="color: rgb(255, 255, 0); font-weight: bold;"
+ href="https://chatgpt.com/" target="_blank">chatGPT</a><span
+ style="color: rgb(255, 255, 0); font-weight: bold;">
+&nbsp; <a style="color: rgb(51, 204, 0);"
+ href="https://aistudio.google.com/prompts/new_chat"
+ target="_blank">Google AI Studio</a></span></small></td>
+      <td style="width: 224px; background-color: black;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <small><a href="https://ko.aliexpress.com"
+ target="_blank"><span style="color: rgb(255, 255, 0);"></span></a><span
+ style="color: rgb(255, 255, 0);"></span></small><span
+ style="color: rgb(255, 255, 0);"></span><a
+ href="https://television-planet.tv/ko/tv-/south-korea/"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">television planet</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp; </font><a href="https://tvonair.co.kr/"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">티비온에어</font></a> </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222"></td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="http://get.adobe.com/kr/flashplayer/about/"
+ href="http://get.adobe.com/kr/flashplayer/about/"
+ target="_blank"><span style="color: blue;"></span></a>
+      </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://www.samsungtvplus.com" target="_blank"><font
+ color="yellow" face="Arial" size="2">삼성TV</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp; </font><a
+ href="https://tv.nate.com/program/clips/1069" target="_blank"><font
+ color="yellow" face="Arial" size="2">네이트티비</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp;&nbsp;</font><small><a
+ style="color: rgb(255, 255, 0);" href="https://koreanz.link/">코리안즈 TV</a></small><font color="yellow"
+ face="Arial" size="2"> </font><font><a
+ data-cke-saved-href="http://www.tving.com/main.do"
+ href="http://www.tving.com/main.do" target="_blank"><font
+ color="#ffc000" face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font></a></font>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222"></td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://www.google.com/android/devicemanager"
+ href="https://www.google.com/android/devicemanager"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: red;"><br>
+      </span></font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ data-cke-saved-href="https://ibs.kfcc.co.kr/ib20/mnu/MCT0000000000344"
+ href="https://ibs.kfcc.co.kr/ib20/mnu/MCT0000000000344"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: white;"><br>
+      </span></font></a><a
+ data-cke-saved-href="https://www.ksd.or.kr/ko/e-service/finding-stocks/find-stocks-guide/"
+ href="https://www.ksd.or.kr/ko/e-service/finding-stocks/find-stocks-guide/"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: white;"></span></font></a> </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://onair.kbs.co.kr/index.html?sname=onair&amp;stype=live&amp;ch_code=11&amp;ch_type=globalList"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2"><span style="color: rgb(255, 255, 0);">kbs1</span></font></a><font
+ color="yellow" face="Arial" size="2"><span
+ style="color: rgb(255, 255, 0);"> &nbsp; <a
+ target="_blank" style="color: rgb(255, 255, 0);"
+ href="https://www.sbs.co.kr/live/S01?div=live_list">sbs</a>
+&nbsp; <a target="_blank"
+ style="color: rgb(255, 255, 0);"
+ href="https://m.imbc.com/onair/mbc">mbc</a> &nbsp;
+      <a target="_blank" style="color: rgb(255, 255, 0);"
+ href="https://onair.jtbc.co.kr/">jtbc</a><span
+ style="color: rgb(255, 255, 0);"> &nbsp; <a
+ style="color: rgb(255, 255, 0);"
+ href="https://broadcast.tvchosun.com/onair/on.cstv"
+ target="_blank">tv조선</a></span></span></font></td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5"
+ style="background-color: black; width: 1032px;"
+ bordercolor="#666666" bgcolor="#666666" width="1126">
+      <a
+ data-cke-saved-href="http://www.istockphoto.com/kr/%EC%8A%A4%ED%86%A1%EC%82%AC%EC%A7%84"
+ href="http://www.istockphoto.com/kr/%EC%8A%A4%ED%86%A1%EC%82%AC%EC%A7%84"
+ target="_blank" style="color: rgb(51, 255, 255);"><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;">무료이미지</span></font></a><span
+ style="color: rgb(51, 255, 255);"><font face="Arial"
+ size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;">
+&nbsp;&nbsp; </span></font></span><a
+ data-cke-saved-href="http://www.istockphoto.com/kr/%EC%8A%A4%ED%86%A1%EC%82%AC%EC%A7%84"
+ href="http://www.istockphoto.com/kr/%EC%8A%A4%ED%86%A1%EC%82%AC%EC%A7%84"
+ target="_blank" style="color: rgb(51, 255, 255);"><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;">istockphoto</span></font></a><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><font
+ face="Arial" size="2"><span style="color: aqua;">
+&nbsp; </span></font><a
+ data-cke-saved-href="https://www.pexels.com/"
+ href="https://www.pexels.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: aqua;">무료이미지</span></font></a><font face="Arial"
+ size="2"><span style="color: aqua;">
+&nbsp;&nbsp; </span></font><a
+ data-cke-saved-href="https://www.pexels.com/"
+ href="https://www.pexels.com/" target="_blank"><font
+ face="Arial" size="2"><span style="color: aqua;">pexels</span></font></a><font
+ face="Arial" size="2"><span style="color: aqua;"></span></font><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><font
+ face="Arial" size="2"><span style="color: yellow;">
+&nbsp; </span></font><a
+ data-cke-saved-href="https://pixabay.com/ko/photos/"
+ href="https://pixabay.com/ko/photos/" target="_blank"><font
+ face="Arial" size="2"><span style="color: yellow;">무료이미지</span></font></a><font face="Arial"
+ size="2"><span style="color: yellow;">
+&nbsp;&nbsp; </span></font><a
+ data-cke-saved-href="https://pixabay.com/ko/photos/"
+ href="https://pixabay.com/ko/photos/" target="_blank"><font
+ face="Arial" size="2"><span style="color: yellow;">pixabay</span></font></a><font
+ face="Arial" size="2"><span style="color: yellow;">
+&nbsp; </span></font><font face="Arial"
+ size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><font
+ face="Arial" size="2"><span style="color: aqua;"></span></font><a
+ data-cke-saved-href="http://www.freepik.com/popular-photos"
+ href="http://www.freepik.com/popular-photos" target="_blank"><font
+ face="Arial" size="2"><span style="color: aqua;">무료이미지</span></font></a><font face="Arial"
+ size="2"><span style="color: aqua;">
+&nbsp;&nbsp; </span></font><a
+ data-cke-saved-href="http://www.freepik.com/popular-photos"
+ href="http://www.freepik.com/popular-photos" target="_blank"><font
+ face="Arial" size="2"><span style="color: aqua;">freepik</span></font></a><font
+ face="Arial" size="2"><span style="color: aqua;"></span></font><span
+ style="color: rgb(51, 255, 255);"><font face="Arial"
+ size="2"><span style="color: rgb(51, 255, 255);">
+&nbsp; </span></font></span><a
+ data-cke-saved-href="https://videos.pexels.com/"
+ href="https://videos.pexels.com/" target="_blank"
+ style="color: rgb(51, 255, 255);"><font face="Arial"
+ size="2"><span style="color: rgb(51, 255, 255);">무료비디오</span></font></a><span
+ style="color: rgb(51, 255, 255);"><font face="Arial"
+ size="2"><span style="color: rgb(51, 255, 255);">
+&nbsp;&nbsp; </span></font></span><a
+ data-cke-saved-href="https://videos.pexels.com/"
+ href="https://videos.pexels.com/" target="_blank"
+ style="color: rgb(51, 255, 255);"><font face="Arial"
+ size="2"><span style="color: rgb(51, 255, 255);">pexels</span></font></a><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><font
+ face="Arial" size="2"><span style="color: yellow;">
+&nbsp; </span></font><a
+ data-cke-saved-href="https://pixabay.com/ko/videos/"
+ href="https://pixabay.com/ko/videos/" target="_blank"><font
+ face="Arial" size="2"><span style="color: yellow;">무료비디오</span></font></a><font face="Arial"
+ size="2"><span style="color: yellow;">
+&nbsp;&nbsp; </span></font><a
+ data-cke-saved-href="https://pixabay.com/ko/videos/"
+ href="https://pixabay.com/ko/videos/" target="_blank"><font
+ face="Arial" size="2"><span style="color: yellow;">pixabay</span></font></a><font
+ face="Arial" size="2"><span style="color: yellow;"></span></font><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><font
+ face="Arial" size="2"><span
+ style="color: rgb(51, 255, 255);"> &nbsp; </span></font><a
+ data-cke-saved-href="https://www.videoblocks.com/videos/footage"
+ href="https://www.videoblocks.com/videos/footage"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: rgb(51, 255, 255);">무료비디오</span></font></a><font
+ face="Arial" size="2"><span
+ style="color: rgb(51, 255, 255);"> &nbsp;&nbsp; </span></font><a
+ data-cke-saved-href="https://www.videoblocks.com/videos/footage"
+ href="https://www.videoblocks.com/videos/footage"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: rgb(51, 255, 255);">videoblocks</span></font></a>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5"
+ style="background-color: black; width: 1032px;"
+ bordercolor="#666666" bgcolor="#666666" width="1126">
+      <small><span style="color: rgb(255, 255, 0);"><a
+ style="color: rgb(51, 204, 0);"
+ href="https://www.google.com/search?q=%EB%B0%98%EC%B0%AC%EB%B0%B0%EB%8B%AC&amp;sca_esv=e890ebbce42516e3&amp;sca_upv=1&amp;sxsrf=ACQVn09Wt_Cf3LVfH1p-cbShk3eaFaeVKw%3A1713686213017&amp;ei=xcYkZr1Pr6faug_9iq6YAg&amp;udm=&amp;oq=%EB%B0%98%EC%B0%AC&amp;gs_lp=Egxnd3Mtd2l6LXNlcnAiBuuwmOywrCoCCAAyChAAGIAEGEMYigUyCBAAGIAEGLEDMgUQABiABDIFEAAYgAQyChAAGIAEGEMYigUyChAAGIAEGEMYigUyBRAAGIAEMgoQABiABBhDGIoFMgUQABiABDIKEAAYgAQYQxiKBUiuXlAAWMNbcAN4AZABAJgBlQGgAfcDqgEDMC40uAEByAEA-AEBmAIHoAKVBMICCxAuGIAEGMcBGK8BwgIFEC4YgATCAgsQABiABBixAxiDAZgDAOIDBRIBMSBAkgcDMy40oAeeGg&amp;sclient=gws-wiz-serp#ip=1"
+ target="_blank">반찬배달</a>&nbsp; <a
+ style="color: rgb(255, 204, 0);"
+ href="https://www.google.com/search?sca_esv=17f72efe5b819f76&amp;sca_upv=1&amp;sxsrf=ACQVn0_2-Hhb1ayopq3BCKE40oPZjjmcSQ:1713687199119&amp;q=%EC%A0%91%EC%9D%B4%EC%8B%9D%EC%A0%84%EB%8F%99%ED%9C%A0%EC%B2%B4%EC%96%B4&amp;udm=2&amp;source=univ&amp;fir=PSMGF09LJBRRaM%252CXeX7yC8FPx-3NM%252C_%253BJTKx-hz0Z0rudM%252ClC_PZPZRgbMtqM%252C_%253BBiC08d9jZ_MLQM%252Ca1BIAqpO62djeM%252C_%253BqY2eoQ79EFkoiM%252C209tHg7yUijriM%252C_%253BzXUFF76GPQ1K6M%252CcjmQsLlEhHTeuM%252C_%253B9Itaq2fts7J7fM%252CgX8dhhnV-vR-2M%252C_%253BrHxKa5BpZwoQdM%252CU0LvuczNshvDLM%252C_%253Bw3ZZnXbLdDCZEM%252C6wObHsdIuqsM_M%252C_%253BNHgYy8CtTSigNM%252CYozXe4w7FdMtHM%252C_%253BWReR1XyqtRYAfM%252CW0TpUH0lk_FdwM%252C_%253BQFpKLWh8I_dA_M%252CmdIeEtIVM9lnDM%252C_%253Bp8TBN3rPaqx3kM%252Cy4WHTreR5eAfuM%252C_%253Bhl1sGLloy3uZVM%252C7FpqODOAuV4NvM%252C_%253BpXeQ0E7Cdk4MKM%252C1wMZNeCRz0Xg4M%252C_%253Bob70Mz_azuWlsM%252CYozXe4w7FdMtHM%252C_&amp;usg=AI4_-kSOvaB6B3wDuCfdDsXjb-MZ-jTT2A&amp;biw=1512&amp;bih=703&amp;dpr=2.5"
+ target="_blank">전동휠체어</a> &nbsp; <br>
+      </span></small></td>
+    </tr>
+    <tr>
+      <td colspan="5"
+ style="background-color: black; text-align: left; width: 1032px;"
+ bordercolor="#666666" bgcolor="#666666" width="1126">
+      <span style="font-family: Arial,Helvetica,sans-serif;"><font
+ color="#92d050" face="Arial" size="2"> </font></span><a
+ target="_blank" data-cke-saved-href="http://www.ipwatch.co.kr/"
+ href="http://www.ipwatch.co.kr/"><font color="#92d050"
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font></a><font
+ color="#92d050" face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><font
+ color="#92d050" face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font><a
+ target="_blank"
+ data-cke-saved-href="https://www.onlinedoctranslator.com/ko/translationform"
+ href="https://www.onlinedoctranslator.com/ko/translationform"><font
+ color="#92d050" face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></font></a><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span><font
+ color="#92d050" face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><br>
+      </span></font> </td>
+    </tr>
+    <tr>
+      <td colspan="5"
+ style="background-color: black; width: 1032px; text-align: center;"
+ bordercolor="#666666" bgcolor="#666666" width="1126">
+      <a
+ data-cke-saved-href="https://ibs.kfcc.co.kr/ib20/mnu/MCT0000000000344"
+ href="https://ibs.kfcc.co.kr/ib20/mnu/MCT0000000000344"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: white;">새마을</span></font></a><font
+ face="Arial" size="2"><span style="color: white;"></span></font><font
+ face="Arial" size="2"><span style="color: white;">
+&nbsp; </span></font><a
+ data-cke-saved-href="http://www.sleepmoney.or.kr/jsp/cm/cdo0001.jsp?t=20200123"
+ href="http://www.sleepmoney.or.kr/jsp/cm/cdo0001.jsp?t=20200123"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: white;">휴면계좌</span></font></a><font
+ face="Arial" size="2"><span style="color: white;"></span></font><font
+ face="Arial" size="2"><span style="color: white;">
+&nbsp; </span></font><a
+ data-cke-saved-href="https://www.ksd.or.kr/ko/e-service/finding-stocks/find-stocks-guide/"
+ href="https://www.ksd.or.kr/ko/e-service/finding-stocks/find-stocks-guide/"
+ target="_blank"><font face="Arial" size="2"><span
+ style="color: white;">예탁결재원</span></font></a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://www.gimpo.go.kr/agri/selectBbsNttList.do?bbsNo=43&amp;key=2599"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">농업기술센터</font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="https://www.gimpo.go.kr/gimpojob/selectBbsNttList.do?bbsNo=1410&amp;key=6310"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">김포시</font></a><font color="yellow"
+ face="Arial" size="2"> &nbsp; &nbsp;<a
+ style="color: rgb(255, 255, 102);"
+ href="https://www.gimpoch.com/%EA%B9%80%ED%8F%AC%EC%8B%9C-%ED%92%8D%EB%AC%B4%EB%8F%99-%EC%A3%BC%EB%AF%BC%EC%84%BC%ED%84%B0/"><span
+ style="text-decoration: underline;">풍무동주민센터</span></a></font></td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <span style="font-family: Arial,Helvetica,sans-serif;"><a
+ href="https://vault.bitwarden.com/#/login"><font
+ color="yellow" face="Arial" size="2">biwden</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp; gm_***********!!</font><font color="yellow"
+ face="Arial" size="2"><br>
+      </font></span><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <span style="font-family: Arial,Helvetica,sans-serif;"><a
+ href="https://lastpass.com/?ac=1&amp;lpnorefresh=1"><font
+ color="yellow" face="Arial" size="2">lpas</font></a><font
+ color="yellow" face="Arial" size="2">
+&nbsp; gm_pa***61***</font><font color="yellow"
+ face="Arial" size="2"><br>
+      </font></span><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <small><span style="color: rgb(255, 204, 0);">비발디 pyj** 1055pa****!61***</span></small><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://www.gopa.or.kr/sub/notice/list.html"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">산업진흥원</font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <small><a style="color: rgb(255, 0, 0);"
+ href="https://vclock.kr/" target="_blank">현재시간</a></small><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><br>
+      </span></font><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a href="https://www.nhimc.or.kr/" target="_blank"><small><span
+ style="color: rgb(255, 255, 0);">일산병원</span></small></a><small><span
+ style="color: rgb(255, 255, 0);"> &nbsp;
+***05**_**********!!</span></small> </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <small><a style="color: rgb(255, 255, 0);"
+ href="https://cert.niceid.co.kr/cert/common/exportToWeb#"
+ target="_blank">NICE</a><span
+ style="color: rgb(255, 255, 0);"> &nbsp; pyj****_10****!</span></small><a
+ style="color: rgb(255, 255, 0);"
+ href="https://cert.niceid.co.kr/cert/common/exportToWeb#"
+ target="_blank"><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font></a><font
+ face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><br>
+      </span></font><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: black; width: 176px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <a
+ href="http://gimpomunhwa.or.kr/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_000000000021&amp;menuNo=5010101000"
+ target="_blank"><font color="yellow" face="Arial"
+ size="2">김포문화원</font></a> </td>
+      <td style="background-color: black; width: 212px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><br>
+      </span></font><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+      <td style="background-color: black; width: 224px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><br>
+      </span></font><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+      <td style="background-color: black; width: 194px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><br>
+      </span></font><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+      <td style="background-color: black; width: 209px;"
+ bordercolor="#666666" bgcolor="#666666" width="222">
+      <font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"><br>
+      </span></font><font face="Arial" size="2"><span
+ style="font-family: Arial,Helvetica,sans-serif;"> </span></font>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<big><big><span
+ style="font-family: Arial,Helvetica,sans-serif;"></span></big></big><br>
+<a style="color: rgb(255, 255, 0); font-weight: bold;"
+ href="https://www.tving.com/live" target="_blank">티빙</a><span
+ style="color: rgb(255, 255, 0); font-weight: bold;"> p**05**
+/ 1055!papa****!6 &nbsp; &nbsp;<br>
+Arthritis
+Pain(관절통) : </span><a
+ style="color: rgb(255, 255, 0); font-weight: bold;"
+ href="https://www.vitadaily.net/product/1000000234"
+ target="_blank">Tylenol (650mg)</a><span
+ style="color: rgb(255, 255, 0); font-weight: bold;">&nbsp;
+&nbsp; Advil &nbsp; &nbsp;<br>
+</span><a style="color: rgb(255, 255, 0); font-weight: bold;"
+ target="_blank"
+ href="https://m.booking.naver.com/order/bizes/412984/items/5562608/menus/11985055?theme=place&amp;refererCode=menutab&amp;service-target=map-pc&amp;area=bmp">노브랜드버거</a><span
+ style="color: rgb(255, 255, 0); font-weight: bold;">
+&nbsp; </span><a
+ style="color: rgb(255, 255, 0); font-weight: bold;"
+ href="https://www.burgerking.co.kr/#/home" target="_blank">버거킹</a><span style="color: rgb(255, 255, 0); font-weight: bold;">
+&nbsp; </span><a
+ style="color: rgb(255, 255, 0); font-weight: bold;"
+ href="https://www.lotteeatz.com/eatzMain" target="_blank">롯데리아</a><br style="color: rgb(255, 255, 0);">
+<div style="font-weight: bold; text-align: center;">
+<br class="Apple-interchange-newline">
+</div>
 </body>
+
+
 </html>
